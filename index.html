@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СИЯНИЕ — одежда и текстиль со стразами ручной работы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #141318;
+    --bg-soft: #1c1a21;
+    --card: #201e26;
+    --line: #33303a;
+    --gold: #c9a768;
+    --gold-soft: #e3cd9c;
+    --ice: #e9e4f5;
+    --text: #f3efe7;
+    --text-dim: #a79f92;
+    --rose: #b98a8a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    letter-spacing:.01em;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  /* sparkle field */
+  .sparkles{position:absolute; inset:0; overflow:hidden; pointer-events:none;}
+  .sparkles span{
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background:var(--gold-soft);
+    box-shadow:0 0 6px 1px rgba(227,205,156,.9);
+    animation: twinkle 3.4s ease-in-out infinite;
+    opacity:.2;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:.15; transform:scale(.8);}
+    50%{opacity:1; transform:scale(1.4);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .sparkles span{animation:none; opacity:.5;}
+  }
+
+  /* header */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(20,19,24,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px; max-width:1180px; margin:0 auto;
+  }
+  .logo{
+    font-family:'Cormorant Garamond', serif;
+    font-size:26px; letter-spacing:.14em; font-weight:600;
+    color:var(--text);
+  }
+  .logo em{font-style:normal; color:var(--gold);}
+  .nav-links{display:flex; gap:36px; font-size:14px; letter-spacing:.04em; text-transform:uppercase;}
+  .nav-links a{color:var(--text-dim); transition:color .25s;}
+  .nav-links a:hover{color:var(--gold-soft);}
+  .nav-cta{
+    border:1px solid var(--gold); color:var(--gold-soft);
+    padding:9px 20px; border-radius:999px; font-size:13px; letter-spacing:.04em;
+    transition:all .25s;
+  }
+  .nav-cta:hover{background:var(--gold); color:#141318;}
+  .burger{display:none;}
+
+  /* hero */
+  .hero{position:relative; padding:96px 0 60px; overflow:hidden;}
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center;
+    position:relative; z-index:2;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:13px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gold-soft); margin-bottom:22px;
+  }
+  .eyebrow::before{content:''; width:26px; height:1px; background:var(--gold);}
+  .hero h1{
+    font-size:clamp(40px,5.4vw,68px); line-height:1.05; font-weight:600;
+    color:var(--text);
+  }
+  .hero h1 i{font-style:italic; color:var(--gold);}
+  .hero p{
+    margin-top:24px; max-width:460px; color:var(--text-dim); font-size:17px;
+  }
+  .hero-actions{display:flex; gap:16px; margin-top:38px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--gold); color:#161319; padding:15px 30px; border-radius:999px;
+    font-size:14px; letter-spacing:.03em; font-weight:600; text-transform:uppercase;
+    transition:transform .25s, box-shadow .25s;
+    box-shadow:0 8px 26px -8px rgba(201,167,104,.55);
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid var(--line); color:var(--text); padding:15px 28px; border-radius:999px;
+    font-size:14px; letter-spacing:.03em; text-transform:uppercase; transition:border-color .25s, color .25s;
+  }
+  .btn-ghost:hover{border-color:var(--gold); color:var(--gold-soft);}
+
+  .hero-media{position:relative;}
+  .hero-media .frame{
+    position:relative; border-radius:6px; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .hero-media img{width:100%; height:460px; object-fit:cover; filter:saturate(1.05);}
+  .hero-media .frame::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(215deg, transparent 40%, rgba(20,19,24,.6) 100%);
+  }
+  .hero-tag{
+    position:absolute; left:-24px; bottom:-24px;
+    background:var(--card); border:1px solid var(--line);
+    padding:18px 22px; border-radius:6px; max-width:230px;
+    box-shadow:0 20px 40px -20px rgba(0,0,0,.6);
+  }
+  .hero-tag .num{font-family:'Cormorant Garamond',serif; font-size:30px; color:var(--gold-soft);}
+  .hero-tag .lbl{font-size:12.5px; color:var(--text-dim); letter-spacing:.02em; margin-top:4px;}
+
+  .stats-row{
+    display:flex; gap:56px; margin-top:64px; padding-top:36px; border-top:1px solid var(--line);
+    flex-wrap:wrap; position:relative; z-index:2;
+  }
+  .stat b{display:block; font-family:'Cormorant Garamond',serif; font-size:32px; color:var(--gold-soft); font-weight:600;}
+  .stat span{font-size:13px; color:var(--text-dim); letter-spacing:.02em;}
+
+  /* section titles */
+  .section-head{max-width:620px; margin:0 auto 52px; text-align:center;}
+  .section-head .eyebrow{justify-content:center;}
+  .section-head .eyebrow::before{display:none;}
+  .section-head h2{font-size:clamp(30px,4vw,44px); font-weight:600;}
+  .section-head p{color:var(--text-dim); margin-top:14px; font-size:15.5px;}
+
+  section{padding:96px 0;}
+  .divider{height:1px; background:linear-gradient(90deg, transparent, var(--line), transparent);}
+
+  /* catalog */
+  .catalog-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:28px;
+  }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:8px; overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:transform .35s, border-color .35s;
+  }
+  .card:hover{transform:translateY(-6px); border-color:#4a4552;}
+  .card-media{position:relative; aspect-ratio:1/1; overflow:hidden;}
+  .card-media img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease;}
+  .card:hover .card-media img{transform:scale(1.06);}
+  .card-media::before{
+    content:''; position:absolute; inset:0; z-index:2;
+    background:linear-gradient(115deg, transparent 40%, rgba(233,228,245,.16) 48%, transparent 56%);
+    transform:translateX(-120%);
+    transition:transform .9s ease;
+  }
+  .card:hover .card-media::before{transform:translateX(120%);}
+  .card-badge{
+    position:absolute; top:14px; left:14px; z-index:3;
+    background:rgba(20,19,24,.72); backdrop-filter:blur(4px);
+    color:var(--gold-soft); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+    padding:6px 12px; border-radius:999px; border:1px solid rgba(201,167,104,.35);
+  }
+  .card-body{padding:24px 24px 26px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .card-body h3{font-size:23px; font-weight:600;}
+  .card-body .desc{font-size:14.5px; color:var(--text-dim); flex:1;}
+  .card-meta{
+    display:flex; gap:8px; flex-wrap:wrap; margin-top:2px;
+  }
+  .tag{
+    font-size:11.5px; letter-spacing:.03em; color:var(--text-dim);
+    border:1px solid var(--line); padding:5px 10px; border-radius:999px;
+  }
+  .card-footer{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:14px; padding-top:16px; border-top:1px solid var(--line);
+  }
+  .price{font-family:'Cormorant Garamond',serif; font-size:25px; color:var(--gold-soft); font-weight:600;}
+  .price span{font-size:13px; color:var(--text-dim); font-family:'Manrope',sans-serif; margin-left:4px;}
+  .buy-btn{
+    font-size:13px; letter-spacing:.03em; text-transform:uppercase; color:var(--text);
+    border:1px solid var(--line); padding:10px 18px; border-radius:999px;
+    transition:all .25s;
+  }
+  .buy-btn:hover{background:var(--gold); border-color:var(--gold); color:#161319;}
+
+  /* process / about */
+  .about{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .about-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:64px; align-items:center;}
+  .about-media{position:relative; border-radius:8px; overflow:hidden; border:1px solid var(--line);}
+  .about-media img{width:100%; height:520px; object-fit:cover;}
+  .steps{display:flex; flex-direction:column; gap:0;}
+  .step{
+    display:flex; gap:22px; padding:26px 0; border-top:1px solid var(--line);
+  }
+  .step:last-child{border-bottom:1px solid var(--line);}
+  .step .mark{
+    font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--gold);
+    min-width:44px;
+  }
+  .step h4{font-size:19px; font-weight:600; margin-bottom:6px;}
+  .step p{font-size:14.5px; color:var(--text-dim);}
+
+  /* care */
+  .care-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px;}
+  .care-card{
+    background:var(--card); border:1px solid var(--line); border-radius:8px; padding:30px 24px;
+    text-align:center;
+  }
+  .care-card .ic{
+    width:44px; height:44px; margin:0 auto 18px; border-radius:50%;
+    border:1px solid var(--gold); display:flex; align-items:center; justify-content:center;
+    color:var(--gold-soft); font-family:'Cormorant Garamond',serif; font-size:20px;
+  }
+  .care-card h4{font-size:17px; margin-bottom:8px; font-weight:600;}
+  .care-card p{font-size:13.5px; color:var(--text-dim);}
+
+  /* order / contact */
+  .order{position:relative; overflow:hidden;}
+  .order-box{
+    background:linear-gradient(135deg, var(--card), #1a1820);
+    border:1px solid var(--line); border-radius:14px;
+    padding:64px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
+    position:relative; z-index:2;
+  }
+  .order-box h2{font-size:clamp(28px,3.6vw,40px); margin-bottom:16px;}
+  .order-box p{color:var(--text-dim); font-size:15px; margin-bottom:28px; max-width:420px;}
+  .contact-list{display:flex; flex-direction:column; gap:14px;}
+  .contact-list a{
+    display:flex; align-items:center; gap:14px;
+    font-size:15px; color:var(--text); border:1px solid var(--line);
+    padding:14px 18px; border-radius:8px; transition:border-color .25s, color .25s;
+  }
+  .contact-list a:hover{border-color:var(--gold); color:var(--gold-soft);}
+  .contact-list .ic{
+    width:30px; height:30px; border-radius:50%; background:var(--gold); color:#161319;
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0;
+  }
+  .order-note{font-size:12.5px; color:var(--text-dim); margin-top:22px; line-height:1.7;}
+  .order-note b{color:var(--gold-soft); font-weight:600;}
+
+  footer{
+    padding:44px 0; border-top:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+  }
+  footer .logo{font-size:19px;}
+  footer p{font-size:13px; color:var(--text-dim);}
+
+  @media (max-width:960px){
+    .nav-links{display:none;}
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-media{order:-1;}
+    .hero-tag{left:16px; bottom:16px;}
+    .catalog-grid{grid-template-columns:repeat(2,1fr);}
+    .about-grid{grid-template-columns:1fr;}
+    .about-media img{height:340px;}
+    .care-grid{grid-template-columns:repeat(2,1fr);}
+    .order-box{grid-template-columns:1fr; padding:40px 28px;}
+    .stats-row{gap:32px;}
+  }
+  @media (max-width:600px){
+    .wrap{padding:0 20px;}
+    .catalog-grid{grid-template-columns:1fr;}
+    .care-grid{grid-template-columns:1fr;}
+    .hero{padding-top:120px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">СИ<em>Я</em>НИЕ</div>
+    <nav class="nav-links">
+      <a href="#catalog">Каталог</a>
+      <a href="#process">Как это сделано</a>
+      <a href="#care">Уход</a>
+      <a href="#order">Контакты</a>
+    </nav>
+    <a href="#order" class="nav-cta">Заказать</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="sparkles" id="sparkleField"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Ручная работа · Стразы на заказ</div>
+        <h1>Принты,<br>которые <i>сияют</i><br>на любой ткани</h1>
+        <p>Худи, футболки и текстиль для дома с авторскими принтами из страз, выложенных вручную кристалл за кристаллом. Свой дизайн, персонаж или логотип — под ваш запрос.</p>
+        <div class="hero-actions">
+          <a href="#catalog" class="btn-primary">Смотреть каталог</a>
+          <a href="#process" class="btn-ghost">Как мы это делаем</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="frame">
+          <img src="images/hero-wide.jpg" alt="Худи с принтом из страз ручной работы">
+        </div>
+        <div class="hero-tag">
+          <div class="num">4–8 ч</div>
+          <div class="lbl">среднее время ручной выкладки одного принта</div>
+        </div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><b>100%</b><span>ручная выкладка страз</span></div>
+      <div class="stat"><b>6</b><span>готовых дизайнов и любой на заказ</span></div>
+      <div class="stat"><b>2000+</b><span>кристаллов на принт в среднем</span></div>
+      <div class="stat"><b>14 дней</b><span>гарантия на посадку страз</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="catalog">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Каталог</div>
+      <h2>Каждый принт — в одном экземпляре</h2>
+      <p>Фото сделаны нами при сборке заказов — это реальные изделия, а не рендеры. Размер, цвет ткани и вариант страз уточняются при оформлении заказа. Можем повторить свой сюжет — пришлите референс.</p>
+    </div>
+
+    <div class="catalog-grid">
+
+      <div class="card">
+        <div class="card-media">
+          <span class="card-badge">Bestseller</span>
+          <img src="images/scrooge.jpg" alt="Худи Scrooge McDuck со стразами">
+        </div>
+        <div class="card-body">
+          <h3>Scrooge McDuck</h3>
+          <p class="desc">Крупная объёмная композиция: цилиндр, мешок монет и фирменный прищур Скруджа выложены сотнями страз с металлическим и золотистым переливом.</p>
+          <div class="card-meta">
+            <span class="tag">Худи, серый меланж</span>
+            <span class="tag">Стразы hotfix: серебро + золото + янтарь</span>
+          </div>
+          <div class="card-footer">
+            <div class="price">6 900 ₽<span>/ шт</span></div>
+            <a href="#order" class="buy-btn">Заказать</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-media">
+          <img src="images/detailing-pillow.jpg" alt="Подушка с логотипом Dr.Detailing из страз">
+        </div>
+        <div class="card-body">
+          <h3>Dr.Detailing</h3>
+          <p class="desc">Брендированная наволочка с логотипом в стразах — делаем такие для бизнеса: фирменный знак, название студии или паблика на текстиле для мерча и подарков.</p>
+          <div class="card-meta">
+            <span class="tag">Наволочка, велюр, графит</span>
+            <span class="tag">Стразы: красный AB + графит</span>
+          </div>
+          <div class="card-footer">
+            <div class="price">от 3 500 ₽<span>/ шт</span></div>
+            <a href="#order" class="buy-btn">Заказать</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-media">
+          <span class="card-badge">Яркий выбор</span>
+          <img src="images/raikov.jpg" alt="Футболка Raikov со стразами">
+        </div>
+        <div class="card-body">
+          <h3>Raikov</h3>
+          <p class="desc">Именная надпись и персонаж в мультиколоре — каждая буква выложена своим оттенком страз. Хороший формат для имени, ника или подарка на заказ.</p>
+          <div class="card-meta">
+            <span class="tag">Футболка, красная</span>
+            <span class="tag">Стразы: mix цветов, AB-эффект</span>
+          </div>
+          <div class="card-footer">
+            <div class="price">5 400 ₽<span>/ шт</span></div>
+            <a href="#order" class="buy-btn">Заказать</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-media">
+          <span class="card-badge">Хит продаж</span>
+          <img src="images/squidgame.jpg" alt="Худи Squid Game со стразами">
+        </div>
+        <div class="card-body">
+          <h3>Squid Game</h3>
+          <p class="desc">Логотип и фигуры-символы с эффектом стекающей неоново-розовой краски. Контраст чёрной ткани и яркого страза считывается издалека.</p>
+          <div class="card-meta">
+            <span class="tag">Худи, чёрная</span>
+            <span class="tag">Стразы: неон-розовый + серебро</span>
+          </div>
+          <div class="card-footer">
+            <div class="price">6 500 ₽<span>/ шт</span></div>
+            <a href="#order" class="buy-btn">Заказать</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-media">
+          <span class="card-badge">Новинка</span>
+          <img src="images/joker.jpg" alt="Худи Joker со стразами">
+        </div>
+        <div class="card-body">
+          <h3>Joker</h3>
+          <p class="desc">Портрет культового персонажа — от зелёных прядей до деталей костюма — с плавными цветовыми переходами внутри одного изображения.</p>
+          <div class="card-meta">
+            <span class="tag">Худи, серо-синяя</span>
+            <span class="tag">Стразы: mix, объёмный портрет</span>
+          </div>
+          <div class="card-footer">
+            <div class="price">7 200 ₽<span>/ шт</span></div>
+            <a href="#order" class="buy-btn">Заказать</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-media">
+          <img src="images/tom.jpg" alt="Футболка с мультгероем и авторской надписью из страз">
+        </div>
+        <div class="card-body">
+          <h3>Tom Party</h3>
+          <p class="desc">Мультяшный персонаж и дерзкая авторская надпись крупными стразами — заказывают как шуточный подарок другу или на вечеринку.</p>
+          <div class="card-meta">
+            <span class="tag">Футболка оверсайз, зелёная</span>
+            <span class="tag">Стразы: жёлтый + красный</span>
+          </div>
+          <div class="card-footer">
+            <div class="price">5 200 ₽<span>/ шт</span></div>
+            <a href="#order" class="buy-btn">Заказать</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="about" id="process">
+  <div class="wrap about-grid">
+    <div class="about-media">
+      <img src="images/about-detail.jpg" alt="Процесс выкладки страз крупным планом">
+    </div>
+    <div>
+      <div class="eyebrow">Процесс</div>
+      <h2 style="font-size:clamp(28px,3.6vw,40px); margin-bottom:8px;">Как рождается один принт</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="mark">01</div>
+          <div><h4>Макет и разметка</h4><p>Переводим изображение или референс в схему раскладки страз и наносим контур на ткань — вручную, без трафарета.</p></div>
+        </div>
+        <div class="step">
+          <div class="mark">02</div>
+          <div><h4>Подбор камней</h4><p>Сортируем стразы по размеру и оттенку под конкретный дизайн, чтобы переход цветов был плавным.</p></div>
+        </div>
+        <div class="step">
+          <div class="mark">03</div>
+          <div><h4>Выкладка вручную</h4><p>Каждый кристалл фиксируется пинцетом на термоклеевой состав — это самая долгая и кропотливая часть работы.</p></div>
+        </div>
+        <div class="step">
+          <div class="mark">04</div>
+          <div><h4>Термофиксация и проверка</h4><p>Прогреваем принт под прессом и проверяем сцепление каждого камня перед упаковкой.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="care">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Уход</div>
+      <h2>Чтобы блеск оставался надолго</h2>
+      <p>Стразы держатся прочно, но, как и любые украшения ручной работы, любят бережное обращение.</p>
+    </div>
+    <div class="care-grid">
+      <div class="care-card">
+        <div class="ic">✦</div>
+        <h4>Стирка наизнанку</h4>
+        <p>Выворачивайте вещь и стирайте в деликатном режиме без отжима.</p>
+      </div>
+      <div class="care-card">
+        <div class="ic">✦</div>
+        <h4>Без сушилки</h4>
+        <p>Сушите на плечиках или горизонтально, вдали от батарей и солнца.</p>
+      </div>
+      <div class="care-card">
+        <div class="ic">✦</div>
+        <h4>Гладить с изнанки</h4>
+        <p>Утюг и парогенератор — только по обратной стороне ткани, не по принту.</p>
+      </div>
+      <div class="care-card">
+        <div class="ic">✦</div>
+        <h4>Без химчистки</h4>
+        <p>Агрессивные растворители могут повредить клеевой состав страз.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <div class="wrap">
+    <div class="order-box">
+      <div>
+        <div class="eyebrow">Заказ</div>
+        <h2>Выбрали принт?<br>Напишите нам размер и пожелания</h2>
+        <p>Мы уточним наличие, срок изготовления (обычно 3–7 дней на заказ) и оформим доставку по России. Предоплата 50% для запуска в работу. Можем сделать индивидуальный дизайн по вашему референсу.</p>
+        <div class="order-note">Цены ориентировочные и зависят от плотности выкладки страз — точная стоимость после согласования макета.</div>
+      </div>
+      <div class="contact-list">
+        <a href="https://t.me/LysiaSh" target="_blank" rel="noopener">
+          <span class="ic">TG</span> @LysiaSh — Telegram
+        </a>
+        <a href="https://wa.me/79227373623" target="_blank" rel="noopener">
+          <span class="ic">WA</span> +7 922 737-36-23 — WhatsApp
+        </a>
+        <a href="mailto:lusiae@mail.ru">
+          <span class="ic">@</span> lusiae@mail.ru
+        </a>
+        <a href="#">
+          <span class="ic">IG</span> @siyanie.handmade — Instagram*
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; width:100%; flex-wrap:wrap; gap:16px;">
+    <div class="logo">СИ<em>Я</em>НИЕ</div>
+    <p>Ручная работа · Стразы · Сделано с любовью к деталям</p>
+  </div>
+</footer>
+
+<script>
+  const field = document.getElementById('sparkleField');
+  const count = 46;
+  for(let i=0;i<count;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*3.4)+'s';
+    s.style.animationDuration = (2.6+Math.random()*2.4)+'s';
+    field.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
