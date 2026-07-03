@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #141318;
+  --bg-soft: #1c1a21;
+  --card: #201e26;
+  --line: #33303a;
+  --gold: #c9a768;
+  --gold-soft: #e3cd9c;
+  --ice: #e9e4f5;
+  --text: #f3efe7;
+  --text-dim: #a79f92;
+  --rose: #b98a8a;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-ice: var(--ice);
+  --color-text: var(--text);
+  --color-text-dim: var(--text-dim);
+  --color-rose: var(--rose);
+
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-manrope);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Decorative hero sparkle field (see components/home/Sparkles.tsx) */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+.sparkle-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  box-shadow: 0 0 6px 1px rgba(227, 205, 156, 0.9);
+  animation: twinkle 3.4s ease-in-out infinite;
+  opacity: 0.2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkle-dot {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+/* Diagonal shimmer sweep on catalog card hover (see components/catalog/ProductCard.tsx) */
+.card-shimmer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(233, 228, 245, 0.16) 48%,
+    transparent 56%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+}
+
+.group:hover .card-shimmer::before {
+  transform: translateX(120%);
+}
