@@ -5,7 +5,7 @@ import { Wrap } from "@/components/layout/Wrap";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { PriceTag } from "@/components/catalog/PriceTag";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
-import { getProductBySlug } from "@/lib/sanity/queries";
+import { getProductBySlug } from "@/lib/supabase/queries";
 
 export default async function ProductPage({
   params,

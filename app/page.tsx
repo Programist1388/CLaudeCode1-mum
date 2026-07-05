@@ -5,7 +5,7 @@ import { ProcessSection } from "@/components/home/ProcessSection";
 import { CareSection } from "@/components/home/CareSection";
 import { OrderSection } from "@/components/home/OrderSection";
 import { CatalogGrid } from "@/components/catalog/CatalogGrid";
-import { getAllProducts } from "@/lib/sanity/queries";
+import { getAllProducts } from "@/lib/supabase/queries";
 
 export default async function Home() {
   const products = await getAllProducts();

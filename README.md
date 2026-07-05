@@ -1,9 +1,9 @@
 # СИЯНИЕ
 
 Site for a handmade rhinestone apparel & textile shop — Next.js storefront
-with a Sanity-managed product catalog. See [`CLAUDE.md`](./CLAUDE.md) for
-the full architecture, folder map, environment variables, and one-time
-setup steps.
+with a Supabase-backed product catalog and a built-in admin panel. See
+[`CLAUDE.md`](./CLAUDE.md) for the full architecture, folder map,
+environment variables, database schema, and one-time setup steps.
 
 ## Quick start
 
@@ -14,8 +14,9 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) for the storefront and
-[http://localhost:3000/studio](http://localhost:3000/studio) for the
-product catalog admin (Sanity Studio).
+[http://localhost:3000/admin](http://localhost:3000/admin) for the product
+catalog admin panel (requires Supabase to be configured first — see
+`CLAUDE.md`).
 
 ## Deployment
 
