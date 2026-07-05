@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Wrap } from "@/components/layout/Wrap";
-import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { ProductGallery } from "@/components/catalog/ProductGallery";
 import { PriceTag } from "@/components/catalog/PriceTag";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { getProductBySlug } from "@/lib/supabase/queries";
@@ -28,21 +28,11 @@ export default async function ProductPage({
       <Header />
       <main className="py-16">
         <Wrap className="grid gap-12 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-[8px] border border-line">
-            {product.images[0] ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                className="aspect-square w-full object-cover"
-              />
-            ) : (
-              <ImagePlaceholder
-                className="aspect-square w-full"
-                label={t.imagePlaceholder.text}
-              />
-            )}
-          </div>
+          <ProductGallery
+            images={product.images}
+            alt={product.title}
+            placeholderLabel={t.imagePlaceholder.text}
+          />
 
           <div>
             {product.badge && (
