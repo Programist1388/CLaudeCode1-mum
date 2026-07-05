@@ -8,10 +8,16 @@ export function AddToCartButton({
   product,
   className = "",
   variant = "primary",
+  addLabel = "В корзину",
+  addedLabel = "Добавлено ✓",
+  orderLabel = "Заказать",
 }: {
   product: Product;
   className?: string;
   variant?: "primary" | "outline";
+  addLabel?: string;
+  addedLabel?: string;
+  orderLabel?: string;
 }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
@@ -34,7 +40,7 @@ export function AddToCartButton({
       onClick={handleClick}
       className={`${base} ${styles} ${className}`}
     >
-      {added ? "Добавлено ✓" : variant === "primary" ? "В корзину" : "Заказать"}
+      {added ? addedLabel : variant === "primary" ? addLabel : orderLabel}
     </button>
   );
 }

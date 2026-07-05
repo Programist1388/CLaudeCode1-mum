@@ -3,8 +3,11 @@ import type { Product } from "@/lib/types";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { PriceTag } from "@/components/catalog/PriceTag";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 
-export function ProductCard({ product }: { product: Product }) {
+export async function ProductCard({ product }: { product: Product }) {
+  const { t } = await getDictionary();
+
   return (
     <div className="group flex flex-col overflow-hidden rounded-[8px] border border-line bg-card transition-[transform,border-color] duration-300 hover:-translate-y-1.5 hover:border-[#4a4552]">
       <Link
@@ -24,7 +27,10 @@ export function ProductCard({ product }: { product: Product }) {
             className="h-full w-full object-cover transition-transform duration-600 ease-out group-hover:scale-[1.06]"
           />
         ) : (
-          <ImagePlaceholder className="h-full w-full" />
+          <ImagePlaceholder
+            className="h-full w-full"
+            label={t.imagePlaceholder.text}
+          />
         )}
       </Link>
 
@@ -48,8 +54,19 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className="mt-3.5 flex items-center justify-between border-t border-line pt-4">
-          <PriceTag value={product.priceValue} isFrom={product.priceIsFrom} />
-          <AddToCartButton product={product} variant="outline" />
+          <PriceTag
+            value={product.priceValue}
+            isFrom={product.priceIsFrom}
+            fromLabel={t.product.priceFrom}
+            unitLabel={t.product.priceUnit}
+          />
+          <AddToCartButton
+            product={product}
+            variant="outline"
+            addLabel={t.product.addToCart}
+            addedLabel={t.product.added}
+            orderLabel={t.product.order}
+          />
         </div>
       </div>
     </div>

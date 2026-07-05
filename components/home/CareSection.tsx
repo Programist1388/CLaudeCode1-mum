@@ -1,43 +1,26 @@
 import { Wrap } from "@/components/layout/Wrap";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 
-const CARE_ITEMS = [
-  {
-    title: "Стирка наизнанку",
-    text: "Выворачивайте вещь и стирайте в деликатном режиме без отжима.",
-  },
-  {
-    title: "Без сушилки",
-    text: "Сушите на плечиках или горизонтально, вдали от батарей и солнца.",
-  },
-  {
-    title: "Гладить с изнанки",
-    text: "Утюг и парогенератор — только по обратной стороне ткани, не по принту.",
-  },
-  {
-    title: "Без химчистки",
-    text: "Агрессивные растворители могут повредить клеевой состав страз.",
-  },
-];
+export async function CareSection() {
+  const { t } = await getDictionary();
 
-export function CareSection() {
   return (
     <section id="care" className="py-24">
       <Wrap>
         <div className="mx-auto mb-13 max-w-[620px] text-center">
           <div className="mb-1 text-[13px] tracking-[0.14em] text-gold-soft uppercase">
-            Уход
+            {t.care.kicker}
           </div>
           <h2 className="font-serif text-[clamp(30px,4vw,44px)] font-semibold text-text">
-            Чтобы блеск оставался надолго
+            {t.care.title}
           </h2>
           <p className="mt-3.5 text-[15.5px] text-text-dim">
-            Стразы держатся прочно, но, как и любые украшения ручной работы,
-            любят бережное обращение.
+            {t.care.subtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {CARE_ITEMS.map((item) => (
+          {t.care.items.map((item) => (
             <div
               key={item.title}
               className="rounded-[8px] border border-line bg-card px-6 py-7.5 text-center"

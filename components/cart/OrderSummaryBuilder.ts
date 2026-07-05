@@ -1,7 +1,22 @@
 import type { CartItem } from "@/lib/cart/cart-context";
 import { formatPriceRub } from "@/lib/format";
+import type { Locale } from "@/lib/i18n/locales";
 
-export function buildOrderSummary(items: CartItem[], note?: string): string {
+// The order message itself always stays in Russian (the owner reads and
+// replies in Russian), but we tell her which language the customer's
+// browser was in, so she knows whether to reply in English instead.
+const LOCALE_LABELS_RU: Record<Locale, string> = {
+  ru: "русский",
+  en: "английский",
+  fr: "французский",
+  es: "испанский",
+};
+
+export function buildOrderSummary(
+  items: CartItem[],
+  note?: string,
+  locale?: Locale
+): string {
   const lines = items.map(
     (item, i) =>
       `${i + 1}. ${item.title} — ${item.qty} шт. (${formatPriceRub(
@@ -18,6 +33,10 @@ export function buildOrderSummary(items: CartItem[], note?: string): string {
 
   if (note?.trim()) {
     parts.push("", `Комментарий: ${note.trim()}`);
+  }
+
+  if (locale && locale !== "ru") {
+    parts.push("", `Язык сайта клиента: ${LOCALE_LABELS_RU[locale]}`);
   }
 
   return parts.join("\n");

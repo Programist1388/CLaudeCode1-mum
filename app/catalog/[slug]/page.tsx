@@ -6,6 +6,7 @@ import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { PriceTag } from "@/components/catalog/PriceTag";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { getProductBySlug } from "@/lib/supabase/queries";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 
 export default async function ProductPage({
   params,
@@ -13,7 +14,10 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const [product, { t }] = await Promise.all([
+    getProductBySlug(slug),
+    getDictionary(),
+  ]);
 
   if (!product) {
     notFound();
@@ -33,7 +37,10 @@ export default async function ProductPage({
                 className="aspect-square w-full object-cover"
               />
             ) : (
-              <ImagePlaceholder className="aspect-square w-full" />
+              <ImagePlaceholder
+                className="aspect-square w-full"
+                label={t.imagePlaceholder.text}
+              />
             )}
           </div>
 
@@ -65,8 +72,16 @@ export default async function ProductPage({
               <PriceTag
                 value={product.priceValue}
                 isFrom={product.priceIsFrom}
+                fromLabel={t.product.priceFrom}
+                unitLabel={t.product.priceUnit}
               />
-              <AddToCartButton product={product} className="mt-6" />
+              <AddToCartButton
+                product={product}
+                className="mt-6"
+                addLabel={t.product.addToCart}
+                addedLabel={t.product.added}
+                orderLabel={t.product.order}
+              />
             </div>
           </div>
         </Wrap>

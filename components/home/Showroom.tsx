@@ -2,8 +2,10 @@ import Link from "next/link";
 import type { ShowroomItem } from "@/lib/types";
 import { Wrap } from "@/components/layout/Wrap";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 
-export function Showroom({ items }: { items: ShowroomItem[] }) {
+export async function Showroom({ items }: { items: ShowroomItem[] }) {
+  const { t } = await getDictionary();
   const track = items.length > 0 ? [...items, ...items] : [];
 
   return (
@@ -11,14 +13,13 @@ export function Showroom({ items }: { items: ShowroomItem[] }) {
       <Wrap>
         <div className="mx-auto mb-13 max-w-[620px] text-center">
           <div className="mb-1 text-[13px] tracking-[0.14em] text-gold-soft uppercase">
-            Витрина
+            {t.showroom.kicker}
           </div>
           <h2 className="font-serif text-[clamp(30px,4vw,44px)] font-semibold text-text">
-            Работы, которые мы уже сделали
+            {t.showroom.title}
           </h2>
           <p className="mt-3.5 text-[15.5px] text-text-dim">
-            Фрагменты готовых заказов — вдохновение для вашего собственного
-            сюжета. Полный каталог с ценами — в отдельном разделе.
+            {t.showroom.subtitle}
           </p>
         </div>
       </Wrap>
@@ -38,7 +39,10 @@ export function Showroom({ items }: { items: ShowroomItem[] }) {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <ImagePlaceholder className="h-full w-full" />
+                <ImagePlaceholder
+                  className="h-full w-full"
+                  label={t.imagePlaceholder.text}
+                />
               )}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg/90 to-transparent p-4 pt-10">
                 <span className="font-serif text-lg text-text">
@@ -50,9 +54,7 @@ export function Showroom({ items }: { items: ShowroomItem[] }) {
         </div>
       ) : (
         <Wrap>
-          <p className="text-center text-text-dim">
-            Витрина скоро пополнится.
-          </p>
+          <p className="text-center text-text-dim">{t.showroom.empty}</p>
         </Wrap>
       )}
 
@@ -61,7 +63,7 @@ export function Showroom({ items }: { items: ShowroomItem[] }) {
           href="/catalog"
           className="inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
         >
-          Смотреть каталог
+          {t.showroom.cta}
         </Link>
       </Wrap>
     </section>

@@ -3,10 +3,12 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CatalogGrid } from "@/components/catalog/CatalogGrid";
 import { getAllProducts, getAllCategories } from "@/lib/supabase/queries";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 
-export const metadata: Metadata = {
-  title: "Каталог — СИЯНИЕ",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDictionary();
+  return { title: t.metadata.catalogTitle };
+}
 
 export default async function CatalogPage({
   searchParams,

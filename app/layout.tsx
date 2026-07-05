@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { CartProvider } from "@/lib/cart/cart-context";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -16,19 +17,23 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "СИЯНИЕ — одежда и текстиль со стразами ручной работы",
-  description:
-    "Худи, футболки и текстиль для дома с авторскими принтами из страз, выложенных вручную кристалл за кристаллом. Свой дизайн, персонаж или логотип — под ваш запрос.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDictionary();
+  return {
+    title: t.metadata.title,
+    description: t.metadata.description,
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { locale } = await getDictionary();
+
   return (
-    <html lang="ru" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang={locale} className={`${cormorant.variable} ${manrope.variable}`}>
       <body className="bg-bg font-sans text-text antialiased">
         <CartProvider>{children}</CartProvider>
       </body>

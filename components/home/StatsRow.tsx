@@ -1,11 +1,13 @@
-const STATS = [
-  { value: "100%", label: "ручная выкладка страз" },
-  { value: "6", label: "готовых дизайнов и любой на заказ" },
-  { value: "2000+", label: "кристаллов на принт в среднем" },
-  { value: "14 дней", label: "гарантия на посадку страз" },
-];
+import type { Dictionary } from "@/lib/i18n/dictionary";
 
-export function StatsRow() {
+export function StatsRow({ t }: { t: Dictionary }) {
+  const STATS = [
+    { value: t.stats.handmadeValue, label: t.stats.handmadeLabel },
+    { value: t.stats.designsValue, label: t.stats.designsLabel },
+    { value: t.stats.crystalsValue, label: t.stats.crystalsLabel },
+    { value: t.stats.warrantyValue, label: t.stats.warrantyLabel },
+  ];
+
   return (
     <div className="relative z-10 mt-16 flex flex-wrap gap-14 border-t border-line pt-9">
       {STATS.map((stat) => (

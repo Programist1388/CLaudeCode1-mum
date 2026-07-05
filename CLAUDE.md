@@ -4,9 +4,12 @@
 
 Handmade rhinestone ("стразы") apparel and home textiles — hoodies, t-shirts,
 pillows with one-of-a-kind crystal-laid prints, made to order. Business is
-based in Russia; the whole UI is Russian-only. There is **no online
-payment** — a customer builds a cart, then "checkout" compiles it into a
-plain-text order message and opens a prefilled WhatsApp (or Telegram)
+based in Russia. The storefront auto-detects the visitor's browser language
+(Russian/English/French/Spanish — see "Internationalization" below); the
+admin panel stays Russian-only, since there's a single Russian-speaking
+owner. There is **no online payment** — a customer builds a cart, then
+"checkout" compiles it into a plain-text order message (always in Russian,
+regardless of site language) and opens a prefilled WhatsApp (or Telegram)
 chat with the shop owner, who confirms availability, price, and a 50%
 prepayment manually, exactly like the shop's original manual process.
 
@@ -56,16 +59,26 @@ components/
               showroom_items
   catalog/    CatalogGrid (also used standalone by app/catalog/page.tsx, with
               category filter tabs), ProductCard, PriceTag
-  cart/       CartButton, CartLineItem, AddToCartButton, OrderSummaryBuilder
+  cart/       CartButton, CartLineItem, CartPageClient, AddToCartButton, OrderSummaryBuilder
   admin/      LogoutButton, CategoriesManager, ProductForm, ShowroomManager,
               ImageUploader, ProductsTable
-  ImagePlaceholder.tsx   stand-in shown wherever a product/section photo is missing
+  layout/LanguageSwitcher.tsx   RU/EN/FR/ES links, sets the `locale` cookie + router.refresh()
+  ImagePlaceholder.tsx   stand-in shown wherever a product/section photo is missing;
+                         takes a `label` prop since it's rendered from Client Components
+                         too and can't call getDictionary() itself (see i18n below)
 
 lib/
   types.ts                shared Product/ShowroomItem types (storefront-facing, DB-agnostic)
   format.ts                formatPriceRub()
   order-links.ts           WhatsApp/Telegram link builders + contact info (env-driven)
   cart/       cart-context.tsx (CartProvider/useCart), cart-storage.ts (localStorage)
+  i18n/
+    locales.ts        SUPPORTED_LOCALES (ru/en/fr/es), DEFAULT_LOCALE, isLocale()
+    dictionary.ts     the Dictionary TypeScript interface — source of truth for which
+                      keys every locale file must provide
+    dictionaries/     ru.ts, en.ts, fr.ts, es.ts — one full Dictionary object each
+    get-dictionary.ts getLocale()/getDictionary() — read the `locale` cookie via
+                      next/headers; Server Components only (see i18n below)
   supabase/
     client.ts   browser client (anon key) — used by login, image upload, admin forms
     server.ts   server client (cookies via next/headers) — Server Components, Server
@@ -237,6 +250,61 @@ the docs and the DB in sync for anyone reading this file first.
   clipboard instead and opens the plain Telegram link.
 - The cart is **not** auto-cleared after "Оформить заказ" — the user gets an
   explicit "Очистить корзину" action instead.
+- The order message text itself is **always Russian** regardless of the
+  site's displayed language (the owner reads/replies in Russian) — see
+  `buildOrderSummary()` in `components/cart/OrderSummaryBuilder.ts`. If the
+  visitor's site language isn't Russian, an extra line is appended noting
+  which language they were browsing in (e.g. "Язык сайта клиента:
+  английский"), so the owner knows to reply in that language instead.
+
+## Internationalization
+
+- Storefront pages (home, `/catalog`, product page, `/cart`) auto-detect the
+  visitor's browser language via the `Accept-Language` header and support
+  **Russian (default), English, French, and Spanish**. The admin panel is
+  **not** translated — it stays Russian-only (single Russian-speaking owner).
+- No routing changes (no `/en`, `/fr` URL prefixes) — this is a cookie-based
+  scheme, not next-intl or App Router locale segments. `proxy.ts` runs on
+  every route now (matcher widened from `/admin/:path*` to everything except
+  static assets) and, if no `locale` cookie exists yet, parses
+  `Accept-Language`, matches it against `lib/i18n/locales.ts`'s
+  `SUPPORTED_LOCALES`, and sets a 1-year `locale` cookie — using the same
+  request-cookie-forwarding trick the existing Supabase auth logic already
+  used, so the cookie is visible to Server Components during the very same
+  request that set it.
+- `lib/i18n/get-dictionary.ts` exports `getLocale()`/`getDictionary()`,
+  which read that cookie via `next/headers` `cookies()` — **Server
+  Components only**. Every storefront Server Component that renders
+  translated text (`Header`, `Footer`, `Hero`, `StatsRow`, `ProcessSection`,
+  `CareSection`, `OrderSection`, `Showroom`, `CatalogGrid`, `ProductCard`,
+  the catalog/product/cart pages) independently calls
+  `await getDictionary()` itself — no prop-drilling a locale through every
+  page.
+- **Client Components can't call `getDictionary()`** (it uses
+  `next/headers`, and a "use client" file can't import an async Server
+  Component that does either — this actually broke the build once during
+  development: `CartPageClient` briefly imported `Header`/`Footer` directly,
+  which doesn't work once those became async). The fix/pattern: Client
+  Components that need translated strings (`CartButton`, `AddToCartButton`,
+  `CartLineItem`, `PriceTag`, `ImagePlaceholder`, `CartPageClient`) take them
+  as **props** from their nearest Server Component ancestor instead. `/cart`
+  in particular is split into `app/cart/page.tsx` (Server: fetches the
+  dictionary, renders `Header`/`Footer` + `CartPageClient`) and
+  `components/cart/CartPageClient.tsx` (Client: everything interactive,
+  receives the whole `Dictionary` object as a prop).
+- New locale = add the language to `SUPPORTED_LOCALES` in
+  `lib/i18n/locales.ts` and add one full `Dictionary`-shaped file under
+  `lib/i18n/dictionaries/`; TypeScript enforces every key exists since each
+  file is typed as `Dictionary`.
+- **Product/category/showroom content the owner types into `/admin` is
+  never auto-translated** — titles, descriptions, tags, category names, and
+  showroom captions always render exactly as entered. Machine-translating
+  handmade-product descriptions with no owner review step was judged too
+  risky (garbled or wrong text); only static UI chrome is translated.
+- A manual override exists too: `components/layout/LanguageSwitcher.tsx` in
+  the header lets a visitor pick RU/EN/FR/ES directly (sets the cookie,
+  calls `router.refresh()`), since Accept-Language detection can guess
+  wrong.
 
 ## Environment variables
 
@@ -260,9 +328,13 @@ without a manual approval step each time.
 
 ## Conventions
 
-- UI copy is Russian-only.
+- Storefront UI copy is translated (see "Internationalization" above) — new
+  user-facing strings go in `lib/i18n/dictionary.ts` +
+  `lib/i18n/dictionaries/*.ts`, not hardcoded in components. Admin panel
+  copy stays Russian-only, hardcoded as before.
 - Prices are formatted "6 900 ₽" / "от 3 500 ₽" via `lib/format.ts` — reuse
-  it rather than formatting numbers inline.
+  it rather than formatting numbers inline. `formatPriceRub` takes an
+  optional `fromLabel` param for the translated "from" word.
 - Server components by default; add `"use client"` only where state,
   effects, or browser APIs (cart, localStorage, clipboard, file upload) are
   actually needed.

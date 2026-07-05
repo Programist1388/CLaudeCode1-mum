@@ -1,30 +1,11 @@
 import { Wrap } from "@/components/layout/Wrap";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 
-const STEPS = [
-  {
-    mark: "01",
-    title: "Макет и разметка",
-    text: "Переводим изображение или референс в схему раскладки страз и наносим контур на ткань — вручную, без трафарета.",
-  },
-  {
-    mark: "02",
-    title: "Подбор камней",
-    text: "Сортируем стразы по размеру и оттенку под конкретный дизайн, чтобы переход цветов был плавным.",
-  },
-  {
-    mark: "03",
-    title: "Выкладка вручную",
-    text: "Каждый кристалл фиксируется пинцетом на термоклеевой состав — это самая долгая и кропотливая часть работы.",
-  },
-  {
-    mark: "04",
-    title: "Термофиксация и проверка",
-    text: "Прогреваем принт под прессом и проверяем сцепление каждого камня перед упаковкой.",
-  },
-];
+export async function ProcessSection() {
+  const { t } = await getDictionary();
+  const steps = t.process.steps;
 
-export function ProcessSection() {
   return (
     <section
       id="process"
@@ -32,22 +13,25 @@ export function ProcessSection() {
     >
       <Wrap className="grid items-center gap-16 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="overflow-hidden rounded-[8px] border border-line">
-          <ImagePlaceholder className="h-[340px] w-full lg:h-[520px]" />
+          <ImagePlaceholder
+            className="h-[340px] w-full lg:h-[520px]"
+            label={t.imagePlaceholder.text}
+          />
         </div>
 
         <div>
           <div className="mb-1 text-[13px] tracking-[0.14em] text-gold-soft uppercase">
-            Процесс
+            {t.process.kicker}
           </div>
           <h2 className="mb-2 font-serif text-[clamp(28px,3.6vw,40px)] font-semibold text-text">
-            Как рождается один принт
+            {t.process.title}
           </h2>
           <div className="flex flex-col">
-            {STEPS.map((step, i) => (
+            {steps.map((step, i) => (
               <div
                 key={step.mark}
                 className={`flex gap-5.5 border-t border-line py-6.5 ${
-                  i === STEPS.length - 1 ? "border-b" : ""
+                  i === steps.length - 1 ? "border-b" : ""
                 }`}
               >
                 <div className="min-w-11 font-serif text-[22px] text-gold">

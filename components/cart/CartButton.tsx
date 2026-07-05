@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useCart } from "@/lib/cart/cart-context";
 
-export function CartButton() {
+export function CartButton({ ariaLabel }: { ariaLabel: string }) {
   const { count } = useCart();
 
   return (
     <Link
       href="/cart"
-      aria-label="Корзина"
+      aria-label={ariaLabel}
       className="relative flex items-center text-text-dim transition-colors hover:text-gold-soft"
     >
       <span aria-hidden className="text-lg">

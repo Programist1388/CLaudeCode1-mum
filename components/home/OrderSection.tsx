@@ -1,5 +1,6 @@
 import { Wrap } from "@/components/layout/Wrap";
 import { contactInfo } from "@/lib/order-links";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 
 const CONTACT_LINKS = [
   {
@@ -24,32 +25,30 @@ const CONTACT_LINKS = [
   },
 ];
 
-export function OrderSection() {
+export async function OrderSection() {
+  const { t } = await getDictionary();
+
   return (
     <section id="order" className="py-24">
       <Wrap>
         <div className="grid items-center gap-12 rounded-[14px] border border-line bg-gradient-to-br from-card to-[#1a1820] p-8 sm:p-16 lg:grid-cols-2">
           <div>
             <div className="mb-1 text-[13px] tracking-[0.14em] text-gold-soft uppercase">
-              Заказ
+              {t.orderSection.kicker}
             </div>
             <h2 className="mb-4 font-serif text-[clamp(28px,3.6vw,40px)] font-semibold text-text">
-              Выбрали принт?
+              {t.orderSection.titleLine1}
               <br />
-              Напишите нам размер и пожелания
+              {t.orderSection.titleLine2}
             </h2>
             <p className="mb-7 max-w-[420px] text-[15px] text-text-dim">
-              Мы уточним наличие, срок изготовления (обычно 3–7 дней на
-              заказ) и оформим доставку по России. Предоплата 50% для запуска
-              в работу. Можем сделать индивидуальный дизайн по вашему
-              референсу.
+              {t.orderSection.body}
             </p>
             <div className="mt-5.5 text-[12.5px] leading-[1.7] text-text-dim">
               <b className="font-semibold text-gold-soft">
-                Цены ориентировочные
-              </b>{" "}
-              и зависят от плотности выкладки страз — точная стоимость после
-              согласования макета.
+                {t.orderSection.priceNoteBold}
+              </b>
+              {t.orderSection.priceNoteRest}
             </div>
           </div>
 
