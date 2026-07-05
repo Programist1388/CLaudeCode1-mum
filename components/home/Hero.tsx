@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Wrap } from "@/components/layout/Wrap";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { Sparkles } from "@/components/home/Sparkles";
@@ -26,12 +27,12 @@ export function Hero() {
               персонаж или логотип — под ваш запрос.
             </p>
             <div className="mt-9.5 flex flex-wrap gap-4">
-              <a
-                href="#catalog"
+              <Link
+                href="/catalog"
                 className="rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase shadow-[0_8px_26px_-8px_rgba(201,167,104,0.55)] transition-transform hover:-translate-y-0.5"
               >
                 Смотреть каталог
-              </a>
+              </Link>
               <a
                 href="#process"
                 className="rounded-full border border-line px-7 py-3.5 text-sm tracking-[0.03em] text-text uppercase transition-colors hover:border-gold hover:text-gold-soft"

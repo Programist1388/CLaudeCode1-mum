@@ -95,3 +95,29 @@ body {
 .group:hover .card-shimmer::before {
   transform: translateX(120%);
 }
+
+/* Auto-sliding showroom gallery (see components/home/Showroom.tsx) — the
+   track renders the item list twice back to back, so shifting by exactly
+   -50% loops seamlessly. */
+@keyframes showroom-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.showroom-track {
+  animation: showroom-scroll 36s linear infinite;
+}
+
+.showroom-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showroom-track {
+    animation: none;
+  }
+}

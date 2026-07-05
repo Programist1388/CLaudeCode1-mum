@@ -20,3 +20,11 @@ export interface ProductRow {
   order_index: number | null;
   created_at: string;
 }
+
+export interface ShowroomItemRow {
+  id: string;
+  title: string;
+  image: string;
+  order_index: number | null;
+  created_at: string;
+}

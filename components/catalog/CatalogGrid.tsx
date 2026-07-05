@@ -1,8 +1,18 @@
+import Link from "next/link";
 import type { Product } from "@/lib/types";
+import type { CategoryRow } from "@/lib/supabase/types";
 import { Wrap } from "@/components/layout/Wrap";
 import { ProductCard } from "@/components/catalog/ProductCard";
 
-export function CatalogGrid({ products }: { products: Product[] }) {
+export function CatalogGrid({
+  products,
+  categories,
+  activeCategory,
+}: {
+  products: Product[];
+  categories?: CategoryRow[];
+  activeCategory?: string;
+}) {
   return (
     <section id="catalog" className="py-24">
       <Wrap>
@@ -21,11 +31,47 @@ export function CatalogGrid({ products }: { products: Product[] }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
-        </div>
+        {categories && categories.length > 0 && (
+          <div className="mb-10 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/catalog"
+              className={`rounded-full border px-5 py-2 text-sm tracking-[0.03em] transition-colors ${
+                !activeCategory
+                  ? "border-gold bg-gold text-bg"
+                  : "border-line text-text-dim hover:border-gold hover:text-gold-soft"
+              }`}
+            >
+              Все
+            </Link>
+            {categories.map((cat) => (
+              <Link
+                key={cat.id}
+                href={`/catalog?category=${cat.slug}`}
+                className={`rounded-full border px-5 py-2 text-sm tracking-[0.03em] transition-colors ${
+                  activeCategory === cat.slug
+                    ? "border-gold bg-gold text-bg"
+                    : "border-line text-text-dim hover:border-gold hover:text-gold-soft"
+                }`}
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {products.length === 0 ? (
+          <p className="text-center text-text-dim">
+            {activeCategory
+              ? "В этой категории пока нет товаров."
+              : "Каталог скоро пополнится."}
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => (
+              <ProductCard key={product.slug} product={product} />
+            ))}
+          </div>
+        )}
       </Wrap>
     </section>
   );

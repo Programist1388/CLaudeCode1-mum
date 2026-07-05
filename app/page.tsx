@@ -1,14 +1,14 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
+import { Showroom } from "@/components/home/Showroom";
 import { ProcessSection } from "@/components/home/ProcessSection";
 import { CareSection } from "@/components/home/CareSection";
 import { OrderSection } from "@/components/home/OrderSection";
-import { CatalogGrid } from "@/components/catalog/CatalogGrid";
-import { getAllProducts } from "@/lib/supabase/queries";
+import { getAllShowroomItems } from "@/lib/supabase/queries";
 
 export default async function Home() {
-  const products = await getAllProducts();
+  const showroomItems = await getAllShowroomItems();
 
   return (
     <>
@@ -16,7 +16,7 @@ export default async function Home() {
       <main>
         <Hero />
         <div className="h-px bg-gradient-to-r from-transparent via-line to-transparent" />
-        <CatalogGrid products={products} />
+        <Showroom items={showroomItems} />
         <ProcessSection />
         <CareSection />
         <OrderSection />

@@ -7,6 +7,12 @@ export interface Product {
   priceIsFrom: boolean;
   badge?: string;
   tags: string[];
-  category?: string;
+  categorySlug?: string;
   available: boolean;
+}
+
+export interface ShowroomItem {
+  id: string;
+  title: string;
+  image: string;
 }

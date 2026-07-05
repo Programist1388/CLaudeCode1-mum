@@ -31,32 +31,38 @@ prepayment manually, exactly like the shop's original manual process.
 app/
   layout.tsx                 root layout: fonts, <html lang="ru">, wraps CartProvider
   globals.css                design tokens (ported from the original static site) + Tailwind
-  page.tsx                   home page — fetches products, composes all sections
+  page.tsx                   home page — Hero + Showroom (sliding gallery) + static sections
+  catalog/page.tsx           full product listing, ?category=<slug> filter tabs
   catalog/[slug]/page.tsx    product detail page
   cart/page.tsx              cart review + "Оформить заказ" (WhatsApp/Telegram)
   admin/
     login/page.tsx            email+password login (no nav shell)
     (dashboard)/               route group — URL stays /admin, /admin/products, etc.
       layout.tsx               nav shell + logout, shown only for logged-in pages
-      page.tsx                 dashboard: product count + category count
+      page.tsx                 dashboard: product/category/showroom counts
       categories/page.tsx      category list + inline add/edit/delete
       products/page.tsx        product table (edit/delete)
       products/new/page.tsx    create form (shares ProductForm)
       products/[id]/edit/page.tsx   edit form (shares ProductForm)
+      showroom/page.tsx        showroom gallery list + inline add/edit/delete
 
 proxy.ts                     route guard for /admin/** (see Tech stack note above)
 
 components/
   layout/     Header, Footer, Wrap (max-width page container)
-  home/       static homepage sections (Hero, Sparkles, StatsRow, ProcessSection,
-              CareSection, OrderSection) — content here is hardcoded React, not in the DB
-  catalog/    CatalogGrid, ProductCard, PriceTag
+  home/       static homepage sections (Hero, Sparkles, StatsRow, Showroom,
+              ProcessSection, CareSection, OrderSection) — content here is hardcoded
+              React, not in the DB, except Showroom which renders admin-managed
+              showroom_items
+  catalog/    CatalogGrid (also used standalone by app/catalog/page.tsx, with
+              category filter tabs), ProductCard, PriceTag
   cart/       CartButton, CartLineItem, AddToCartButton, OrderSummaryBuilder
-  admin/      LogoutButton, CategoriesManager, ProductForm, ImageUploader, ProductsTable
+  admin/      LogoutButton, CategoriesManager, ProductForm, ShowroomManager,
+              ImageUploader, ProductsTable
   ImagePlaceholder.tsx   stand-in shown wherever a product/section photo is missing
 
 lib/
-  types.ts                shared Product type (storefront-facing, DB-agnostic)
+  types.ts                shared Product/ShowroomItem types (storefront-facing, DB-agnostic)
   format.ts                formatPriceRub()
   order-links.ts           WhatsApp/Telegram link builders + contact info (env-driven)
   cart/       cart-context.tsx (CartProvider/useCart), cart-storage.ts (localStorage)
@@ -65,11 +71,12 @@ lib/
     server.ts   server client (cookies via next/headers) — Server Components, Server
                 Actions, used by proxy.ts too (constructed inline there, not imported,
                 since proxy needs request-bound cookies, not next/headers)
-    types.ts    CategoryRow, ProductRow (raw DB shapes)
-    queries.ts  getAllProducts, getProductBySlug, getAllCategories — maps DB rows to
-                the storefront Product type
-    mutations.ts  Server Actions: create/update/delete for products and categories,
-                  each calling revalidatePath() after writing
+    types.ts    CategoryRow, ProductRow, ShowroomItemRow (raw DB shapes)
+    queries.ts  getAllProducts, getProductBySlug, getAllCategories,
+                getAllShowroomItems — maps DB rows to storefront types; products are
+                joined with categories(slug) so /catalog can filter by category
+    mutations.ts  Server Actions: create/update/delete for products, categories, and
+                  showroom items, each calling revalidatePath() after writing
 ```
 
 ## Dev commands
@@ -84,14 +91,14 @@ npm run typecheck   # tsc --noEmit
 
 ## Where content lives
 
-- **Products, prices, photos, categories, availability** → `/admin` on the
-  live site (or `localhost:3000/admin` locally). Not in code. See
-  `lib/supabase/types.ts` for the exact fields and the SQL below for the
-  schema.
+- **Products, prices, photos, categories, availability, and the homepage
+  showroom gallery** → `/admin` on the live site (or `localhost:3000/admin`
+  locally). Not in code. See `lib/supabase/types.ts` for the exact fields
+  and the SQL below for the schema.
 - **Everything else** (hero copy, process steps, care instructions, contact
   links) → plain React content in `components/home/*.tsx`, edited via code.
-  This was a deliberate scope decision: only the product catalog was asked
-  to be self-service.
+  This was a deliberate scope decision: only the product catalog and
+  showroom gallery were asked to be self-service.
 - **Contact details** (WhatsApp number, Telegram handle, email) are read
   from env vars via `lib/order-links.ts`, not hardcoded per-component.
 
@@ -112,9 +119,10 @@ npm run typecheck   # tsc --noEmit
   what actually confine writes to the logged-in admin — the storefront's
   anon key can only ever read.
 - Image uploads (`components/admin/ImageUploader.tsx`) go straight from the
-  browser to the `product-images` Storage bucket using the admin's
-  authenticated session — no server-side proxy route needed, since Storage
-  RLS already restricts writes to authenticated users.
+  browser to Storage (the `product-images` or `showroom-images` bucket,
+  selected via its `bucket` prop) using the admin's authenticated session —
+  no server-side proxy route needed, since Storage RLS already restricts
+  writes to authenticated users.
 
 ## Supabase setup (one-time, owner performs this — see below)
 
@@ -161,7 +169,33 @@ create policy "public read product images" on storage.objects for select
 create policy "admin write product images" on storage.objects for all
   using (bucket_id = 'product-images' and auth.role() = 'authenticated')
   with check (bucket_id = 'product-images' and auth.role() = 'authenticated');
+
+create table showroom_items (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  image text not null,
+  order_index integer,
+  created_at timestamptz not null default now()
+);
+
+alter table showroom_items enable row level security;
+
+create policy "public read showroom items" on showroom_items for select using (true);
+create policy "admin write showroom items" on showroom_items for all
+  using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+
+insert into storage.buckets (id, name, public) values ('showroom-images', 'showroom-images', true);
+
+create policy "public read showroom images" on storage.objects for select
+  using (bucket_id = 'showroom-images');
+create policy "admin write showroom images" on storage.objects for all
+  using (bucket_id = 'showroom-images' and auth.role() = 'authenticated')
+  with check (bucket_id = 'showroom-images' and auth.role() = 'authenticated');
 ```
+
+This full schema (including `showroom_items`) is already applied to the live
+Supabase project via `supabase/migrations/*.sql` — the block above just keeps
+the docs and the DB in sync for anyone reading this file first.
 
 ### One-time setup only the project owner can do (not Claude)
 
@@ -219,7 +253,10 @@ git-ignored; `.env.example` is intentionally committed as the template.
 
 ## Deployment
 
-Vercel auto-deploys `main`.
+Vercel auto-deploys `main`. Claude should commit and push every completed
+modification straight to `main` without pausing to ask for push
+confirmation — the owner works solo on this repo and wants changes live
+without a manual approval step each time.
 
 ## Conventions
 

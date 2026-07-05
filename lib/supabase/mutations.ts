@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import type { CategoryRow } from "@/lib/supabase/types";
+import type { CategoryRow, ShowroomItemRow } from "@/lib/supabase/types";
 
 function slugify(input: string): string {
   return input
@@ -134,5 +134,66 @@ export async function deleteProduct(
   revalidatePath("/");
   revalidatePath(`/catalog/${slug}`);
   revalidatePath("/admin/products");
+  return {};
+}
+
+export interface ShowroomItemInput {
+  title: string;
+  image: string;
+  orderIndex: number | null;
+}
+
+function toShowroomRow(input: ShowroomItemInput) {
+  return {
+    title: input.title,
+    image: input.image,
+    order_index: input.orderIndex,
+  };
+}
+
+export async function createShowroomItem(
+  input: ShowroomItemInput
+): Promise<{ error?: string; item?: ShowroomItemRow }> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("showroom_items")
+    .insert(toShowroomRow(input))
+    .select()
+    .single();
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/");
+  revalidatePath("/admin/showroom");
+  return { item: data as ShowroomItemRow };
+}
+
+export async function updateShowroomItem(
+  id: string,
+  input: ShowroomItemInput
+): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("showroom_items")
+    .update(toShowroomRow(input))
+    .eq("id", id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/");
+  revalidatePath("/admin/showroom");
+  return {};
+}
+
+export async function deleteShowroomItem(
+  id: string
+): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("showroom_items").delete().eq("id", id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/");
+  revalidatePath("/admin/showroom");
   return {};
 }

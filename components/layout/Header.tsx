@@ -3,7 +3,7 @@ import { Wrap } from "@/components/layout/Wrap";
 import { CartButton } from "@/components/cart/CartButton";
 
 const NAV_LINKS = [
-  { href: "/#catalog", label: "Каталог" },
+  { href: "/catalog", label: "Каталог" },
   { href: "/#process", label: "Как это сделано" },
   { href: "/#care", label: "Уход" },
   { href: "/#order", label: "Контакты" },

@@ -45,7 +45,7 @@ export default function CartPage() {
               Загляните в каталог, чтобы выбрать принт.
             </p>
             <Link
-              href="/#catalog"
+              href="/catalog"
               className="mt-8 inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
             >
               Смотреть каталог

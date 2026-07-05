@@ -3,10 +3,8 @@
 import { useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-const BUCKET = "product-images";
-
-function pathFromPublicUrl(url: string): string | null {
-  const marker = `/${BUCKET}/`;
+function pathFromPublicUrl(url: string, bucket: string): string | null {
+  const marker = `/${bucket}/`;
   const idx = url.indexOf(marker);
   return idx === -1 ? null : url.slice(idx + marker.length);
 }
@@ -14,26 +12,34 @@ function pathFromPublicUrl(url: string): string | null {
 export function ImageUploader({
   images,
   onChange,
+  bucket = "product-images",
+  maxImages,
 }: {
   images: string[];
   onChange: (images: string[]) => void;
+  bucket?: string;
+  maxImages?: number;
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const atLimit = maxImages != null && images.length >= maxImages;
 
   async function handleFiles(fileList: FileList | null) {
     if (!fileList || fileList.length === 0) return;
+    const remaining = maxImages != null ? maxImages - images.length : fileList.length;
+    if (remaining <= 0) return;
+
     setUploading(true);
     setError(null);
 
     const supabase = createClient();
     const uploaded: string[] = [];
 
-    for (const file of Array.from(fileList)) {
+    for (const file of Array.from(fileList).slice(0, remaining)) {
       const path = `${crypto.randomUUID()}-${file.name}`;
       const { error: uploadError } = await supabase.storage
-        .from(BUCKET)
+        .from(bucket)
         .upload(path, file);
 
       if (uploadError) {
@@ -41,7 +47,7 @@ export function ImageUploader({
         continue;
       }
 
-      const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+      const { data } = supabase.storage.from(bucket).getPublicUrl(path);
       uploaded.push(data.publicUrl);
     }
 
@@ -53,10 +59,10 @@ export function ImageUploader({
   async function handleRemove(url: string) {
     onChange(images.filter((img) => img !== url));
 
-    const path = pathFromPublicUrl(url);
+    const path = pathFromPublicUrl(url, bucket);
     if (!path) return;
     const supabase = createClient();
-    await supabase.storage.from(BUCKET).remove([path]);
+    await supabase.storage.from(bucket).remove([path]);
   }
 
   return (
@@ -81,18 +87,20 @@ export function ImageUploader({
         ))}
       </div>
 
-      <label className="mt-3 inline-block cursor-pointer rounded-full border border-line px-5 py-2.5 text-sm text-text transition-colors hover:border-gold hover:text-gold-soft">
-        {uploading ? "Загрузка..." : "Добавить фото"}
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          disabled={uploading}
-          onChange={(e) => handleFiles(e.target.files)}
-          className="hidden"
-        />
-      </label>
+      {!atLimit && (
+        <label className="mt-3 inline-block cursor-pointer rounded-full border border-line px-5 py-2.5 text-sm text-text transition-colors hover:border-gold hover:text-gold-soft">
+          {uploading ? "Загрузка..." : "Добавить фото"}
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            multiple={maxImages !== 1}
+            disabled={uploading}
+            onChange={(e) => handleFiles(e.target.files)}
+            className="hidden"
+          />
+        </label>
+      )}
 
       {error && <p className="mt-2 text-sm text-rose">{error}</p>}
     </div>
