@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { placeholderProducts } from "@/lib/placeholder-products";
 import type { Product } from "@/lib/types";
 import type { CategoryRow, ProductRow } from "@/lib/supabase/types";
 
@@ -17,14 +16,7 @@ function toProduct(row: ProductRow): Product {
   };
 }
 
-/**
- * Falls back to the hardcoded launch catalog when Supabase isn't configured
- * yet (NEXT_PUBLIC_SUPABASE_URL unset), so the site keeps working before the
- * owner finishes Supabase setup — see CLAUDE.md.
- */
 export async function getAllProducts(): Promise<Product[]> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return placeholderProducts;
-
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
@@ -33,15 +25,11 @@ export async function getAllProducts(): Promise<Product[]> {
     .order("order_index", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: true });
 
-  if (error || !data) return placeholderProducts;
+  if (error || !data) return [];
   return (data as ProductRow[]).map(toProduct);
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    return placeholderProducts.find((p) => p.slug === slug) ?? null;
-  }
-
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")

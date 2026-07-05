@@ -58,8 +58,6 @@ components/
 lib/
   types.ts                shared Product type (storefront-facing, DB-agnostic)
   format.ts                formatPriceRub()
-  placeholder-products.ts  the original 6 launch products; used as a fallback
-                            catalog until NEXT_PUBLIC_SUPABASE_URL is set
   order-links.ts           WhatsApp/Telegram link builders + contact info (env-driven)
   cart/       cart-context.tsx (CartProvider/useCart), cart-storage.ts (localStorage)
   supabase/
@@ -69,8 +67,7 @@ lib/
                 since proxy needs request-bound cookies, not next/headers)
     types.ts    CategoryRow, ProductRow (raw DB shapes)
     queries.ts  getAllProducts, getProductBySlug, getAllCategories — maps DB rows to
-                the storefront Product type; falls back to placeholder-products.ts
-                when Supabase isn't configured yet
+                the storefront Product type
     mutations.ts  Server Actions: create/update/delete for products and categories,
                   each calling revalidatePath() after writing
 ```
@@ -211,7 +208,7 @@ create policy "admin write product images" on storage.objects for all
 
 | Variable | Purpose | Where to set |
 |---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL — catalog falls back to `lib/placeholder-products.ts` and `/admin` returns a 503 message until this is set | Vercel + local `.env.local` |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL — required; `/admin` returns a 503 message if this is unset | Vercel + local `.env.local` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon (public) API key — RLS policies confine what it can actually do | Vercel + `.env.local` |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Order-message target number | Vercel + `.env.local` |
 | `NEXT_PUBLIC_TELEGRAM_HANDLE` | Order-message target handle | Vercel + `.env.local` |
