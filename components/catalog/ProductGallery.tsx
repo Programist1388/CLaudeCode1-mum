@@ -16,15 +16,19 @@ export function ProductGallery({
   const [zoomed, setZoomed] = useState(false);
 
   useEffect(() => {
-    if (!zoomed) return;
-
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setZoomed(false);
+      if (e.key === "Escape") {
+        setZoomed(false);
+      } else if (images.length > 1 && e.key === "ArrowLeft") {
+        setActive((i) => (i - 1 + images.length) % images.length);
+      } else if (images.length > 1 && e.key === "ArrowRight") {
+        setActive((i) => (i + 1) % images.length);
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [zoomed]);
+  }, [images.length]);
 
   if (images.length === 0) {
     return (
