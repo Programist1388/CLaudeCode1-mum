@@ -73,7 +73,7 @@ export interface ProductInput {
 function toRow(input: ProductInput) {
   return {
     title: input.title,
-    slug: input.slug,
+    slug: slugify(input.slug),
     description: input.description,
     price_value: input.priceValue,
     price_is_from: input.priceIsFrom,
@@ -90,16 +90,17 @@ export async function createProduct(
   input: ProductInput
 ): Promise<{ error?: string; id?: string }> {
   const supabase = await createClient();
+  const row = toRow(input);
   const { data, error } = await supabase
     .from("products")
-    .insert(toRow(input))
+    .insert(row)
     .select("id")
     .single();
 
   if (error) return { error: error.message };
 
   revalidatePath("/");
-  revalidatePath(`/catalog/${input.slug}`);
+  revalidatePath(`/catalog/${row.slug}`);
   revalidatePath("/admin/products");
   return { id: data.id as string };
 }
@@ -109,15 +110,13 @@ export async function updateProduct(
   input: ProductInput
 ): Promise<{ error?: string }> {
   const supabase = await createClient();
-  const { error } = await supabase
-    .from("products")
-    .update(toRow(input))
-    .eq("id", id);
+  const row = toRow(input);
+  const { error } = await supabase.from("products").update(row).eq("id", id);
 
   if (error) return { error: error.message };
 
   revalidatePath("/");
-  revalidatePath(`/catalog/${input.slug}`);
+  revalidatePath(`/catalog/${row.slug}`);
   revalidatePath("/admin/products");
   return {};
 }

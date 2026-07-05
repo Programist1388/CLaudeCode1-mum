@@ -15,7 +15,7 @@ export default async function ProductPage({
 }) {
   const { slug } = await params;
   const [product, { t }] = await Promise.all([
-    getProductBySlug(slug),
+    getProductBySlug(decodeURIComponent(slug)),
     getDictionary(),
   ]);
 
