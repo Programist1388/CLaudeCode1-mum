@@ -143,9 +143,9 @@ export const es: Dictionary = {
     text: "Foto próximamente",
   },
   metadata: {
-    title: "SIYANIE — ropa y textiles con strass hechos a mano",
+    title: "LAVANDA — ropa y textiles con strass hechos a mano",
     description:
       "Sudaderas, camisetas y textiles para el hogar con diseños originales de strass colocados a mano, cristal a cristal. Tu propio diseño, personaje o logo — por encargo.",
-    catalogTitle: "Catálogo — SIYANIE",
+    catalogTitle: "Catálogo — LAVANDA",
   },
 };

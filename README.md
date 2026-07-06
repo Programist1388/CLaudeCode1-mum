@@ -1,4 +1,4 @@
-# СИЯНИЕ
+# ЛАВАНДА
 
 Site for a handmade rhinestone apparel & textile shop — Next.js storefront
 with a Supabase-backed product catalog and a built-in admin panel. See

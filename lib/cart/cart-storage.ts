@@ -1,6 +1,6 @@
 import type { CartItem } from "@/lib/cart/cart-context";
 
-const STORAGE_KEY = "siyanie:cart";
+const STORAGE_KEY = "lavanda:cart";
 
 export function loadCart(): CartItem[] {
   if (typeof window === "undefined") return [];

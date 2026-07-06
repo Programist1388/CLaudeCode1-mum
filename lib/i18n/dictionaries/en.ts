@@ -143,9 +143,9 @@ export const en: Dictionary = {
     text: "Photo coming soon",
   },
   metadata: {
-    title: "SIYANIE — handmade rhinestone clothing and textiles",
+    title: "LAVANDA — handmade rhinestone clothing and textiles",
     description:
       "Hoodies, t-shirts, and home textiles with original rhinestone prints, laid crystal by crystal by hand. Your own design, character, or logo — made to order.",
-    catalogTitle: "Catalog — SIYANIE",
+    catalogTitle: "Catalog — LAVANDA",
   },
 };

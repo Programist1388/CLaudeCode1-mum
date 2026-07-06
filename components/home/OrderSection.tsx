@@ -21,7 +21,7 @@ const CONTACT_LINKS = [
   {
     href: "#",
     icon: "IG",
-    label: "@siyanie.handmade — Instagram*",
+    label: "@lavanda.handmade — Instagram*",
   },
 ];
 

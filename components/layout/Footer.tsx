@@ -8,7 +8,7 @@ export async function Footer() {
     <footer className="border-t border-line py-11">
       <Wrap className="flex flex-wrap items-center justify-between gap-4">
         <div className="font-serif text-[19px] font-semibold text-text">
-          СИ<em className="text-gold not-italic">Я</em>НИЕ
+          ЛА<em className="text-gold not-italic">В</em>АНДА
         </div>
         <p className="text-[13px] text-text-dim">{t.footer.tagline}</p>
       </Wrap>

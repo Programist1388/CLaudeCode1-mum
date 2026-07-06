@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# SIYANIE (СИЯНИЕ)
+# LAVANDA (ЛАВАНДА)
 
 Handmade rhinestone ("стразы") apparel and home textiles — hoodies, t-shirts,
 pillows with one-of-a-kind crystal-laid prints, made to order. Business is

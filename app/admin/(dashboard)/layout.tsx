@@ -26,7 +26,7 @@ export default async function AdminDashboardLayout({
         <Wrap className="flex flex-wrap items-center justify-between gap-4 py-4">
           <div className="flex items-center gap-8">
             <span className="font-serif text-xl font-semibold text-text">
-              Админ · СИЯНИЕ
+              Админ · ЛАВАНДА
             </span>
             <nav className="flex gap-6 text-sm text-text-dim">
               {NAV_LINKS.map((link) => (

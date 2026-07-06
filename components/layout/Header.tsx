@@ -21,7 +21,7 @@ export async function Header() {
           href="/"
           className="font-serif text-2xl font-semibold tracking-[0.14em] text-text"
         >
-          СИ<em className="text-gold not-italic">Я</em>НИЕ
+          ЛА<em className="text-gold not-italic">В</em>АНДА
         </Link>
 
         <nav className="hidden gap-9 text-sm tracking-[0.04em] text-text-dim uppercase md:flex">
