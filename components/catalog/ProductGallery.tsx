@@ -5,6 +5,9 @@ import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 
 const SWIPE_THRESHOLD = 40;
 
+const NAV_BUTTON_CLASS =
+  "absolute top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-bg/70 text-lg text-text backdrop-blur-sm transition-colors hover:border-gold hover:text-gold-soft";
+
 export function ProductGallery({
   images,
   alt,
@@ -19,19 +22,28 @@ export function ProductGallery({
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const didSwipe = useRef(false);
 
+  function goPrev() {
+    setActive((i) => (i - 1 + images.length) % images.length);
+  }
+
+  function goNext() {
+    setActive((i) => (i + 1) % images.length);
+  }
+
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         setZoomed(false);
       } else if (images.length > 1 && e.key === "ArrowLeft") {
-        setActive((i) => (i - 1 + images.length) % images.length);
+        goPrev();
       } else if (images.length > 1 && e.key === "ArrowRight") {
-        setActive((i) => (i + 1) % images.length);
+        goNext();
       }
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [images.length]);
 
   function handleTouchStart(e: React.TouchEvent) {
@@ -50,9 +62,9 @@ export function ProductGallery({
     if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
       didSwipe.current = true;
       if (dx < 0) {
-        setActive((i) => (i + 1) % images.length);
+        goNext();
       } else {
-        setActive((i) => (i - 1 + images.length) % images.length);
+        goPrev();
       }
     }
   }
@@ -70,8 +82,7 @@ export function ProductGallery({
 
   return (
     <div>
-      <button
-        type="button"
+      <div
         onClick={() => {
           if (didSwipe.current) {
             didSwipe.current = false;
@@ -81,9 +92,11 @@ export function ProductGallery({
         }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        role="button"
+        tabIndex={0}
         aria-label={alt}
         style={{ touchAction: "pan-y" }}
-        className="block w-full cursor-zoom-in overflow-hidden rounded-[8px] border border-line"
+        className="relative block w-full cursor-zoom-in overflow-hidden rounded-[8px] border border-line"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -91,7 +104,34 @@ export function ProductGallery({
           alt={alt}
           className="aspect-square w-full object-cover"
         />
-      </button>
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goPrev();
+              }}
+              aria-label="Предыдущее фото"
+              className={`${NAV_BUTTON_CLASS} left-3`}
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goNext();
+              }}
+              aria-label="Следующее фото"
+              className={`${NAV_BUTTON_CLASS} right-3`}
+            >
+              ›
+            </button>
+          </>
+        )}
+      </div>
 
       {images.length > 1 && (
         <div className="mt-3 flex flex-wrap gap-3">
@@ -140,6 +180,34 @@ export function ProductGallery({
           >
             ✕
           </button>
+
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goPrev();
+                }}
+                aria-label="Предыдущее фото"
+                className={`${NAV_BUTTON_CLASS} left-4 sm:left-8`}
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goNext();
+                }}
+                aria-label="Следующее фото"
+                className={`${NAV_BUTTON_CLASS} right-4 sm:right-8`}
+              >
+                ›
+              </button>
+            </>
+          )}
+
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={images[active]}
