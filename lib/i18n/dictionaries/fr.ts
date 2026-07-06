@@ -21,8 +21,6 @@ export const fr: Dictionary = {
       "Sweats, t-shirts et textiles de maison ornés de motifs en strass posés main, cristal par cristal. Votre propre design, personnage ou logo — sur commande.",
     ctaCatalog: "Voir le catalogue",
     ctaProcess: "Comment nous procédons",
-    statCardValue: "4 à 8 h",
-    statCardLabel: "temps moyen pour poser un motif à la main",
   },
   stats: {
     handmadeValue: "100 %",

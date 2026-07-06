@@ -18,8 +18,6 @@ export interface Dictionary {
     subtitle: string;
     ctaCatalog: string;
     ctaProcess: string;
-    statCardValue: string;
-    statCardLabel: string;
   };
   stats: {
     handmadeValue: string;

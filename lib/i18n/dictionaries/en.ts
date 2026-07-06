@@ -21,8 +21,6 @@ export const en: Dictionary = {
       "Hoodies, t-shirts, and home textiles with original rhinestone prints, laid crystal by crystal by hand. Your own design, character, or logo — made to order.",
     ctaCatalog: "View catalog",
     ctaProcess: "How we make it",
-    statCardValue: "4–8 hrs",
-    statCardLabel: "average time to hand-lay one print",
   },
   stats: {
     handmadeValue: "100%",
