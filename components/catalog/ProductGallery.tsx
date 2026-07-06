@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+
+const SWIPE_THRESHOLD = 40;
 
 export function ProductGallery({
   images,
@@ -14,6 +16,8 @@ export function ProductGallery({
 }) {
   const [active, setActive] = useState(0);
   const [zoomed, setZoomed] = useState(false);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const didSwipe = useRef(false);
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -30,6 +34,29 @@ export function ProductGallery({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [images.length]);
 
+  function handleTouchStart(e: React.TouchEvent) {
+    const touch = e.touches[0];
+    touchStart.current = { x: touch.clientX, y: touch.clientY };
+    didSwipe.current = false;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (!touchStart.current || images.length <= 1) return;
+    const touch = e.changedTouches[0];
+    const dx = touch.clientX - touchStart.current.x;
+    const dy = touch.clientY - touchStart.current.y;
+    touchStart.current = null;
+
+    if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+      didSwipe.current = true;
+      if (dx < 0) {
+        setActive((i) => (i + 1) % images.length);
+      } else {
+        setActive((i) => (i - 1 + images.length) % images.length);
+      }
+    }
+  }
+
   if (images.length === 0) {
     return (
       <div className="overflow-hidden rounded-[8px] border border-line">
@@ -45,8 +72,17 @@ export function ProductGallery({
     <div>
       <button
         type="button"
-        onClick={() => setZoomed(true)}
+        onClick={() => {
+          if (didSwipe.current) {
+            didSwipe.current = false;
+            return;
+          }
+          setZoomed(true);
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         aria-label={alt}
+        style={{ touchAction: "pan-y" }}
         className="block w-full cursor-zoom-in overflow-hidden rounded-[8px] border border-line"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -84,7 +120,16 @@ export function ProductGallery({
 
       {zoomed && (
         <div
-          onClick={() => setZoomed(false)}
+          onClick={() => {
+            if (didSwipe.current) {
+              didSwipe.current = false;
+              return;
+            }
+            setZoomed(false);
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          style={{ touchAction: "pan-y" }}
           className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-bg/95 p-6"
         >
           <button
