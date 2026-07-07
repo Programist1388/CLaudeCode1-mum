@@ -2,7 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import type { CategoryRow, ShowroomItemRow } from "@/lib/supabase/types";
+import {
+  ORDER_STATUSES,
+  type CategoryRow,
+  type OrderItemSnapshot,
+  type OrderStatus,
+  type ShowroomItemRow,
+} from "@/lib/supabase/types";
 
 function slugify(input: string): string {
   return input
@@ -133,6 +139,58 @@ export async function deleteProduct(
   revalidatePath("/");
   revalidatePath(`/catalog/${slug}`);
   revalidatePath("/admin/products");
+  return {};
+}
+
+export interface OrderInput {
+  /** Generated in the browser so the order number can be quoted in the
+      WhatsApp/Telegram message before the insert round-trip finishes. */
+  id: string;
+  items: OrderItemSnapshot[];
+  total: number;
+  note: string;
+  locale: string;
+}
+
+export async function createOrder(
+  input: OrderInput
+): Promise<{ error?: string }> {
+  if (input.items.length === 0 || input.items.length > 100) {
+    return { error: "Некорректный состав заказа" };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("orders").insert({
+    id: input.id,
+    items: input.items,
+    total: input.total,
+    note: input.note.trim().slice(0, 2000),
+    locale: input.locale,
+  });
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/orders");
+  return {};
+}
+
+export async function updateOrderStatus(
+  id: string,
+  status: OrderStatus
+): Promise<{ error?: string }> {
+  if (!ORDER_STATUSES.includes(status)) {
+    return { error: "Неизвестный статус" };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("orders")
+    .update({ status })
+    .eq("id", id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/orders");
   return {};
 }
 

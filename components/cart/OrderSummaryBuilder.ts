@@ -15,7 +15,8 @@ const LOCALE_LABELS_RU: Record<Locale, string> = {
 export function buildOrderSummary(
   items: CartItem[],
   note?: string,
-  locale?: Locale
+  locale?: Locale,
+  orderNumber?: string
 ): string {
   const lines = items.map(
     (item, i) =>
@@ -37,6 +38,10 @@ export function buildOrderSummary(
 
   if (locale && locale !== "ru") {
     parts.push("", `Язык сайта клиента: ${LOCALE_LABELS_RU[locale]}`);
+  }
+
+  if (orderNumber) {
+    parts.push("", `Номер заказа: ${orderNumber}`);
   }
 
   return parts.join("\n");

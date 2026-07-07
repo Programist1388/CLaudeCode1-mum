@@ -28,3 +28,31 @@ export interface ShowroomItemRow {
   order_index: number | null;
   created_at: string;
 }
+
+export const ORDER_STATUSES = [
+  "new",
+  "in_progress",
+  "ready",
+  "cancelled",
+] as const;
+
+export type OrderStatus = (typeof ORDER_STATUSES)[number];
+
+/** One cart line frozen into the order at checkout time. */
+export interface OrderItemSnapshot {
+  slug: string;
+  title: string;
+  qty: number;
+  priceValue: number;
+  priceIsFrom: boolean;
+}
+
+export interface OrderRow {
+  id: string;
+  items: OrderItemSnapshot[];
+  total: number;
+  note: string;
+  locale: string;
+  status: OrderStatus;
+  created_at: string;
+}

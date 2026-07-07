@@ -43,6 +43,7 @@ app/
     (dashboard)/               route group — URL stays /admin, /admin/products, etc.
       layout.tsx               nav shell + logout, shown only for logged-in pages
       page.tsx                 dashboard: product/category/showroom counts
+      orders/page.tsx          order list + fulfilment-status dropdown per order
       categories/page.tsx      category list + inline add/edit/delete
       products/page.tsx        product table (edit/delete)
       products/new/page.tsx    create form (shares ProductForm)
@@ -59,9 +60,10 @@ components/
               showroom_items
   catalog/    CatalogGrid (also used standalone by app/catalog/page.tsx, with
               category filter tabs), ProductCard, PriceTag
-  cart/       CartButton, CartLineItem, CartPageClient, AddToCartButton, OrderSummaryBuilder
+  cart/       CartButton, CartLineItem, CartPageClient, AddToCartButton, OrderSummaryBuilder,
+              OrderStatusList (customer-facing order statuses on /cart)
   admin/      LogoutButton, CategoriesManager, ProductForm, ShowroomManager,
-              ImageUploader, ProductsTable
+              ImageUploader, ProductsTable, OrdersTable (status dropdown per order)
   layout/LanguageSwitcher.tsx   RU/EN/FR/ES links, sets the `locale` cookie + router.refresh()
   ImagePlaceholder.tsx   stand-in shown wherever a product/section photo is missing;
                          takes a `label` prop since it's rendered from Client Components
@@ -71,7 +73,8 @@ lib/
   types.ts                shared Product/ShowroomItem types (storefront-facing, DB-agnostic)
   format.ts                formatPriceRub()
   order-links.ts           WhatsApp/Telegram link builders + contact info (env-driven)
-  cart/       cart-context.tsx (CartProvider/useCart), cart-storage.ts (localStorage)
+  cart/       cart-context.tsx (CartProvider/useCart), cart-storage.ts (localStorage),
+              order-storage.ts (ids of orders placed from this browser, newOrderId/orderNumber)
   i18n/
     locales.ts        SUPPORTED_LOCALES (ru/en/fr/es), DEFAULT_LOCALE, isLocale()
     dictionary.ts     the Dictionary TypeScript interface — source of truth for which
@@ -84,12 +87,13 @@ lib/
     server.ts   server client (cookies via next/headers) — Server Components, Server
                 Actions, used by proxy.ts too (constructed inline there, not imported,
                 since proxy needs request-bound cookies, not next/headers)
-    types.ts    CategoryRow, ProductRow, ShowroomItemRow (raw DB shapes)
+    types.ts    CategoryRow, ProductRow, ShowroomItemRow, OrderRow + ORDER_STATUSES (raw DB shapes)
     queries.ts  getAllProducts, getProductBySlug, getAllCategories,
-                getAllShowroomItems — maps DB rows to storefront types; products are
-                joined with categories(slug) so /catalog can filter by category
+                getAllShowroomItems, getAllOrders — maps DB rows to storefront types;
+                products are joined with categories(slug) so /catalog can filter by category
     mutations.ts  Server Actions: create/update/delete for products, categories, and
-                  showroom items, each calling revalidatePath() after writing
+                  showroom items, each calling revalidatePath() after writing; plus
+                  createOrder (anon, called at checkout) and updateOrderStatus (admin)
 ```
 
 ## Dev commands
@@ -204,11 +208,33 @@ create policy "public read showroom images" on storage.objects for select
 create policy "admin write showroom images" on storage.objects for all
   using (bucket_id = 'showroom-images' and auth.role() = 'authenticated')
   with check (bucket_id = 'showroom-images' and auth.role() = 'authenticated');
+
+create table orders (
+  id uuid primary key default gen_random_uuid(),
+  items jsonb not null default '[]',
+  total numeric not null default 0,
+  note text not null default '',
+  locale text not null default 'ru',
+  status text not null default 'new'
+    check (status in ('new', 'in_progress', 'ready', 'cancelled')),
+  created_at timestamptz not null default now()
+);
+
+alter table orders enable row level security;
+
+create policy "public insert new orders" on orders for insert
+  with check (status = 'new');
+create policy "public read orders" on orders for select using (true);
+create policy "admin update orders" on orders for update
+  using (auth.role() = 'authenticated')
+  with check (auth.role() = 'authenticated');
+create policy "admin delete orders" on orders for delete
+  using (auth.role() = 'authenticated');
 ```
 
-This full schema (including `showroom_items`) is already applied to the live
-Supabase project via `supabase/migrations/*.sql` — the block above just keeps
-the docs and the DB in sync for anyone reading this file first.
+This full schema (including `showroom_items` and `orders`) is already applied
+to the live Supabase project via `supabase/migrations/*.sql` — the block above
+just keeps the docs and the DB in sync for anyone reading this file first.
 
 ### One-time setup only the project owner can do (not Claude)
 
@@ -239,10 +265,11 @@ the docs and the DB in sync for anyone reading this file first.
 
 ## Cart / order flow
 
-- Client-side only: `CartProvider` (`lib/cart/cart-context.tsx`) holds cart
-  state in React state, mirrored to `localStorage`. No order database, no
-  payment gateway (Stripe doesn't support Russian businesses; the owner
-  explicitly deferred ЮKassa/CloudPayments-style integration for now).
+- The cart itself is client-side only: `CartProvider`
+  (`lib/cart/cart-context.tsx`) holds cart state in React state, mirrored to
+  `localStorage`. No payment gateway (Stripe doesn't support Russian
+  businesses; the owner explicitly deferred ЮKassa/CloudPayments-style
+  integration for now).
 - `/cart` builds a plain-text order summary
   (`components/cart/OrderSummaryBuilder.ts`) and opens
   `https://wa.me/<number>?text=<encoded summary>`. Telegram doesn't support
@@ -256,6 +283,16 @@ the docs and the DB in sync for anyone reading this file first.
   visitor's site language isn't Russian, an extra line is appended noting
   which language they were browsing in (e.g. "Язык сайта клиента:
   английский"), so the owner knows to reply in that language instead.
+- **Order statuses**: checkout also snapshots the cart into an `orders` row
+  (id minted in the browser — `lib/cart/order-storage.ts` — so the order
+  number can be quoted in the message text; the insert itself is
+  fire-and-forget so WhatsApp/Telegram opens instantly). The row stores no
+  personal data — the conversation stays in WhatsApp. The admin sets the
+  status (🆕 new / ⚙️ in_progress / ✅ ready / ❌ cancelled) via a dropdown
+  on `/admin/orders`; the customer sees a simplified three-state view
+  ("принят" covers both new and in_progress) in the "Ваши заказы" block on
+  `/cart`, matched via order ids kept in their browser's localStorage.
+  Anon RLS allows insert (status forced to 'new') and read, never update.
 
 ## Internationalization
 
@@ -346,7 +383,8 @@ without a manual approval step each time.
 
 ## Known non-goals (by design, not oversight)
 
-No online payments, no user accounts beyond the single admin, no order
-history page, no automated inventory decrement — `available` on a product
-is a manual toggle in `/admin`, no analytics/order stats (dashboard is just
-product/category counts, as requested).
+No online payments, no user accounts beyond the single admin (customers
+track their orders via localStorage-kept ids, not a login), no automated
+inventory decrement — `available` on a product is a manual toggle in
+`/admin`, no analytics/order stats (dashboard is just product/category
+counts, as requested).

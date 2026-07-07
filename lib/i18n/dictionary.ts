@@ -91,6 +91,13 @@ export interface Dictionary {
     increaseAria: string;
     remove: string;
   };
+  orders: {
+    title: string;
+    orderLabel: string;
+    statusAccepted: string;
+    statusReady: string;
+    statusCancelled: string;
+  };
   imagePlaceholder: {
     text: string;
   };

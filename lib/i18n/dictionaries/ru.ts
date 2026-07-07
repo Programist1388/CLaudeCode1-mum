@@ -137,6 +137,13 @@ export const ru: Dictionary = {
     increaseAria: "Увеличить количество",
     remove: "Удалить",
   },
+  orders: {
+    title: "Ваши заказы",
+    orderLabel: "Заказ",
+    statusAccepted: "Заказ принят",
+    statusReady: "Заказ готов",
+    statusCancelled: "Заказ отменен",
+  },
   imagePlaceholder: {
     text: "Фото скоро будет",
   },

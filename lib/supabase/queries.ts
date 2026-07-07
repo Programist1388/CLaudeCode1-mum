@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Product, ShowroomItem } from "@/lib/types";
 import type {
   CategoryRow,
+  OrderRow,
   ProductRow,
   ShowroomItemRow,
 } from "@/lib/supabase/types";
@@ -59,6 +60,17 @@ export async function getAllCategories(): Promise<CategoryRow[]> {
 
   if (error || !data) return [];
   return data as CategoryRow[];
+}
+
+export async function getAllOrders(): Promise<OrderRow[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error || !data) return [];
+  return data as OrderRow[];
 }
 
 export async function getAllShowroomItems(): Promise<ShowroomItem[]> {

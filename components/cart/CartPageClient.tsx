@@ -1,12 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Wrap } from "@/components/layout/Wrap";
 import { CartLineItem } from "@/components/cart/CartLineItem";
+import { OrderStatusList } from "@/components/cart/OrderStatusList";
 import { buildOrderSummary } from "@/components/cart/OrderSummaryBuilder";
 import { useCart } from "@/lib/cart/cart-context";
+import { addOrderId, newOrderId, orderNumber } from "@/lib/cart/order-storage";
 import { buildWhatsAppLink, buildTelegramLink } from "@/lib/order-links";
+import { createOrder } from "@/lib/supabase/mutations";
 import { formatPriceRub } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 import type { Locale } from "@/lib/i18n/locales";
@@ -22,13 +25,49 @@ export function CartPageClient({
   const [note, setNote] = useState("");
   const [orderRequested, setOrderRequested] = useState(false);
   const [copied, setCopied] = useState(false);
+  // The order id is minted in the browser so its number can be quoted in
+  // the message right away; a fresh one is minted if the cart changes
+  // after an order was already placed (that's a different order then).
+  const [draft, setDraft] = useState(() => ({
+    id: newOrderId(),
+    placed: false,
+  }));
+
+  useEffect(() => {
+    // A placed draft belongs to the cart contents it was placed with; if
+    // the cart changes afterwards, that's a different order.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDraft((d) => (d.placed ? { id: newOrderId(), placed: false } : d));
+  }, [items, note]);
 
   const summary = useMemo(
-    () => buildOrderSummary(items, note, locale),
-    [items, note, locale]
+    () => buildOrderSummary(items, note, locale, orderNumber(draft.id)),
+    [items, note, locale, draft.id]
   );
   const hasEstimate = items.some((item) => item.priceIsFrom);
   const total = items.reduce((sum, item) => sum + item.priceValue * item.qty, 0);
+
+  // Fire-and-forget: the WhatsApp/Telegram window opens immediately, the
+  // order row is written in parallel so the customer can track its status.
+  function placeOrder() {
+    if (draft.placed || items.length === 0) return;
+    setDraft({ ...draft, placed: true });
+    void createOrder({
+      id: draft.id,
+      items: items.map((item) => ({
+        slug: item.slug,
+        title: item.title,
+        qty: item.qty,
+        priceValue: item.priceValue,
+        priceIsFrom: item.priceIsFrom,
+      })),
+      total,
+      note,
+      locale,
+    }).then((result) => {
+      if (!result.error) addOrderId(draft.id);
+    });
+  }
 
   async function handleCopyAndOpenTelegram() {
     try {
@@ -37,6 +76,7 @@ export function CartPageClient({
     } catch {
       // Clipboard API may be unavailable; the summary is still visible below to copy by hand.
     }
+    placeOrder();
     setOrderRequested(true);
     window.open(buildTelegramLink(), "_blank", "noopener");
   }
@@ -55,6 +95,7 @@ export function CartPageClient({
           >
             {t.cart.browseCatalog}
           </Link>
+          <OrderStatusList t={t} locale={locale} />
         </Wrap>
       </main>
     );
@@ -100,7 +141,10 @@ export function CartPageClient({
                 href={buildWhatsAppLink(summary)}
                 target="_blank"
                 rel="noopener"
-                onClick={() => setOrderRequested(true)}
+                onClick={() => {
+                  placeOrder();
+                  setOrderRequested(true);
+                }}
                 className="rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
               >
                 {t.cart.checkoutWhatsapp}
@@ -133,6 +177,8 @@ export function CartPageClient({
             </button>
           </div>
         )}
+
+        <OrderStatusList t={t} locale={locale} />
       </Wrap>
     </main>
   );

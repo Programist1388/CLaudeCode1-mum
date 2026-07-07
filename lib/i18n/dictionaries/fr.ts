@@ -137,6 +137,13 @@ export const fr: Dictionary = {
     increaseAria: "Augmenter la quantité",
     remove: "Supprimer",
   },
+  orders: {
+    title: "Vos commandes",
+    orderLabel: "Commande",
+    statusAccepted: "Commande reçue",
+    statusReady: "Commande prête",
+    statusCancelled: "Commande annulée",
+  },
   imagePlaceholder: {
     text: "Photo à venir",
   },
