@@ -39,7 +39,7 @@ export async function ProductCard({ product }: { product: Product }) {
           {product.title}
         </h3>
 
-        <div className="flex flex-1 flex-wrap gap-2">
+        <div className="flex flex-1 flex-wrap content-start items-start gap-2">
           {product.tags.map((tag) => (
             <span
               key={tag}
