@@ -49,7 +49,7 @@ export function CartPageClient({
 
   // Fire-and-forget: the WhatsApp/Telegram window opens immediately, the
   // order row is written in parallel so the customer can track its status.
-  function placeOrder() {
+  function placeOrder(channel: "whatsapp" | "telegram") {
     if (draft.placed || items.length === 0) return;
     setDraft({ ...draft, placed: true });
     void createOrder({
@@ -64,6 +64,7 @@ export function CartPageClient({
       total,
       note,
       locale,
+      channel,
     }).then((result) => {
       if (!result.error) addOrderId(draft.id);
     });
@@ -76,7 +77,7 @@ export function CartPageClient({
     } catch {
       // Clipboard API may be unavailable; the summary is still visible below to copy by hand.
     }
-    placeOrder();
+    placeOrder("telegram");
     setOrderRequested(true);
     window.open(buildTelegramLink(), "_blank", "noopener");
   }
@@ -142,7 +143,7 @@ export function CartPageClient({
                 target="_blank"
                 rel="noopener"
                 onClick={() => {
-                  placeOrder();
+                  placeOrder("whatsapp");
                   setOrderRequested(true);
                 }}
                 className="rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"

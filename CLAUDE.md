@@ -293,6 +293,15 @@ just keeps the docs and the DB in sync for anyone reading this file first.
   ("принят" covers both new and in_progress) in the "Ваши заказы" block on
   `/cart`, matched via order ids kept in their browser's localStorage.
   Anon RLS allows insert (status forced to 'new') and read, never update.
+- **New-order notifications** (`lib/order-notifications.ts`): after a
+  successful insert, `createOrder` sends the owner a Telegram message via
+  her bot (`TELEGRAM_BOT_TOKEN`/`TELEGRAM_ADMIN_CHAT_ID`) with the order
+  number, items, total, note, and which messenger the customer opened
+  (`orders.channel`). Telegram is the only admin channel — WhatsApp has no
+  free send API (only the paid WhatsApp Business API), which the owner
+  hasn't set up. The send never throws and runs only after the insert, so
+  checkout works with Telegram down and a duplicate submit (same client-
+  minted id, rejected by the PK) can't notify twice.
 
 ## Internationalization
 
@@ -352,6 +361,8 @@ just keeps the docs and the DB in sync for anyone reading this file first.
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Order-message target number | Vercel + `.env.local` |
 | `NEXT_PUBLIC_TELEGRAM_HANDLE` | Order-message target handle | Vercel + `.env.local` |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Shown in the contact section | Vercel + `.env.local` |
+| `TELEGRAM_BOT_TOKEN` | Bot (via @BotFather) that notifies the owner about new orders. **Server-only** — no `NEXT_PUBLIC` prefix, must never reach the browser. Unset = notifications silently off, orders unaffected | Vercel + `.env.local` |
+| `TELEGRAM_ADMIN_CHAT_ID` | The owner's chat id with that bot (she must /start the bot once; id via the bot API `getUpdates`) | Vercel + `.env.local` |
 
 Copy `.env.example` to `.env.local` for local dev. `.env.local` is
 git-ignored; `.env.example` is intentionally committed as the template.

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateOrderStatus } from "@/lib/supabase/mutations";
+import { deleteOrder, updateOrderStatus } from "@/lib/supabase/mutations";
 import { orderNumber } from "@/lib/cart/order-storage";
 import { formatPriceRub } from "@/lib/format";
 import {
@@ -42,6 +42,19 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
     });
   }
 
+  function handleDelete(id: string, number: string) {
+    if (!confirm(`Удалить заказ ${number}?`)) return;
+    setError(null);
+    startTransition(async () => {
+      const result = await deleteOrder(id);
+      if (result.error) {
+        setError(result.error);
+        return;
+      }
+      router.refresh();
+    });
+  }
+
   if (orders.length === 0) {
     return <p className="text-text-dim">Заказов пока нет.</p>;
   }
@@ -58,6 +71,7 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
               <th className="p-4 font-normal">Состав</th>
               <th className="p-4 font-normal">Сумма</th>
               <th className="p-4 font-normal">Статус</th>
+              <th className="p-4 font-normal" />
             </tr>
           </thead>
           <tbody>
@@ -73,6 +87,9 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
+                  </div>
+                  <div className="mt-1 text-text-dim">
+                    через {order.channel === "telegram" ? "Telegram" : "WhatsApp"}
                   </div>
                 </td>
                 <td className="p-4 align-top text-text-dim">
@@ -110,6 +127,16 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
                       </option>
                     ))}
                   </select>
+                </td>
+                <td className="p-4 text-right align-top">
+                  <button
+                    type="button"
+                    disabled={isPending}
+                    onClick={() => handleDelete(order.id, orderNumber(order.id))}
+                    className="text-text-dim underline decoration-dotted hover:text-rose disabled:opacity-60"
+                  >
+                    Удалить
+                  </button>
                 </td>
               </tr>
             ))}

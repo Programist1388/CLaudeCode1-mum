@@ -54,5 +54,6 @@ export interface OrderRow {
   note: string;
   locale: string;
   status: OrderStatus;
+  channel: "whatsapp" | "telegram";
   created_at: string;
 }

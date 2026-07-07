@@ -3,6 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import {
+  sendNewOrderNotification,
+  type OrderChannel,
+} from "@/lib/order-notifications";
+import {
   ORDER_STATUSES,
   type CategoryRow,
   type OrderItemSnapshot,
@@ -150,6 +154,7 @@ export interface OrderInput {
   total: number;
   note: string;
   locale: string;
+  channel: OrderChannel;
 }
 
 export async function createOrder(
@@ -159,16 +164,33 @@ export async function createOrder(
     return { error: "Некорректный состав заказа" };
   }
 
+  const note = input.note.trim().slice(0, 2000);
+  const channel: OrderChannel =
+    input.channel === "telegram" ? "telegram" : "whatsapp";
+
   const supabase = await createClient();
   const { error } = await supabase.from("orders").insert({
     id: input.id,
     items: input.items,
     total: input.total,
-    note: input.note.trim().slice(0, 2000),
+    note,
     locale: input.locale,
+    channel,
   });
 
   if (error) return { error: error.message };
+
+  // Sent only after a successful insert — a duplicate submit with the same
+  // id fails on the primary key above, so the owner never gets the same
+  // order twice. Never throws; checkout succeeds even if Telegram is down.
+  await sendNewOrderNotification({
+    orderNumber: input.id.slice(0, 8).toUpperCase(),
+    items: input.items,
+    total: input.total,
+    note,
+    locale: input.locale,
+    channel,
+  });
 
   revalidatePath("/admin/orders");
   return {};
@@ -187,6 +209,16 @@ export async function updateOrderStatus(
     .from("orders")
     .update({ status })
     .eq("id", id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/orders");
+  return {};
+}
+
+export async function deleteOrder(id: string): Promise<{ error?: string }> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("orders").delete().eq("id", id);
 
   if (error) return { error: error.message };
 
