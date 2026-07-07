@@ -4,6 +4,11 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteOrder, updateOrderStatus } from "@/lib/supabase/mutations";
 import { orderNumber } from "@/lib/cart/order-storage";
+import {
+  deliveryMethodNeedsAddress,
+  DELIVERY_METHOD_LABELS_RU,
+  isDeliveryMethod,
+} from "@/lib/delivery";
 import { formatPriceRub } from "@/lib/format";
 import {
   ORDER_STATUSES,
@@ -68,6 +73,7 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
           <thead>
             <tr className="border-b border-line text-text-dim">
               <th className="p-4 font-normal">Заказ</th>
+              <th className="p-4 font-normal">Клиент</th>
               <th className="p-4 font-normal">Состав</th>
               <th className="p-4 font-normal">Сумма</th>
               <th className="p-4 font-normal">Статус</th>
@@ -91,6 +97,18 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
                   <div className="mt-1 text-text-dim">
                     через {order.channel === "telegram" ? "Telegram" : "WhatsApp"}
                   </div>
+                </td>
+                <td className="p-4 align-top whitespace-nowrap">
+                  <div className="text-text">{order.customer_name}</div>
+                  <div className="mt-1 text-text-dim">{order.customer_phone}</div>
+                  {isDeliveryMethod(order.delivery_method) && (
+                    <div className="mt-1 text-text-dim">
+                      {DELIVERY_METHOD_LABELS_RU[order.delivery_method]}
+                      {deliveryMethodNeedsAddress(order.delivery_method) &&
+                        order.delivery_address &&
+                        ` — ${order.delivery_address}`}
+                    </div>
+                  )}
                 </td>
                 <td className="p-4 align-top text-text-dim">
                   {order.items.map((item) => (

@@ -82,6 +82,18 @@ export interface Dictionary {
     estimateTotal: string;
     noteLabel: string;
     notePlaceholder: string;
+    nameLabel: string;
+    namePlaceholder: string;
+    phoneLabel: string;
+    phonePlaceholder: string;
+    deliveryMethodLabel: string;
+    deliveryMethodCourier: string;
+    deliveryMethodPost: string;
+    deliveryMethodCdek: string;
+    deliveryMethodPickup: string;
+    deliveryAddressLabel: string;
+    deliveryAddressPlaceholder: string;
+    requiredFieldError: string;
     checkoutWhatsapp: string;
     checkoutTelegram: string;
     checkoutTelegramCopied: string;

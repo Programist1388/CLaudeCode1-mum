@@ -8,6 +8,11 @@ import { OrderStatusList } from "@/components/cart/OrderStatusList";
 import { buildOrderSummary } from "@/components/cart/OrderSummaryBuilder";
 import { useCart } from "@/lib/cart/cart-context";
 import { addOrderId, newOrderId, orderNumber } from "@/lib/cart/order-storage";
+import {
+  DELIVERY_METHODS,
+  deliveryMethodNeedsAddress,
+  type DeliveryMethod,
+} from "@/lib/delivery";
 import { buildWhatsAppLink, buildTelegramLink } from "@/lib/order-links";
 import { createOrder } from "@/lib/supabase/mutations";
 import { formatPriceRub } from "@/lib/format";
@@ -23,6 +28,11 @@ export function CartPageClient({
 }) {
   const { items, clear } = useCart();
   const [note, setNote] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("courier");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [showErrors, setShowErrors] = useState(false);
   const [orderRequested, setOrderRequested] = useState(false);
   const [copied, setCopied] = useState(false);
   // The order id is minted in the browser so its number can be quoted in
@@ -33,16 +43,28 @@ export function CartPageClient({
     placed: false,
   }));
 
+  const needsAddress = deliveryMethodNeedsAddress(deliveryMethod);
+  const isValid =
+    customerName.trim().length > 0 &&
+    customerPhone.trim().length > 0 &&
+    (!needsAddress || deliveryAddress.trim().length > 0);
+
   useEffect(() => {
-    // A placed draft belongs to the cart contents it was placed with; if
-    // the cart changes afterwards, that's a different order.
+    // A placed draft belongs to the cart/checkout details it was placed
+    // with; if any of that changes afterwards, that's a different order.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setDraft((d) => (d.placed ? { id: newOrderId(), placed: false } : d));
-  }, [items, note]);
+  }, [items, note, customerName, customerPhone, deliveryMethod, deliveryAddress]);
 
   const summary = useMemo(
-    () => buildOrderSummary(items, note, locale, orderNumber(draft.id)),
-    [items, note, locale, draft.id]
+    () =>
+      buildOrderSummary(items, note, locale, orderNumber(draft.id), {
+        name: customerName,
+        phone: customerPhone,
+        deliveryMethod,
+        deliveryAddress,
+      }),
+    [items, note, locale, draft.id, customerName, customerPhone, deliveryMethod, deliveryAddress]
   );
   const hasEstimate = items.some((item) => item.priceIsFrom);
   const total = items.reduce((sum, item) => sum + item.priceValue * item.qty, 0);
@@ -65,12 +87,20 @@ export function CartPageClient({
       note,
       locale,
       channel,
+      customerName,
+      customerPhone,
+      deliveryMethod,
+      deliveryAddress,
     }).then((result) => {
       if (!result.error) addOrderId(draft.id);
     });
   }
 
   async function handleCopyAndOpenTelegram() {
+    if (!isValid) {
+      setShowErrors(true);
+      return;
+    }
     try {
       await navigator.clipboard.writeText(summary);
       setCopied(true);
@@ -126,6 +156,82 @@ export function CartPageClient({
               </span>
             </div>
 
+            <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <label className="block text-sm text-text-dim">
+                {t.cart.nameLabel}
+                <input
+                  type="text"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  placeholder={t.cart.namePlaceholder}
+                  className="mt-2 w-full rounded-[8px] border border-line bg-bg-soft p-3 text-text placeholder:text-text-dim/60 focus:border-gold focus:outline-none"
+                />
+                {showErrors && !customerName.trim() && (
+                  <span className="mt-1 block text-[13px] text-rose">
+                    {t.cart.requiredFieldError}
+                  </span>
+                )}
+              </label>
+
+              <label className="block text-sm text-text-dim">
+                {t.cart.phoneLabel}
+                <input
+                  type="tel"
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
+                  placeholder={t.cart.phonePlaceholder}
+                  className="mt-2 w-full rounded-[8px] border border-line bg-bg-soft p-3 text-text placeholder:text-text-dim/60 focus:border-gold focus:outline-none"
+                />
+                {showErrors && !customerPhone.trim() && (
+                  <span className="mt-1 block text-[13px] text-rose">
+                    {t.cart.requiredFieldError}
+                  </span>
+                )}
+              </label>
+
+              <label className="block text-sm text-text-dim">
+                {t.cart.deliveryMethodLabel}
+                <select
+                  value={deliveryMethod}
+                  onChange={(e) =>
+                    setDeliveryMethod(e.target.value as DeliveryMethod)
+                  }
+                  className="mt-2 w-full rounded-[8px] border border-line bg-bg-soft p-3 text-text focus:border-gold focus:outline-none"
+                >
+                  {DELIVERY_METHODS.map((method) => (
+                    <option key={method} value={method}>
+                      {
+                        {
+                          courier: t.cart.deliveryMethodCourier,
+                          post: t.cart.deliveryMethodPost,
+                          cdek: t.cart.deliveryMethodCdek,
+                          pickup: t.cart.deliveryMethodPickup,
+                        }[method]
+                      }
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {needsAddress && (
+                <label className="block text-sm text-text-dim">
+                  {t.cart.deliveryAddressLabel}
+                  <input
+                    type="text"
+                    value={deliveryAddress}
+                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                    placeholder={t.cart.deliveryAddressPlaceholder}
+                    className="mt-2 w-full rounded-[8px] border border-line bg-bg-soft p-3 text-text placeholder:text-text-dim/60 focus:border-gold focus:outline-none"
+                  />
+                  {showErrors && !deliveryAddress.trim() && (
+                    <span className="mt-1 block text-[13px] text-rose">
+                      {t.cart.requiredFieldError}
+                    </span>
+                  )}
+                </label>
+              )}
+            </div>
+
             <label className="mt-6 block text-sm text-text-dim">
               {t.cart.noteLabel}
               <textarea
@@ -142,7 +248,12 @@ export function CartPageClient({
                 href={buildWhatsAppLink(summary)}
                 target="_blank"
                 rel="noopener"
-                onClick={() => {
+                onClick={(e) => {
+                  if (!isValid) {
+                    e.preventDefault();
+                    setShowErrors(true);
+                    return;
+                  }
                   placeOrder("whatsapp");
                   setOrderRequested(true);
                 }}

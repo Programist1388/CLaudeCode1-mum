@@ -1,6 +1,18 @@
 import type { CartItem } from "@/lib/cart/cart-context";
+import {
+  deliveryMethodNeedsAddress,
+  DELIVERY_METHOD_LABELS_RU,
+  type DeliveryMethod,
+} from "@/lib/delivery";
 import { formatPriceRub } from "@/lib/format";
 import type { Locale } from "@/lib/i18n/locales";
+
+export interface OrderCustomerInfo {
+  name: string;
+  phone: string;
+  deliveryMethod: DeliveryMethod;
+  deliveryAddress: string;
+}
 
 // The order message itself always stays in Russian (the owner reads and
 // replies in Russian), but we tell her which language the customer's
@@ -16,7 +28,8 @@ export function buildOrderSummary(
   items: CartItem[],
   note?: string,
   locale?: Locale,
-  orderNumber?: string
+  orderNumber?: string,
+  customer?: OrderCustomerInfo
 ): string {
   const lines = items.map(
     (item, i) =>
@@ -31,6 +44,18 @@ export function buildOrderSummary(
   const totalLine = `Итого${hasEstimate ? " (ориентировочно)" : ""}: ${formatPriceRub(total)}`;
 
   const parts = ["Здравствуйте! Хочу заказать:", "", ...lines, "", totalLine];
+
+  if (customer) {
+    parts.push(
+      "",
+      `Имя: ${customer.name}`,
+      `Телефон: ${customer.phone}`,
+      `Способ доставки: ${DELIVERY_METHOD_LABELS_RU[customer.deliveryMethod]}`
+    );
+    if (deliveryMethodNeedsAddress(customer.deliveryMethod)) {
+      parts.push(`Адрес доставки: ${customer.deliveryAddress}`);
+    }
+  }
 
   if (note?.trim()) {
     parts.push("", `Комментарий: ${note.trim()}`);

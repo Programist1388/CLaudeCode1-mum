@@ -55,5 +55,9 @@ export interface OrderRow {
   locale: string;
   status: OrderStatus;
   channel: "whatsapp" | "telegram";
+  customer_name: string;
+  customer_phone: string;
+  delivery_method: string;
+  delivery_address: string;
   created_at: string;
 }

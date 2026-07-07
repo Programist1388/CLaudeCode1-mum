@@ -217,6 +217,12 @@ create table orders (
   locale text not null default 'ru',
   status text not null default 'new'
     check (status in ('new', 'in_progress', 'ready', 'cancelled')),
+  channel text not null default 'whatsapp'
+    check (channel in ('whatsapp', 'telegram')),
+  customer_name text not null default '',
+  customer_phone text not null default '',
+  delivery_method text not null default '',
+  delivery_address text not null default '',
   created_at timestamptz not null default now()
 );
 
@@ -230,6 +236,14 @@ create policy "admin update orders" on orders for update
   with check (auth.role() = 'authenticated');
 create policy "admin delete orders" on orders for delete
   using (auth.role() = 'authenticated');
+create policy "admin read orders" on orders for select
+  using (auth.role() = 'authenticated');
+
+-- customer_name/customer_phone/delivery_address are personal data; anon
+-- (the customer-facing status widget) must not be able to read them off
+-- other people's orders, so its SELECT is narrowed to non-PII columns.
+revoke select on orders from anon;
+grant select (id, status, created_at) on orders to anon;
 ```
 
 This full schema (including `showroom_items` and `orders`) is already applied
@@ -286,22 +300,40 @@ just keeps the docs and the DB in sync for anyone reading this file first.
 - **Order statuses**: checkout also snapshots the cart into an `orders` row
   (id minted in the browser — `lib/cart/order-storage.ts` — so the order
   number can be quoted in the message text; the insert itself is
-  fire-and-forget so WhatsApp/Telegram opens instantly). The row stores no
-  personal data — the conversation stays in WhatsApp. The admin sets the
+  fire-and-forget so WhatsApp/Telegram opens instantly). The admin sets the
   status (🆕 new / ⚙️ in_progress / ✅ ready / ❌ cancelled) via a dropdown
   on `/admin/orders`; the customer sees a simplified three-state view
   ("принят" covers both new and in_progress) in the "Ваши заказы" block on
   `/cart`, matched via order ids kept in their browser's localStorage.
-  Anon RLS allows insert (status forced to 'new') and read, never update.
+- **Checkout fields**: name, phone, and delivery method/address are
+  required before either checkout button works (client-side validation in
+  `CartPageClient.tsx`, re-validated server-side in `createOrder` — see
+  `lib/delivery.ts` for the `DeliveryMethod` union and
+  `deliveryMethodNeedsAddress()`, which is false only for in-person pickup).
+  These are personal data, unlike the rest of the row, which is why the
+  RLS setup below is column-restricted rather than a blanket read policy.
+  No payment fields exist anywhere on the site — no online payment gateway
+  is configured (see below), so there is nothing legitimate to collect.
+- **Order RLS is column-restricted, not just row-restricted**: anon can
+  insert (status forced to `'new'`) and can `select` only
+  `id, status, created_at` — enforced via a Postgres column-level `GRANT`
+  (`supabase/migrations/20260709000000_order_checkout_details.sql`), since
+  RLS alone can't hide specific columns and the customer-facing status
+  widget must stay reachable without a login. Never write an anon-facing
+  query as `select("*")` against `orders` — it will get a permission error;
+  name/phone/address are only selectable by the authenticated admin (a
+  separate `"admin read orders"` policy), fetched via `getAllOrders()` in
+  `/admin/orders`.
 - **New-order notifications** (`lib/order-notifications.ts`): after a
   successful insert, `createOrder` sends the owner a Telegram message via
   her bot (`TELEGRAM_BOT_TOKEN`/`TELEGRAM_ADMIN_CHAT_ID`) with the order
-  number, items, total, note, and which messenger the customer opened
-  (`orders.channel`). Telegram is the only admin channel — WhatsApp has no
-  free send API (only the paid WhatsApp Business API), which the owner
-  hasn't set up. The send never throws and runs only after the insert, so
-  checkout works with Telegram down and a duplicate submit (same client-
-  minted id, rejected by the PK) can't notify twice.
+  number, items, total, customer name/phone/delivery info, note, and which
+  messenger the customer opened (`orders.channel`). Telegram is the only
+  admin channel — WhatsApp has no free send API (only the paid WhatsApp
+  Business API), which the owner hasn't set up. The send never throws and
+  runs only after the insert, so checkout works with Telegram down and a
+  duplicate submit (same client-minted id, rejected by the PK) can't
+  notify twice.
 
 ## Internationalization
 

@@ -7,6 +7,11 @@
 // Deliberately never throws: a failed notification must not fail checkout.
 // If TELEGRAM_BOT_TOKEN / TELEGRAM_ADMIN_CHAT_ID are unset, it's a no-op.
 
+import {
+  deliveryMethodNeedsAddress,
+  DELIVERY_METHOD_LABELS_RU,
+  type DeliveryMethod,
+} from "@/lib/delivery";
 import { formatPriceRub } from "@/lib/format";
 import type { OrderItemSnapshot } from "@/lib/supabase/types";
 
@@ -31,6 +36,10 @@ export interface NewOrderNotification {
   note: string;
   locale: string;
   channel: OrderChannel;
+  customerName: string;
+  customerPhone: string;
+  deliveryMethod: DeliveryMethod;
+  deliveryAddress: string;
 }
 
 function buildText(order: NewOrderNotification): string {
@@ -49,8 +58,17 @@ function buildText(order: NewOrderNotification): string {
     ...lines,
     "",
     `Итого${hasEstimate ? " (ориентировочно)" : ""}: ${formatPriceRub(order.total)}`,
-    `Оформлен через: ${CHANNEL_LABELS_RU[order.channel]}`,
+    "",
+    `Клиент: ${order.customerName}`,
+    `Телефон: ${order.customerPhone}`,
+    `Способ доставки: ${DELIVERY_METHOD_LABELS_RU[order.deliveryMethod]}`,
   ];
+
+  if (deliveryMethodNeedsAddress(order.deliveryMethod)) {
+    parts.push(`Адрес доставки: ${order.deliveryAddress}`);
+  }
+
+  parts.push(`Оформлен через: ${CHANNEL_LABELS_RU[order.channel]}`);
 
   if (order.note.trim()) {
     parts.push(`Комментарий: ${order.note.trim()}`);

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { deliveryMethodNeedsAddress, isDeliveryMethod } from "@/lib/delivery";
 import {
   sendNewOrderNotification,
   type OrderChannel,
@@ -155,6 +156,10 @@ export interface OrderInput {
   note: string;
   locale: string;
   channel: OrderChannel;
+  customerName: string;
+  customerPhone: string;
+  deliveryMethod: string;
+  deliveryAddress: string;
 }
 
 export async function createOrder(
@@ -162,6 +167,22 @@ export async function createOrder(
 ): Promise<{ error?: string }> {
   if (input.items.length === 0 || input.items.length > 100) {
     return { error: "Некорректный состав заказа" };
+  }
+
+  const customerName = input.customerName.trim().slice(0, 200);
+  const customerPhone = input.customerPhone.trim().slice(0, 50);
+  if (!customerName || !customerPhone) {
+    return { error: "Укажите имя и телефон" };
+  }
+
+  const deliveryMethod = isDeliveryMethod(input.deliveryMethod)
+    ? input.deliveryMethod
+    : "courier";
+  const deliveryAddress = deliveryMethodNeedsAddress(deliveryMethod)
+    ? input.deliveryAddress.trim().slice(0, 500)
+    : "";
+  if (deliveryMethodNeedsAddress(deliveryMethod) && !deliveryAddress) {
+    return { error: "Укажите адрес доставки" };
   }
 
   const note = input.note.trim().slice(0, 2000);
@@ -176,6 +197,10 @@ export async function createOrder(
     note,
     locale: input.locale,
     channel,
+    customer_name: customerName,
+    customer_phone: customerPhone,
+    delivery_method: deliveryMethod,
+    delivery_address: deliveryAddress,
   });
 
   if (error) return { error: error.message };
@@ -190,6 +215,10 @@ export async function createOrder(
     note,
     locale: input.locale,
     channel,
+    customerName,
+    customerPhone,
+    deliveryMethod,
+    deliveryAddress,
   });
 
   revalidatePath("/admin/orders");
