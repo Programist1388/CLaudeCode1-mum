@@ -11,8 +11,8 @@ export async function Hero() {
     <section className="relative overflow-hidden pt-24 pb-15">
       <Sparkles />
       <Wrap className="relative z-10">
-        <div className="max-w-[640px]">
-          <div className="mb-5 flex items-center gap-2.5 text-[13px] tracking-[0.14em] text-gold-soft uppercase before:h-px before:w-6.5 before:bg-gold">
+        <div className="mx-auto max-w-[640px] text-center">
+          <div className="mb-5 flex items-center justify-center gap-2.5 text-[13px] tracking-[0.14em] text-gold-soft uppercase before:h-px before:w-6.5 before:bg-gold">
             {t.hero.kicker}
           </div>
           <h1 className="font-serif text-[clamp(40px,5.4vw,68px)] leading-[1.05] font-semibold text-text">
@@ -25,10 +25,10 @@ export async function Hero() {
             <br />
             {t.hero.titleLine3}
           </h1>
-          <p className="mt-6 max-w-[460px] text-[17px] text-text-dim">
+          <p className="mx-auto mt-6 max-w-[460px] text-[17px] text-text-dim">
             {t.hero.subtitle}
           </p>
-          <div className="mt-9.5 flex flex-wrap gap-4">
+          <div className="mt-9.5 flex flex-wrap justify-center gap-4">
             <Link
               href="/catalog"
               className="rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase shadow-[0_8px_26px_-8px_rgba(201,167,104,0.55)] transition-transform hover:-translate-y-0.5"
