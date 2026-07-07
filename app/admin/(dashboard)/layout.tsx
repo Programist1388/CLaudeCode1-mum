@@ -3,12 +3,13 @@ import { Wrap } from "@/components/layout/Wrap";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { createClient } from "@/lib/supabase/server";
 
+// «Категории» и «Витрина» убраны из навигации по просьбе владельца;
+// сами страницы /admin/categories и /admin/showroom остались доступны
+// по прямой ссылке.
 const NAV_LINKS = [
   { href: "/admin", label: "Дашборд" },
   { href: "/admin/orders", label: "Заказы" },
   { href: "/admin/products", label: "Товары" },
-  { href: "/admin/categories", label: "Категории" },
-  { href: "/admin/showroom", label: "Витрина" },
 ];
 
 export default async function AdminDashboardLayout({
