@@ -16,7 +16,7 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-bg/86 backdrop-blur-md">
-      <Wrap className="flex items-center justify-between py-4.5">
+      <Wrap className="flex flex-wrap items-center justify-between gap-y-2.5 py-4.5">
         <Link
           href="/"
           className="font-serif text-2xl font-semibold tracking-[0.14em] text-text"
@@ -36,7 +36,7 @@ export async function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 max-md:grow max-md:justify-end max-[350px]:gap-3">
           <LanguageSwitcher locale={locale} />
           <CartButton ariaLabel={t.header.cartAria} />
           <Link

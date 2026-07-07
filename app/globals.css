@@ -33,6 +33,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* No page-level horizontal scrolling, ever (mobile swipes included).
+   `clip` rather than `hidden` so html/body don't become scroll
+   containers — that would break the sticky header. */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
