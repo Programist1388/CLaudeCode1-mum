@@ -23,6 +23,7 @@ function toProduct(row: ProductWithCategory): Product {
     tags: row.tags ?? [],
     categorySlug: row.categories?.slug,
     available: row.available,
+    sizeType: row.size_type,
   };
 }
 

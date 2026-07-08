@@ -30,6 +30,11 @@ export function CartLineItem({ item, t }: { item: CartItem; t: Dictionary }) {
         <h3 className="font-serif text-lg font-semibold text-text">
           {item.title}
         </h3>
+        {item.size && (
+          <p className="mt-0.5 text-[13px] text-text-dim">
+            {t.product.sizeLabel}: {item.size}
+          </p>
+        )}
         <PriceTag
           value={item.priceValue}
           isFrom={item.priceIsFrom}
@@ -41,7 +46,7 @@ export function CartLineItem({ item, t }: { item: CartItem; t: Dictionary }) {
       <div className="flex items-center gap-2">
         <button
           type="button"
-          onClick={() => updateQty(item.slug, item.qty - 1)}
+          onClick={() => updateQty(item.slug, item.qty - 1, item.size)}
           aria-label={t.cart.decreaseAria}
           className="flex h-8 w-8 items-center justify-center rounded-full border border-line text-text transition-colors hover:border-gold hover:text-gold-soft"
         >
@@ -50,7 +55,7 @@ export function CartLineItem({ item, t }: { item: CartItem; t: Dictionary }) {
         <span className="w-6 text-center text-text">{item.qty}</span>
         <button
           type="button"
-          onClick={() => updateQty(item.slug, item.qty + 1)}
+          onClick={() => updateQty(item.slug, item.qty + 1, item.size)}
           aria-label={t.cart.increaseAria}
           className="flex h-8 w-8 items-center justify-center rounded-full border border-line text-text transition-colors hover:border-gold hover:text-gold-soft"
         >
@@ -60,7 +65,7 @@ export function CartLineItem({ item, t }: { item: CartItem; t: Dictionary }) {
 
       <button
         type="button"
-        onClick={() => removeItem(item.slug)}
+        onClick={() => removeItem(item.slug, item.size)}
         className="text-sm text-text-dim underline decoration-dotted transition-colors hover:text-rose"
       >
         {t.cart.remove}

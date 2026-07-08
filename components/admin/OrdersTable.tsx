@@ -117,8 +117,9 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
                 </td>
                 <td className="p-4 align-top text-text-dim">
                   {order.items.map((item) => (
-                    <div key={item.slug}>
-                      {item.title} — {item.qty} шт.
+                    <div key={`${item.slug}-${item.size ?? ""}`}>
+                      {item.title}
+                      {item.size ? `, размер ${item.size}` : ""} — {item.qty} шт.
                     </div>
                   ))}
                   {order.note && (

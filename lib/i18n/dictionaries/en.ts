@@ -117,6 +117,8 @@ export const en: Dictionary = {
     order: "Order",
     priceFrom: "from",
     priceUnit: "pc",
+    sizeLabel: "Size",
+    selectSizeError: "Please select a size",
   },
   cart: {
     title: "Cart",

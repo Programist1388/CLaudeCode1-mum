@@ -117,6 +117,8 @@ export const ru: Dictionary = {
     order: "Заказать",
     priceFrom: "от",
     priceUnit: "шт",
+    sizeLabel: "Размер",
+    selectSizeError: "Выберите размер",
   },
   cart: {
     title: "Корзина",

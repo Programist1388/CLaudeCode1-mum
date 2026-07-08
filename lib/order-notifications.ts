@@ -45,7 +45,7 @@ export interface NewOrderNotification {
 function buildText(order: NewOrderNotification): string {
   const lines = order.items.map(
     (item, i) =>
-      `${i + 1}. ${item.title} — ${item.qty} шт. (${formatPriceRub(
+      `${i + 1}. ${item.title}${item.size ? `, размер ${item.size}` : ""} — ${item.qty} шт. (${formatPriceRub(
         item.priceValue * item.qty,
         item.priceIsFrom
       )})`

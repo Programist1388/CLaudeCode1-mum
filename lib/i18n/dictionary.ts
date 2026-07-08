@@ -72,6 +72,8 @@ export interface Dictionary {
     order: string;
     priceFrom: string;
     priceUnit: string;
+    sizeLabel: string;
+    selectSizeError: string;
   };
   cart: {
     title: string;

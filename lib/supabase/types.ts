@@ -1,3 +1,5 @@
+import type { SizeType } from "@/lib/sizes";
+
 export interface CategoryRow {
   id: string;
   name: string;
@@ -18,6 +20,7 @@ export interface ProductRow {
   category_id: string | null;
   available: boolean;
   order_index: number | null;
+  size_type: SizeType;
   created_at: string;
 }
 
@@ -45,6 +48,7 @@ export interface OrderItemSnapshot {
   qty: number;
   priceValue: number;
   priceIsFrom: boolean;
+  size?: string;
 }
 
 export interface OrderRow {

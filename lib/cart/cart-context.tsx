@@ -18,14 +18,21 @@ export interface CartItem {
   priceIsFrom: boolean;
   image?: string;
   qty: number;
+  /** Chosen clothing/shoe size, if the product has one (see lib/sizes.ts). */
+  size?: string;
+}
+
+/** Same slug with different sizes are separate cart lines. */
+export function cartLineKey(slug: string, size?: string): string {
+  return size ? `${slug}::${size}` : slug;
 }
 
 interface CartContextValue {
   items: CartItem[];
   count: number;
-  addItem: (product: Product, qty?: number) => void;
-  removeItem: (slug: string) => void;
-  updateQty: (slug: string, qty: number) => void;
+  addItem: (product: Product, qty?: number, size?: string) => void;
+  removeItem: (slug: string, size?: string) => void;
+  updateQty: (slug: string, qty: number, size?: string) => void;
   clear: () => void;
 }
 
@@ -50,12 +57,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (hydrated) saveCart(items);
   }, [items, hydrated]);
 
-  const addItem = useCallback((product: Product, qty = 1) => {
+  const addItem = useCallback((product: Product, qty = 1, size?: string) => {
     setItems((prev) => {
-      const existing = prev.find((i) => i.slug === product.slug);
+      const key = cartLineKey(product.slug, size);
+      const existing = prev.find((i) => cartLineKey(i.slug, i.size) === key);
       if (existing) {
         return prev.map((i) =>
-          i.slug === product.slug ? { ...i, qty: i.qty + qty } : i
+          cartLineKey(i.slug, i.size) === key ? { ...i, qty: i.qty + qty } : i
         );
       }
       return [
@@ -67,20 +75,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
           priceIsFrom: product.priceIsFrom,
           image: product.images[0],
           qty,
+          size,
         },
       ];
     });
   }, []);
 
-  const removeItem = useCallback((slug: string) => {
-    setItems((prev) => prev.filter((i) => i.slug !== slug));
+  const removeItem = useCallback((slug: string, size?: string) => {
+    const key = cartLineKey(slug, size);
+    setItems((prev) => prev.filter((i) => cartLineKey(i.slug, i.size) !== key));
   }, []);
 
-  const updateQty = useCallback((slug: string, qty: number) => {
+  const updateQty = useCallback((slug: string, qty: number, size?: string) => {
+    const key = cartLineKey(slug, size);
     setItems((prev) =>
       qty <= 0
-        ? prev.filter((i) => i.slug !== slug)
-        : prev.map((i) => (i.slug === slug ? { ...i, qty } : i))
+        ? prev.filter((i) => cartLineKey(i.slug, i.size) !== key)
+        : prev.map((i) => (cartLineKey(i.slug, i.size) === key ? { ...i, qty } : i))
     );
   }, []);
 

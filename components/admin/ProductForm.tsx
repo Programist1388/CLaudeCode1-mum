@@ -8,7 +8,14 @@ import {
   updateProduct,
   type ProductInput,
 } from "@/lib/supabase/mutations";
+import { SIZE_TYPES, type SizeType } from "@/lib/sizes";
 import { ImageUploader } from "@/components/admin/ImageUploader";
+
+const SIZE_TYPE_LABELS: Record<SizeType, string> = {
+  clothing: "Одежда (S–XXL)",
+  shoes: "Обувь (36–45)",
+  none: "Без размера",
+};
 
 function slugifyPreview(input: string): string {
   return input.toLowerCase().trim().replace(/\s+/g, "-");
@@ -42,6 +49,9 @@ export function ProductForm({
   );
   const [categoryId, setCategoryId] = useState(
     initialProduct?.category_id ?? ""
+  );
+  const [sizeType, setSizeType] = useState<SizeType>(
+    initialProduct?.size_type ?? "clothing"
   );
   const [available, setAvailable] = useState(
     initialProduct?.available ?? true
@@ -80,6 +90,7 @@ export function ProductForm({
         .map((t) => t.trim())
         .filter(Boolean),
       categoryId: categoryId || null,
+      sizeType,
       available,
       orderIndex: orderIndex.trim() ? Number(orderIndex) : null,
       images,
@@ -193,6 +204,21 @@ export function ProductForm({
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>
               {cat.name}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="text-sm text-text-dim">
+        Тип размера
+        <select
+          value={sizeType}
+          onChange={(e) => setSizeType(e.target.value as SizeType)}
+          className="mt-2 w-full rounded-[8px] border border-line bg-bg-soft p-3 text-text focus:border-gold focus:outline-none"
+        >
+          {SIZE_TYPES.map((type) => (
+            <option key={type} value={type}>
+              {SIZE_TYPE_LABELS[type]}
             </option>
           ))}
         </select>

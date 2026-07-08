@@ -6,6 +6,8 @@ import { useCart } from "@/lib/cart/cart-context";
 
 export function AddToCartButton({
   product,
+  size,
+  onMissingSize,
   className = "",
   variant = "primary",
   addLabel = "В корзину",
@@ -13,6 +15,10 @@ export function AddToCartButton({
   orderLabel = "Заказать",
 }: {
   product: Product;
+  /** Chosen size, if the product needs one — see product.sizeType. */
+  size?: string;
+  /** Called instead of adding when a size is required but wasn't chosen. */
+  onMissingSize?: () => void;
   className?: string;
   variant?: "primary" | "outline";
   addLabel?: string;
@@ -23,7 +29,11 @@ export function AddToCartButton({
   const [added, setAdded] = useState(false);
 
   function handleClick() {
-    addItem(product);
+    if (product.sizeType !== "none" && !size) {
+      onMissingSize?.();
+      return;
+    }
+    addItem(product, 1, size);
     setAdded(true);
     window.setTimeout(() => setAdded(false), 1500);
   }

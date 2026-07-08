@@ -117,6 +117,8 @@ export const fr: Dictionary = {
     order: "Commander",
     priceFrom: "à partir de",
     priceUnit: "pièce",
+    sizeLabel: "Taille",
+    selectSizeError: "Veuillez choisir une taille",
   },
   cart: {
     title: "Panier",

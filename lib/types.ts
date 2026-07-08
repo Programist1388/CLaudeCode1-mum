@@ -1,3 +1,5 @@
+import type { SizeType } from "@/lib/sizes";
+
 export interface Product {
   slug: string;
   title: string;
@@ -9,6 +11,7 @@ export interface Product {
   tags: string[];
   categorySlug?: string;
   available: boolean;
+  sizeType: SizeType;
 }
 
 export interface ShowroomItem {
