@@ -1,6 +1,6 @@
 # ЛАВАНДА
 
-Site for a handmade rhinestone apparel & textile shop — Next.js storefront
+Site for a handmade embroidered accessories shop — Next.js storefront
 with a Supabase-backed product catalog and a built-in admin panel. See
 [`CLAUDE.md`](./CLAUDE.md) for the full architecture, folder map,
 environment variables, database schema, and one-time setup steps.

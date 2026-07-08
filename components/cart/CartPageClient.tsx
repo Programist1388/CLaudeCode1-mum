@@ -6,7 +6,7 @@ import { Wrap } from "@/components/layout/Wrap";
 import { CartLineItem } from "@/components/cart/CartLineItem";
 import { OrderStatusList } from "@/components/cart/OrderStatusList";
 import { buildOrderSummary } from "@/components/cart/OrderSummaryBuilder";
-import { cartLineKey, useCart } from "@/lib/cart/cart-context";
+import { useCart } from "@/lib/cart/cart-context";
 import { addOrderId, newOrderId } from "@/lib/cart/order-storage";
 import {
   DELIVERY_METHODS,
@@ -82,7 +82,6 @@ export function CartPageClient({
         qty: item.qty,
         priceValue: item.priceValue,
         priceIsFrom: item.priceIsFrom,
-        size: item.size,
       })),
       total,
       note,
@@ -144,7 +143,7 @@ export function CartPageClient({
           <>
             <div className="rounded-[8px] border border-line bg-card px-6">
               {items.map((item) => (
-                <CartLineItem key={cartLineKey(item.slug, item.size)} item={item} t={t} />
+                <CartLineItem key={item.slug} item={item} t={t} />
               ))}
             </div>
 

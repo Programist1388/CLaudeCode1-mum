@@ -4,7 +4,7 @@ export function StatsRow({ t }: { t: Dictionary }) {
   const STATS = [
     { value: t.stats.handmadeValue, label: t.stats.handmadeLabel },
     { value: t.stats.designsValue, label: t.stats.designsLabel },
-    { value: t.stats.crystalsValue, label: t.stats.crystalsLabel },
+    { value: t.stats.stitchesValue, label: t.stats.stitchesLabel },
     { value: t.stats.warrantyValue, label: t.stats.warrantyLabel },
   ];
 

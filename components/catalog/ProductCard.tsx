@@ -57,24 +57,13 @@ export async function ProductCard({ product }: { product: Product }) {
             fromLabel={t.product.priceFrom}
             unitLabel={t.product.priceUnit}
           />
-          {product.sizeType === "none" ? (
-            <AddToCartButton
-              product={product}
-              variant="outline"
-              addLabel={t.product.addToCart}
-              addedLabel={t.product.added}
-              orderLabel={t.product.order}
-            />
-          ) : (
-            // A size must be picked before adding to cart — that happens
-            // on the product page, so the quick-add button becomes a link.
-            <Link
-              href={`/catalog/${product.slug}`}
-              className="rounded-full border border-line px-4.5 py-2.5 text-[13px] tracking-[0.03em] text-text uppercase transition-all hover:border-gold hover:bg-gold hover:text-bg"
-            >
-              {t.product.order}
-            </Link>
-          )}
+          <AddToCartButton
+            product={product}
+            variant="outline"
+            addLabel={t.product.addToCart}
+            addedLabel={t.product.added}
+            orderLabel={t.product.order}
+          />
         </div>
       </div>
     </div>

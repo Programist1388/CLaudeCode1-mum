@@ -7,7 +7,6 @@ import {
   sendNewOrderNotification,
   type OrderChannel,
 } from "@/lib/order-notifications";
-import { isSizeType, type SizeType } from "@/lib/sizes";
 import {
   ORDER_STATUSES,
   type CategoryRow,
@@ -80,7 +79,6 @@ export interface ProductInput {
   available: boolean;
   orderIndex: number | null;
   images: string[];
-  sizeType: SizeType;
 }
 
 function toRow(input: ProductInput) {
@@ -96,7 +94,6 @@ function toRow(input: ProductInput) {
     available: input.available,
     order_index: input.orderIndex,
     images: input.images,
-    size_type: isSizeType(input.sizeType) ? input.sizeType : "clothing",
   };
 }
 

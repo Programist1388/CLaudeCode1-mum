@@ -2,8 +2,8 @@
 
 # LAVANDA (ЛАВАНДА)
 
-Handmade rhinestone ("стразы") apparel and home textiles — hoodies, t-shirts,
-pillows with one-of-a-kind crystal-laid prints, made to order. Business is
+Handmade embroidered accessories — bags, caps, pins, and similar
+one-of-a-kind pieces embroidered by hand, made to order. Business is
 based in Russia. The storefront auto-detects the visitor's browser language
 (Russian/English/French/Spanish — see "Internationalization" below); the
 admin panel stays Russian-only, since there's a single Russian-speaking
@@ -59,8 +59,7 @@ components/
               React, not in the DB, except Showroom which renders admin-managed
               showroom_items
   catalog/    CatalogGrid (also used standalone by app/catalog/page.tsx, with
-              category filter tabs), ProductCard, PriceTag, ProductPurchasePanel
-              (product-page size selector + AddToCartButton, see "Product sizes" below)
+              category filter tabs), ProductCard, PriceTag
   cart/       CartButton, CartLineItem, CartPageClient, AddToCartButton, OrderSummaryBuilder,
               OrderStatusList (customer-facing order statuses on /cart)
   admin/      LogoutButton, CategoriesManager, ProductForm, ShowroomManager,
@@ -72,8 +71,6 @@ components/
 
 lib/
   types.ts                shared Product/ShowroomItem types (storefront-facing, DB-agnostic)
-  sizes.ts                 SizeType ("clothing"/"shoes"/"none") + CLOTHING_SIZES/SHOE_SIZES/
-                          sizeOptionsFor() — see "Product sizes" below
   format.ts                formatPriceRub()
   order-links.ts           WhatsApp/Telegram link builders + contact info (env-driven)
   cart/       cart-context.tsx (CartProvider/useCart), cart-storage.ts (localStorage),
@@ -167,8 +164,6 @@ create table products (
   category_id uuid references categories(id) on delete set null,
   available boolean not null default true,
   order_index integer,
-  size_type text not null default 'clothing'
-    check (size_type in ('clothing', 'shoes', 'none')),
   created_at timestamptz not null default now()
 );
 
@@ -339,29 +334,6 @@ just keeps the docs and the DB in sync for anyone reading this file first.
   runs only after the insert, so checkout works with Telegram down and a
   duplicate submit (same client-minted id, rejected by the PK) can't
   notify twice.
-
-## Product sizes
-
-- Each product declares a `size_type` (`products.size_type`, admin-editable
-  in `ProductForm.tsx`): `"clothing"` (chips XS–XXL), `"shoes"` (chips EU
-  36–45), or `"none"` (no selector — e.g. pillows/home textiles). See
-  `lib/sizes.ts` for the option lists and `sizeOptionsFor()`.
-- On the product page, `ProductPurchasePanel` renders the size chips (if
-  any) and the add-to-cart button together, since they share state: a size
-  must be picked before adding is allowed (`AddToCartButton`'s
-  `onMissingSize` callback surfaces the inline error). On catalog cards
-  (`ProductCard`), there's no room for a chip picker, so a sized product's
-  quick-add button becomes a plain link to the product page instead —
-  sizeless products (`"none"`) keep the instant one-click add.
-- The chosen size travels with the cart line: `CartItem.size` in
-  `lib/cart/cart-context.tsx`. The same product in two different sizes is
-  two separate lines — `cartLineKey(slug, size)` is the dedupe/lookup key
-  used everywhere a cart line needs identifying (add/remove/update-qty,
-  the `key=` in `CartPageClient`'s list). Carried through to
-  `OrderItemSnapshot.size` at checkout, and rendered as
-  `", размер X"` appended to the item line in the customer's own
-  WhatsApp/Telegram message, the owner's Telegram notification, and
-  `/admin/orders`.
 
 ## Internationalization
 

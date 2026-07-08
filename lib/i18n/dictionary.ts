@@ -24,8 +24,8 @@ export interface Dictionary {
     handmadeLabel: string;
     designsValue: string;
     designsLabel: string;
-    crystalsValue: string;
-    crystalsLabel: string;
+    stitchesValue: string;
+    stitchesLabel: string;
     warrantyValue: string;
     warrantyLabel: string;
   };
@@ -72,8 +72,6 @@ export interface Dictionary {
     order: string;
     priceFrom: string;
     priceUnit: string;
-    sizeLabel: string;
-    selectSizeError: string;
   };
   cart: {
     title: string;

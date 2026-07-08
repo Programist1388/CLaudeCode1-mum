@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Wrap } from "@/components/layout/Wrap";
 import { ProductGallery } from "@/components/catalog/ProductGallery";
 import { PriceTag } from "@/components/catalog/PriceTag";
-import { ProductPurchasePanel } from "@/components/catalog/ProductPurchasePanel";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { getProductBySlug } from "@/lib/supabase/queries";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 
@@ -65,7 +65,13 @@ export default async function ProductPage({
                 fromLabel={t.product.priceFrom}
                 unitLabel={t.product.priceUnit}
               />
-              <ProductPurchasePanel product={product} t={t} className="mt-6" />
+              <AddToCartButton
+                product={product}
+                className="mt-6"
+                addLabel={t.product.addToCart}
+                addedLabel={t.product.added}
+                orderLabel={t.product.order}
+              />
             </div>
           </div>
         </Wrap>
