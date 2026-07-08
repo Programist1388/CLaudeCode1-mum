@@ -23,6 +23,11 @@ const STATUS_LABELS: Record<OrderStatus, string> = {
   cancelled: "❌ Заказ отменен",
 };
 
+const CHANNEL_LABELS: Record<OrderRow["channel"], string> = {
+  whatsapp: "💬 WhatsApp",
+  telegram: "✈️ Telegram",
+};
+
 const LOCALE_LABELS: Record<string, string> = {
   ru: "русский",
   en: "английский",
@@ -94,8 +99,8 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
                       minute: "2-digit",
                     })}
                   </div>
-                  <div className="mt-1 text-text-dim">
-                    через {order.channel === "telegram" ? "Telegram" : "WhatsApp"}
+                  <div className="mt-1 font-semibold text-gold-soft">
+                    {CHANNEL_LABELS[order.channel]}
                   </div>
                 </td>
                 <td className="p-4 align-top whitespace-nowrap">

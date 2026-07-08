@@ -7,7 +7,7 @@ import { CartLineItem } from "@/components/cart/CartLineItem";
 import { OrderStatusList } from "@/components/cart/OrderStatusList";
 import { buildOrderSummary } from "@/components/cart/OrderSummaryBuilder";
 import { useCart } from "@/lib/cart/cart-context";
-import { addOrderId, newOrderId, orderNumber } from "@/lib/cart/order-storage";
+import { addOrderId, newOrderId } from "@/lib/cart/order-storage";
 import {
   DELIVERY_METHODS,
   deliveryMethodNeedsAddress,
@@ -58,13 +58,13 @@ export function CartPageClient({
 
   const summary = useMemo(
     () =>
-      buildOrderSummary(items, note, locale, orderNumber(draft.id), {
+      buildOrderSummary(items, note, locale, {
         name: customerName,
         phone: customerPhone,
         deliveryMethod,
         deliveryAddress,
       }),
-    [items, note, locale, draft.id, customerName, customerPhone, deliveryMethod, deliveryAddress]
+    [items, note, locale, customerName, customerPhone, deliveryMethod, deliveryAddress]
   );
   const hasEstimate = items.some((item) => item.priceIsFrom);
   const total = items.reduce((sum, item) => sum + item.priceValue * item.qty, 0);
