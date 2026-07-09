@@ -43,6 +43,8 @@ export const ru: Dictionary = {
     kicker: "Коллекция",
     title: "Найдите свой аксессуар",
     subtitle: "Переключайтесь между моделями одним нажатием — фото и цена обновятся мгновенно.",
+    otherModels: "Другие модели",
+    viewDetails: "Подробнее",
   },
   process: {
     kicker: "Процесс",

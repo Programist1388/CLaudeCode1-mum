@@ -43,6 +43,8 @@ export const fr: Dictionary = {
     kicker: "Collection",
     title: "Trouvez votre accessoire",
     subtitle: "Passez d'un modèle à l'autre en un clic — photo et prix se mettent à jour instantanément.",
+    otherModels: "Autres modèles",
+    viewDetails: "Voir le détail",
   },
   process: {
     kicker: "Procédé",

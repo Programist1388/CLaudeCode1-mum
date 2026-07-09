@@ -39,6 +39,8 @@ export interface Dictionary {
     kicker: string;
     title: string;
     subtitle: string;
+    otherModels: string;
+    viewDetails: string;
   };
   process: {
     kicker: string;
