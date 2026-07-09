@@ -1,3 +1,4 @@
+import { RevealOnScroll } from "@/components/layout/RevealOnScroll";
 import { Wrap } from "@/components/layout/Wrap";
 import { contactInfo } from "@/lib/order-links";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -31,7 +32,7 @@ export async function OrderSection() {
   return (
     <section id="order" className="py-24">
       <Wrap>
-        <div className="grid items-center gap-12 rounded-[14px] border border-line bg-gradient-to-br from-card to-[#1a1820] p-8 sm:p-16 lg:grid-cols-2">
+        <RevealOnScroll className="grid items-center gap-12 rounded-[14px] border border-line bg-gradient-to-br from-card to-[#1a1820] p-8 sm:p-16 lg:grid-cols-2">
           <div>
             <div className="mb-1 text-[13px] tracking-[0.14em] text-gold-soft uppercase">
               {t.orderSection.kicker}
@@ -68,7 +69,7 @@ export async function OrderSection() {
               </a>
             ))}
           </div>
-        </div>
+        </RevealOnScroll>
       </Wrap>
     </section>
   );

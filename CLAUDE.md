@@ -53,7 +53,11 @@ app/
 proxy.ts                     route guard for /admin/** (see Tech stack note above)
 
 components/
-  layout/     Header, Footer, Wrap (max-width page container)
+  layout/     Header, Footer, Wrap (max-width page container), RevealOnScroll
+              (client component wrapping server-rendered children in an
+              IntersectionObserver fade/rise-in — see .reveal-on-scroll in
+              globals.css; used on every homepage section's header/content,
+              `delayMs` staggers a list item-by-item)
   home/       static homepage sections (Hero, Sparkles, StatsRow, ProcessSection,
               CareSection, OrderSection) — content here is hardcoded React, not
               in the DB, except two sections that render real catalog products:

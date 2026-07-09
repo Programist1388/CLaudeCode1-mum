@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Product } from "@/lib/types";
+import { RevealOnScroll } from "@/components/layout/RevealOnScroll";
 import { Wrap } from "@/components/layout/Wrap";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { formatPriceRub } from "@/lib/format";
@@ -78,7 +79,7 @@ export function FactsGrid({
   return (
     <section className="py-24">
       <Wrap>
-        <div className="mx-auto mb-13 max-w-[620px] text-center">
+        <RevealOnScroll className="mx-auto mb-13 max-w-[620px] text-center">
           <div className="mb-1 text-[13px] tracking-[0.14em] text-gold-soft uppercase">
             {t.factsGrid.kicker}
           </div>
@@ -88,9 +89,12 @@ export function FactsGrid({
           <p className="mt-3.5 text-[15.5px] text-text-dim">
             {t.factsGrid.subtitle}
           </p>
-        </div>
+        </RevealOnScroll>
 
-        <div className="grid grid-cols-1 border-t border-l border-line/60 bg-bg sm:grid-cols-2 lg:grid-cols-4">
+        <RevealOnScroll
+          delayMs={150}
+          className="grid grid-cols-1 border-t border-l border-line/60 bg-bg sm:grid-cols-2 lg:grid-cols-4"
+        >
           <StatCell value={t.stats.handmadeValue} label={t.stats.handmadeLabel} />
           {products.slice(0, 3).map((p) => (
             <ProductCell key={p.slug} product={p} t={t} />
@@ -101,7 +105,7 @@ export function FactsGrid({
           {products.slice(3, 6).map((p) => (
             <ProductCell key={p.slug} product={p} t={t} />
           ))}
-        </div>
+        </RevealOnScroll>
       </Wrap>
     </section>
   );

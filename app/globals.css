@@ -107,6 +107,31 @@ body {
   }
 }
 
+/* Fade-and-rise reveal as a section scrolls into view (see
+   components/layout/RevealOnScroll.tsx) — the reference site's dominant
+   motion pattern, applied to our own section headers/content instead of
+   its movie-fact blocks. */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

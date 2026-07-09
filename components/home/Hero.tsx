@@ -1,4 +1,5 @@
 import { CatalogLink } from "@/components/layout/CatalogLink";
+import { RevealOnScroll } from "@/components/layout/RevealOnScroll";
 import { Wrap } from "@/components/layout/Wrap";
 import { Sparkles } from "@/components/home/Sparkles";
 import { StatsRow } from "@/components/home/StatsRow";
@@ -11,7 +12,7 @@ export async function Hero() {
     <section className="relative overflow-hidden pt-24 pb-15">
       <Sparkles />
       <Wrap className="relative z-10">
-        <div className="mx-auto max-w-[640px] text-center">
+        <RevealOnScroll className="mx-auto max-w-[640px] text-center">
           <div className="mb-5 flex items-center justify-center gap-2.5 text-[13px] tracking-[0.14em] text-gold-soft uppercase before:h-px before:w-6.5 before:bg-gold">
             {t.hero.kicker}
           </div>
@@ -42,9 +43,11 @@ export async function Hero() {
               {t.hero.ctaProcess}
             </a>
           </div>
-        </div>
+        </RevealOnScroll>
 
-        <StatsRow t={t} />
+        <RevealOnScroll delayMs={150}>
+          <StatsRow t={t} />
+        </RevealOnScroll>
       </Wrap>
     </section>
   );

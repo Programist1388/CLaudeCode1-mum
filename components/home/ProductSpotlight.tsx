@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
+import { RevealOnScroll } from "@/components/layout/RevealOnScroll";
 import { Wrap } from "@/components/layout/Wrap";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { PriceTag } from "@/components/catalog/PriceTag";
@@ -31,7 +32,7 @@ export function ProductSpotlight({
   return (
     <section className="py-24">
       <Wrap>
-        <div className="mx-auto mb-13 max-w-[620px] text-center">
+        <RevealOnScroll className="mx-auto mb-13 max-w-[620px] text-center">
           <div className="mb-1 text-[13px] tracking-[0.14em] text-gold-soft uppercase">
             {t.spotlight.kicker}
           </div>
@@ -41,9 +42,9 @@ export function ProductSpotlight({
           <p className="mt-3.5 text-[15.5px] text-text-dim">
             {t.spotlight.subtitle}
           </p>
-        </div>
+        </RevealOnScroll>
 
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <RevealOnScroll delayMs={150} className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
           <div className="relative">
             <div className="absolute inset-6 -z-10 rounded-full bg-gold/12 blur-3xl" />
             <Link
@@ -145,7 +146,7 @@ export function ProductSpotlight({
               </div>
             )}
           </div>
-        </div>
+        </RevealOnScroll>
       </Wrap>
     </section>
   );
