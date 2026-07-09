@@ -17,11 +17,33 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700"],
 });
 
+const OG_LOCALES: Record<string, string> = {
+  ru: "ru_RU",
+  en: "en_US",
+  fr: "fr_FR",
+  es: "es_ES",
+};
+
+const siteUrl =
+  process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+
 export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getDictionary();
+  const { t, locale } = await getDictionary();
   return {
+    ...(siteUrl ? { metadataBase: new URL(`https://${siteUrl}`) } : {}),
     title: t.metadata.title,
     description: t.metadata.description,
+    openGraph: {
+      title: t.metadata.title,
+      description: t.metadata.description,
+      locale: OG_LOCALES[locale],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.metadata.title,
+      description: t.metadata.description,
+    },
   };
 }
 
