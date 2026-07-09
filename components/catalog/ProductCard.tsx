@@ -3,6 +3,7 @@ import type { Product } from "@/lib/types";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { PriceTag } from "@/components/catalog/PriceTag";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { ProductDescriptionToggle } from "@/components/catalog/ProductDescriptionToggle";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 
 export async function ProductCard({ product }: { product: Product }) {
@@ -49,6 +50,14 @@ export async function ProductCard({ product }: { product: Product }) {
             </span>
           ))}
         </div>
+
+        {product.description && (
+          <ProductDescriptionToggle
+            description={product.description}
+            moreLabel={t.product.moreInfo}
+            lessLabel={t.product.lessInfo}
+          />
+        )}
 
         <div className="mt-3.5 flex items-center justify-between border-t border-line pt-4">
           <PriceTag

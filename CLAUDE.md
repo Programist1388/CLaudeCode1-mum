@@ -70,7 +70,12 @@ components/
               still has a working admin page, but isn't rendered on the
               homepage anymore — removed at the owner's request; see git log.
   catalog/    CatalogGrid (also used standalone by app/catalog/page.tsx, with
-              category filter tabs), ProductCard, PriceTag
+              category filter tabs), ProductCard (collapsed-by-default
+              "Подробнее" description reveal via ProductDescriptionToggle —
+              deliberately still hidden by default, just now expandable
+              instead of omitted entirely), ProductDescriptionToggle,
+              ProductGallery (prev/next crossfades via .spotlight-fade, keyed
+              by active index), PriceTag
   cart/       CartButton, CartLineItem, CartPageClient, AddToCartButton, OrderSummaryBuilder,
               OrderStatusList (customer-facing order statuses on /cart)
   admin/      LogoutButton, CategoriesManager, ProductForm, ShowroomManager,

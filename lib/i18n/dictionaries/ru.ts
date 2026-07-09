@@ -128,6 +128,8 @@ export const ru: Dictionary = {
     order: "Заказать",
     priceFrom: "от",
     priceUnit: "шт",
+    moreInfo: "Подробнее",
+    lessInfo: "Скрыть",
   },
   cart: {
     title: "Корзина",

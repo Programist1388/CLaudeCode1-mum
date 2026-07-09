@@ -128,6 +128,8 @@ export const fr: Dictionary = {
     order: "Commander",
     priceFrom: "à partir de",
     priceUnit: "pièce",
+    moreInfo: "Plus d'infos",
+    lessInfo: "Masquer",
   },
   cart: {
     title: "Panier",

@@ -128,6 +128,8 @@ export const es: Dictionary = {
     order: "Pedir",
     priceFrom: "desde",
     priceUnit: "ud.",
+    moreInfo: "Más información",
+    lessInfo: "Ocultar",
   },
   cart: {
     title: "Carrito",

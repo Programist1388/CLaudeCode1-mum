@@ -25,16 +25,18 @@ export async function Header() {
         </Link>
 
         <nav className="hidden gap-9 text-sm tracking-[0.04em] text-text-dim uppercase md:flex">
-          <CatalogLink href="/catalog" className="transition-colors hover:text-gold-soft">
+          <CatalogLink href="/catalog" className="flex items-center transition-colors hover:text-gold-soft">
             {t.nav.catalog}
+            <span className="nav-pulse-dot" aria-hidden="true" />
           </CatalogLink>
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-gold-soft"
+              className="flex items-center transition-colors hover:text-gold-soft"
             >
               {link.label}
+              <span className="nav-pulse-dot" aria-hidden="true" />
             </Link>
           ))}
         </nav>

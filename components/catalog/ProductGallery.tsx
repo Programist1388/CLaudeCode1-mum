@@ -100,9 +100,10 @@ export function ProductGallery({
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
+          key={active}
           src={images[active]}
           alt={alt}
-          className="aspect-square w-full object-cover"
+          className="spotlight-fade aspect-square w-full object-cover"
         />
 
         {images.length > 1 && (
@@ -210,9 +211,10 @@ export function ProductGallery({
 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
+            key={active}
             src={images[active]}
             alt={alt}
-            className="max-h-[90vh] max-w-[90vw] object-contain"
+            className="spotlight-fade max-h-[90vh] max-w-[90vw] object-contain"
           />
         </div>
       )}

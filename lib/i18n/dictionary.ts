@@ -83,6 +83,8 @@ export interface Dictionary {
     order: string;
     priceFrom: string;
     priceUnit: string;
+    moreInfo: string;
+    lessInfo: string;
   };
   cart: {
     title: string;
