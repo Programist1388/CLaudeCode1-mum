@@ -39,6 +39,11 @@ export const es: Dictionary = {
     empty: "Pronto llegarán ejemplos de nuestros trabajos.",
     cta: "Ver catálogo",
   },
+  spotlight: {
+    kicker: "Colección",
+    title: "Encuentra tu accesorio",
+    subtitle: "Cambia de modelo con un toque — foto y precio se actualizan al instante.",
+  },
   process: {
     kicker: "Proceso",
     title: "Cómo nace un accesorio",

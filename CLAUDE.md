@@ -57,7 +57,12 @@ components/
   home/       static homepage sections (Hero, Sparkles, StatsRow, Showroom,
               ProcessSection, CareSection, OrderSection) — content here is hardcoded
               React, not in the DB, except Showroom which renders admin-managed
-              showroom_items
+              showroom_items, and ProductSpotlight, which renders real catalog
+              products (a client component: an Apple-AirPods-Max-style swatch
+              row where each swatch is a product thumbnail — tap one and the
+              big photo/title/price crossfade to it via the .spotlight-fade
+              keyframe in globals.css, keyed by product slug so React remounts
+              and replays the animation)
   catalog/    CatalogGrid (also used standalone by app/catalog/page.tsx, with
               category filter tabs), ProductCard, PriceTag
   cart/       CartButton, CartLineItem, CartPageClient, AddToCartButton, OrderSummaryBuilder,

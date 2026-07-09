@@ -35,6 +35,11 @@ export interface Dictionary {
     empty: string;
     cta: string;
   };
+  spotlight: {
+    kicker: string;
+    title: string;
+    subtitle: string;
+  };
   process: {
     kicker: string;
     title: string;

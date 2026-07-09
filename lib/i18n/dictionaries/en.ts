@@ -39,6 +39,11 @@ export const en: Dictionary = {
     empty: "Examples of our work are coming soon.",
     cta: "View catalog",
   },
+  spotlight: {
+    kicker: "Collection",
+    title: "Find your accessory",
+    subtitle: "Switch between pieces with a single tap — photo and price update instantly.",
+  },
   process: {
     kicker: "Process",
     title: "How one accessory comes to life",

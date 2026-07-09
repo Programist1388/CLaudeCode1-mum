@@ -225,3 +225,28 @@ body {
     animation: none;
   }
 }
+
+/* Crossfade when switching the featured product in the swatch-style
+   selector (see components/home/ProductSpotlight.tsx) — applied via a
+   changing `key` prop, so React remounts the node and replays the
+   animation every time a different swatch is picked. */
+@keyframes spotlight-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.spotlight-fade {
+  animation: spotlight-fade-in 0.45s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-fade {
+    animation: none;
+  }
+}
