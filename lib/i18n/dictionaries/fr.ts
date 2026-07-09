@@ -46,6 +46,11 @@ export const fr: Dictionary = {
     otherModels: "Autres modèles",
     viewDetails: "Voir le détail",
   },
+  factsGrid: {
+    kicker: "Repères",
+    title: "L'atelier, en chiffres et en pièces",
+    subtitle: "Quelques faits sur nous et une sélection de pièces du catalogue.",
+  },
   process: {
     kicker: "Procédé",
     title: "Comment naît un accessoire",

@@ -42,6 +42,11 @@ export interface Dictionary {
     otherModels: string;
     viewDetails: string;
   };
+  factsGrid: {
+    kicker: string;
+    title: string;
+    subtitle: string;
+  };
   process: {
     kicker: string;
     title: string;

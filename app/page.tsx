@@ -2,6 +2,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
 import { ProductSpotlight } from "@/components/home/ProductSpotlight";
+import { FactsGrid } from "@/components/home/FactsGrid";
 import { ProcessSection } from "@/components/home/ProcessSection";
 import { CareSection } from "@/components/home/CareSection";
 import { OrderSection } from "@/components/home/OrderSection";
@@ -21,6 +22,7 @@ export default async function Home() {
         <Hero />
         <div className="h-px bg-gradient-to-r from-transparent via-line to-transparent" />
         <ProductSpotlight products={products.slice(0, 8)} t={t} />
+        <FactsGrid products={products.slice(0, 6)} t={t} />
         <ProcessSection />
         <CareSection />
         <OrderSection />

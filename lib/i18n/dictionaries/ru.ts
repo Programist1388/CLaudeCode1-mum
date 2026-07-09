@@ -46,6 +46,11 @@ export const ru: Dictionary = {
     otherModels: "Другие модели",
     viewDetails: "Подробнее",
   },
+  factsGrid: {
+    kicker: "Факты",
+    title: "О мастерской и изделиях",
+    subtitle: "Немного фактов о нас и подборка изделий из каталога.",
+  },
   process: {
     kicker: "Процесс",
     title: "Как рождается один аксессуар",

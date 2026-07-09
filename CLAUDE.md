@@ -54,16 +54,21 @@ proxy.ts                     route guard for /admin/** (see Tech stack note abov
 
 components/
   layout/     Header, Footer, Wrap (max-width page container)
-  home/       static homepage sections (Hero, Sparkles, StatsRow, Showroom,
-              ProcessSection, CareSection, OrderSection) — content here is hardcoded
-              React, not in the DB, except Showroom which renders admin-managed
-              showroom_items, and ProductSpotlight, which renders real catalog
-              products (a client component, big photo on one side / price +
-              "other models" list on the other — the list row you tap stands
-              in for a color/variant switcher; the photo/title/price crossfade
-              via the .spotlight-fade keyframe in globals.css, keyed by product
-              slug so React remounts
-              and replays the animation)
+  home/       static homepage sections (Hero, Sparkles, StatsRow, ProcessSection,
+              CareSection, OrderSection) — content here is hardcoded React, not
+              in the DB, except two sections that render real catalog products:
+              - ProductSpotlight: a client component, big photo on one side /
+                price + "other models" list on the other — the list row you tap
+                stands in for a color/variant switcher; the photo/title/price
+                crossfade via the .spotlight-fade keyframe in globals.css, keyed
+                by product slug so React remounts and replays the animation
+              - FactsGrid: a server component, sharp-edged bordered grid
+                alternating big stat-number cells (reusing real values from
+                t.stats) with full-bleed product-photo cells (title + price
+                overlaid bottom-left, links to the product page)
+              Showroom (renders admin-managed showroom_items) still exists and
+              still has a working admin page, but isn't rendered on the
+              homepage anymore — removed at the owner's request; see git log.
   catalog/    CatalogGrid (also used standalone by app/catalog/page.tsx, with
               category filter tabs), ProductCard, PriceTag
   cart/       CartButton, CartLineItem, CartPageClient, AddToCartButton, OrderSummaryBuilder,
