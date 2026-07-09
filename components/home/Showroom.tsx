@@ -12,9 +12,6 @@ export async function Showroom({ items }: { items: ShowroomItem[] }) {
     <section id="showroom" className="overflow-hidden py-24">
       <Wrap>
         <div className="mx-auto mb-13 max-w-[620px] text-center">
-          <div className="mb-1 text-[13px] tracking-[0.14em] text-gold-soft uppercase">
-            {t.showroom.kicker}
-          </div>
           <h2 className="font-serif text-[clamp(30px,4vw,44px)] font-semibold text-text">
             {t.showroom.title}
           </h2>

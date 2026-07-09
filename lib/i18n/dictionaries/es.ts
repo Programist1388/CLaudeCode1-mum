@@ -33,7 +33,6 @@ export const es: Dictionary = {
     warrantyLabel: "garantía de calidad del bordado",
   },
   showroom: {
-    kicker: "Portafolio",
     title: "Trabajos que ya hemos realizado",
     subtitle:
       "Fragmentos de pedidos terminados — inspiración para tu propia idea. El catálogo completo con precios está en su propia sección.",

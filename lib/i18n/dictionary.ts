@@ -30,7 +30,6 @@ export interface Dictionary {
     warrantyLabel: string;
   };
   showroom: {
-    kicker: string;
     title: string;
     subtitle: string;
     empty: string;

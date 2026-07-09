@@ -33,7 +33,6 @@ export const en: Dictionary = {
     warrantyLabel: "warranty on embroidery quality",
   },
   showroom: {
-    kicker: "Portfolio",
     title: "Work we've already made",
     subtitle:
       "Fragments of finished orders — inspiration for your own idea. The full catalog with prices is in its own section.",
