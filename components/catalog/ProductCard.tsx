@@ -9,7 +9,7 @@ export async function ProductCard({ product }: { product: Product }) {
   const { t } = await getDictionary();
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-[8px] border border-line bg-card transition-[transform,border-color] duration-300 hover:-translate-y-1.5 hover:border-[#4a4552]">
+    <div className="group flex flex-col overflow-hidden rounded-[8px] border border-line bg-card transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1.5 hover:border-gold/45 hover:shadow-gold">
       <Link
         href={`/catalog/${product.slug}`}
         className="card-shimmer relative block aspect-square overflow-hidden"

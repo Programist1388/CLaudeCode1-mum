@@ -41,7 +41,7 @@ export async function Header() {
           <CartButton ariaLabel={t.header.cartAria} />
           <Link
             href="/#order"
-            className="rounded-full border border-gold px-5 py-2 text-[13px] tracking-[0.04em] text-gold-soft transition-all hover:bg-gold hover:text-bg"
+            className="rounded-full border border-gold px-5 py-2 text-[13px] tracking-[0.04em] text-gold-soft transition-all hover:bg-gold hover:text-bg hover:shadow-gold"
           >
             {t.nav.orderCta}
           </Link>

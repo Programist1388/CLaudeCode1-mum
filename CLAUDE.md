@@ -266,11 +266,23 @@ just keeps the docs and the DB in sync for anyone reading this file first.
 ## Design system rules
 
 - Colors and fonts are CSS custom properties in `app/globals.css` (`--bg`,
-  `--gold`, `--gold-soft`, etc., ported verbatim from the original static
-  site), exposed to Tailwind via `@theme inline` as `bg-*`/`text-*`
-  utilities (e.g. `bg-card`, `text-gold-soft`, `border-line`). **Don't
-  hardcode hex colors in components** — add/adjust the token in
-  `globals.css` instead so it stays in one place.
+  `--gold`, `--gold-soft`, etc.), exposed to Tailwind via `@theme inline` as
+  `bg-*`/`text-*` utilities (e.g. `bg-card`, `text-gold-soft`,
+  `border-line`). **Don't hardcode hex colors in components** — add/adjust
+  the token in `globals.css` instead so it stays in one place.
+- **"Gilded" luxury pass**: the base palette went deeper/warmer
+  (`--bg`/`--bg-soft`/`--card` darker, `--gold-soft`/`--text` brighter) for
+  richer contrast. `.bg-gold` is overridden in `globals.css` with a gold
+  gradient (`background-image`, layered on top of the Tailwind-generated
+  solid `background-color`) — this means **every** `bg-gold` usage
+  site-wide (buttons, badges, the active category pill, in both storefront
+  and admin) automatically gets the gilded-metal sheen with zero
+  per-component work. `--shadow-gold`/`--shadow-gold-strong` are `@theme`
+  tokens generating real `shadow-gold`/`shadow-gold-strong` Tailwind
+  utilities — apply those (not ad hoc `shadow-[...]` arbitrary values) to
+  give a primary CTA a glow, typically `shadow-gold hover:shadow-gold-strong`.
+  `.text-glow-gold` is a small soft-glow text-shadow class for gold display
+  text (used on Hero's emphasis word).
 - Fonts: Cormorant Garamond (serif/headings) and Manrope (sans/body), loaded
   via `next/font/google` in `app/layout.tsx`.
 - No UI component library — the site is small and bespoke; keep it that way

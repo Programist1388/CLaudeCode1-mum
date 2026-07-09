@@ -19,7 +19,7 @@ export async function Hero() {
             {t.hero.titleLine1}
             <br />
             {t.hero.titleBeforeEmphasis}
-            <i className="text-gold not-italic italic">
+            <i className="text-glow-gold text-gold not-italic italic">
               {t.hero.titleEmphasis}
             </i>
             <br />
@@ -31,7 +31,7 @@ export async function Hero() {
           <div className="mt-9.5 flex flex-wrap justify-center gap-4">
             <Link
               href="/catalog"
-              className="rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase shadow-[0_8px_26px_-8px_rgba(201,167,104,0.55)] transition-transform hover:-translate-y-0.5"
+              className="rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase shadow-gold transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-gold-strong"
             >
               {t.hero.ctaCatalog}
             </Link>
