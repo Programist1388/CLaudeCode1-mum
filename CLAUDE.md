@@ -58,7 +58,7 @@ components/
               IntersectionObserver fade/rise-in — see .reveal-on-scroll in
               globals.css; used on every homepage section's header/content,
               `delayMs` staggers a list item-by-item)
-  home/       static homepage sections (Hero, Sparkles, StatsRow, ProcessSection,
+  home/       static homepage sections (Hero, Sparkles, ProcessSection,
               CareSection, OrderSection) — content here is hardcoded React, not
               in the DB, except two sections that render real catalog products:
               - ProductSpotlight: a client component, big photo on one side /

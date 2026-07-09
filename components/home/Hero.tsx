@@ -2,7 +2,6 @@ import { CatalogLink } from "@/components/layout/CatalogLink";
 import { RevealOnScroll } from "@/components/layout/RevealOnScroll";
 import { Wrap } from "@/components/layout/Wrap";
 import { Sparkles } from "@/components/home/Sparkles";
-import { StatsRow } from "@/components/home/StatsRow";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 
 export async function Hero() {
@@ -43,10 +42,6 @@ export async function Hero() {
               {t.hero.ctaProcess}
             </a>
           </div>
-        </RevealOnScroll>
-
-        <RevealOnScroll delayMs={150}>
-          <StatsRow t={t} />
         </RevealOnScroll>
       </Wrap>
     </section>
