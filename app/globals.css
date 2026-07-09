@@ -161,18 +161,16 @@ body {
 }
 
 /* Tactile "press" feedback for the site's catalog buttons/links (Hero,
-   Showroom, empty-cart CTA, header nav) — a warm shine flash appears the
-   instant the button is pressed and fades out smoothly on release. Uses
-   :active rather than a JS click handler so it plays reliably even when
-   the click immediately triggers navigation to /catalog. */
+   Showroom, empty-cart CTA, header nav — see components/layout/CatalogLink.tsx).
+   A real :active-only version isn't reliable here: a normal click's
+   mousedown-to-navigation window is often too short to actually see it, since
+   the click immediately routes to /catalog. CatalogLink instead adds the
+   `.catalog-press-active` class on click, holds navigation for one animation
+   cycle, then routes — so the animation always plays in full. */
 .catalog-press {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-}
-
-.catalog-press:active {
-  transform: scale(0.95);
 }
 
 .catalog-press::after {
@@ -181,25 +179,49 @@ body {
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: radial-gradient(circle, rgba(255, 248, 230, 0.6), transparent 70%);
+  background: radial-gradient(circle, rgba(255, 248, 230, 0.65), transparent 70%);
   opacity: 0;
-  transform: scale(0.5);
-  transition: opacity 0.45s ease, transform 0.45s ease;
   pointer-events: none;
 }
 
-.catalog-press:active::after {
-  opacity: 1;
-  transform: scale(1.2);
-  transition: opacity 0s, transform 0s;
+@keyframes catalog-press-scale {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes catalog-press-shine {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.catalog-press-active {
+  animation: catalog-press-scale 0.4s ease;
+}
+
+.catalog-press-active::after {
+  animation: catalog-press-shine 0.5s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .catalog-press:active {
-    transform: none;
-  }
-
-  .catalog-press::after {
-    transition: none;
+  .catalog-press-active,
+  .catalog-press-active::after {
+    animation: none;
   }
 }

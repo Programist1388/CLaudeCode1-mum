@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Wrap } from "@/components/layout/Wrap";
 import { CartButton } from "@/components/cart/CartButton";
+import { CatalogLink } from "@/components/layout/CatalogLink";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 
@@ -8,7 +9,6 @@ export async function Header() {
   const { locale, t } = await getDictionary();
 
   const NAV_LINKS = [
-    { href: "/catalog", label: t.nav.catalog },
     { href: "/#process", label: t.nav.process },
     { href: "/#care", label: t.nav.care },
     { href: "/#order", label: t.nav.contact },
@@ -25,13 +25,14 @@ export async function Header() {
         </Link>
 
         <nav className="hidden gap-9 text-sm tracking-[0.04em] text-text-dim uppercase md:flex">
+          <CatalogLink href="/catalog" className="transition-colors hover:text-gold-soft">
+            {t.nav.catalog}
+          </CatalogLink>
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`transition-colors hover:text-gold-soft ${
-                link.href === "/catalog" ? "catalog-press" : ""
-              }`}
+              className="transition-colors hover:text-gold-soft"
             >
               {link.label}
             </Link>

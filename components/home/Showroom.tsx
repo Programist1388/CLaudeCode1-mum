@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { ShowroomItem } from "@/lib/types";
+import { CatalogLink } from "@/components/layout/CatalogLink";
 import { Wrap } from "@/components/layout/Wrap";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -56,12 +56,12 @@ export async function Showroom({ items }: { items: ShowroomItem[] }) {
       )}
 
       <Wrap className="mt-13 text-center">
-        <Link
+        <CatalogLink
           href="/catalog"
-          className="catalog-press inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
+          className="inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
         >
           {t.showroom.cta}
-        </Link>
+        </CatalogLink>
       </Wrap>
     </section>
   );

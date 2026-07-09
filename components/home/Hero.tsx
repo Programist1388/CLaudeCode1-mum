@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { CatalogLink } from "@/components/layout/CatalogLink";
 import { Wrap } from "@/components/layout/Wrap";
 import { Sparkles } from "@/components/home/Sparkles";
 import { StatsRow } from "@/components/home/StatsRow";
@@ -29,12 +29,12 @@ export async function Hero() {
             {t.hero.subtitle}
           </p>
           <div className="mt-9.5 flex flex-wrap justify-center gap-4">
-            <Link
+            <CatalogLink
               href="/catalog"
-              className="catalog-press rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase shadow-gold transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-gold-strong"
+              className="rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase shadow-gold transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-gold-strong"
             >
               {t.hero.ctaCatalog}
-            </Link>
+            </CatalogLink>
             <a
               href="#process"
               className="rounded-full border border-line px-7 py-3.5 text-sm tracking-[0.03em] text-text uppercase transition-colors hover:border-gold hover:text-gold-soft"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import { CatalogLink } from "@/components/layout/CatalogLink";
 import { Wrap } from "@/components/layout/Wrap";
 import { CartLineItem } from "@/components/cart/CartLineItem";
 import { OrderStatusList } from "@/components/cart/OrderStatusList";
@@ -120,12 +120,12 @@ export function CartPageClient({
             {t.cart.emptyTitle}
           </h1>
           <p className="mt-3 text-text-dim">{t.cart.emptySubtitle}</p>
-          <Link
+          <CatalogLink
             href="/catalog"
-            className="catalog-press mt-8 inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
+            className="mt-8 inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
           >
             {t.cart.browseCatalog}
-          </Link>
+          </CatalogLink>
           <OrderStatusList t={t} locale={locale} />
         </Wrap>
       </main>
