@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
 
 // Replaces the default Next.js placeholder favicon with a small brand
-// mark: the gold "В" that's highlighted in the header/footer wordmark
-// (ЛА«В»АНДА), on the site's dark background.
+// mark: the gold "Л" — the first letter of the wordmark (ЛАВАНДА) — on
+// the site's dark background.
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
@@ -23,7 +23,7 @@ export default function Icon() {
           fontWeight: 600,
         }}
       >
-        В
+        Л
       </div>
     ),
     { ...size }

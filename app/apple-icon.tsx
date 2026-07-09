@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 
-// Same brand mark as app/icon.tsx, sized for iOS home-screen shortcuts.
+// Same brand mark as app/icon.tsx (the gold "Л"), sized for iOS
+// home-screen shortcuts.
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
@@ -21,7 +22,7 @@ export default function AppleIcon() {
           fontWeight: 600,
         }}
       >
-        В
+        Л
       </div>
     ),
     { ...size }
