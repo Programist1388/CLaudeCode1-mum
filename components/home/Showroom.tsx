@@ -58,7 +58,7 @@ export async function Showroom({ items }: { items: ShowroomItem[] }) {
       <Wrap className="mt-13 text-center">
         <Link
           href="/catalog"
-          className="inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
+          className="catalog-press inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
         >
           {t.showroom.cta}
         </Link>

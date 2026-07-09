@@ -122,7 +122,7 @@ export function CartPageClient({
           <p className="mt-3 text-text-dim">{t.cart.emptySubtitle}</p>
           <Link
             href="/catalog"
-            className="mt-8 inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
+            className="catalog-press mt-8 inline-block rounded-full bg-gold px-7.5 py-3.5 text-sm font-semibold tracking-[0.03em] text-bg uppercase transition-transform hover:-translate-y-0.5"
           >
             {t.cart.browseCatalog}
           </Link>

@@ -29,7 +29,9 @@ export async function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-gold-soft"
+              className={`transition-colors hover:text-gold-soft ${
+                link.href === "/catalog" ? "catalog-press" : ""
+              }`}
             >
               {link.label}
             </Link>
