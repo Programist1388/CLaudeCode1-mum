@@ -49,7 +49,11 @@ export const en: Dictionary = {
   factsGrid: {
     kicker: "Facts",
     title: "The workshop, in numbers and pieces",
-    subtitle: "A few facts about us and a selection of pieces from the catalog.",
+    subtitle: "A few facts about how we work and what we make.",
+    workLabel: "The work",
+    workText: "Every piece is embroidered by hand, stitch by stitch — from marking the fabric to a final check before packaging.",
+    productsLabel: "The pieces",
+    productsText: "Bags, backpacks, caps, and other accessories — each one of a kind, with an original embroidery design.",
   },
   process: {
     kicker: "Process",

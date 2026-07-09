@@ -49,7 +49,11 @@ export const fr: Dictionary = {
   factsGrid: {
     kicker: "Repères",
     title: "L'atelier, en chiffres et en pièces",
-    subtitle: "Quelques faits sur nous et une sélection de pièces du catalogue.",
+    subtitle: "Quelques faits sur notre façon de travailler et ce que nous créons.",
+    workLabel: "Le travail",
+    workText: "Chaque pièce est brodée à la main, point par point — du traçage sur le tissu à la vérification finale avant l'emballage.",
+    productsLabel: "Les pièces",
+    productsText: "Sacs, sacs à dos, casquettes et autres accessoires — chacun est unique, avec un motif de broderie original.",
   },
   process: {
     kicker: "Procédé",

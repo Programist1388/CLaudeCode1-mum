@@ -46,6 +46,10 @@ export interface Dictionary {
     kicker: string;
     title: string;
     subtitle: string;
+    workLabel: string;
+    workText: string;
+    productsLabel: string;
+    productsText: string;
   };
   process: {
     kicker: string;

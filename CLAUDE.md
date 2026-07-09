@@ -66,10 +66,11 @@ components/
                 stands in for a color/variant switcher; the photo/title/price
                 crossfade via the .spotlight-fade keyframe in globals.css, keyed
                 by product slug so React remounts and replays the animation
-              - FactsGrid: a server component, sharp-edged bordered grid
-                alternating big stat-number cells (reusing real values from
-                t.stats) with full-bleed product-photo cells (title + price
-                overlaid bottom-left, links to the product page)
+              - FactsGrid: a server component, sharp-edged bordered grid of
+                all four t.stats values plus two short copy cells
+                (t.factsGrid.work*/product*) — no photos or product data
+                (an earlier version showed product photos here; removed at
+                the owner's request, see git log)
               Showroom (renders admin-managed showroom_items) still exists and
               still has a working admin page, but isn't rendered on the
               homepage anymore — removed at the owner's request; see git log.

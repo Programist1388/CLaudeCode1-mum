@@ -22,7 +22,7 @@ export default async function Home() {
         <Hero />
         <div className="h-px bg-gradient-to-r from-transparent via-line to-transparent" />
         <ProductSpotlight products={products.slice(0, 8)} t={t} />
-        <FactsGrid products={products.slice(0, 6)} t={t} />
+        <FactsGrid t={t} />
         <ProcessSection />
         <CareSection />
         <OrderSection />

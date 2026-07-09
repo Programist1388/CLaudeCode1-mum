@@ -49,7 +49,11 @@ export const es: Dictionary = {
   factsGrid: {
     kicker: "Datos",
     title: "El taller, en cifras y piezas",
-    subtitle: "Algunos datos sobre nosotros y una selección de piezas del catálogo.",
+    subtitle: "Algunos datos sobre cómo trabajamos y qué hacemos.",
+    workLabel: "El trabajo",
+    workText: "Cada pieza se borda a mano, punto a punto — desde el trazado en la tela hasta la revisión final antes de embalar.",
+    productsLabel: "Las piezas",
+    productsText: "Bolsos, mochilas, gorras y otros accesorios — cada uno una pieza única, con un diseño de bordado original.",
   },
   process: {
     kicker: "Proceso",
