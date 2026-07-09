@@ -33,11 +33,11 @@ export const fr: Dictionary = {
     warrantyLabel: "garantie sur la qualité de la broderie",
   },
   showroom: {
-    kicker: "Vitrine",
+    kicker: "Portfolio",
     title: "Des créations déjà réalisées",
     subtitle:
       "Extraits de commandes terminées — de quoi inspirer votre propre idée. Le catalogue complet avec les prix se trouve dans sa propre rubrique.",
-    empty: "La vitrine sera bientôt garnie.",
+    empty: "Des exemples de nos créations arrivent bientôt.",
     cta: "Voir le catalogue",
   },
   process: {
