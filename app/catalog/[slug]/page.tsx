@@ -6,16 +6,16 @@ import { ProductGallery } from "@/components/catalog/ProductGallery";
 import { PriceTag } from "@/components/catalog/PriceTag";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { getProductBySlug } from "@/lib/supabase/queries";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { getDictionary, getLocale } from "@/lib/i18n/get-dictionary";
 
 export default async function ProductPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
+  const [{ slug }, locale] = await Promise.all([params, getLocale()]);
   const [product, { t }] = await Promise.all([
-    getProductBySlug(decodeURIComponent(slug)),
+    getProductBySlug(decodeURIComponent(slug), locale),
     getDictionary(),
   ]);
 

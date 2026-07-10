@@ -6,6 +6,8 @@ import type {
   ProductRow,
   ShowroomItemRow,
 } from "@/lib/supabase/types";
+import type { Locale } from "@/lib/i18n/locales";
+import { translateProductText } from "@/lib/translate";
 
 type ProductWithCategory = ProductRow & {
   categories: { slug: string } | null;
@@ -26,7 +28,23 @@ function toProduct(row: ProductWithCategory): Product {
   };
 }
 
-export async function getAllProducts(): Promise<Product[]> {
+// Title/description are typed into /admin in Russian only (see CLAUDE.md);
+// this machine-translates them for non-Russian visitors at read time
+// rather than storing per-locale copies, so the owner never has to type
+// anything twice.
+async function localizeProduct(
+  product: Product,
+  locale: Locale
+): Promise<Product> {
+  if (locale === "ru") return product;
+  const [title, description] = await Promise.all([
+    translateProductText(product.title, locale),
+    translateProductText(product.description, locale),
+  ]);
+  return { ...product, title, description };
+}
+
+export async function getAllProducts(locale: Locale = "ru"): Promise<Product[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
@@ -36,10 +54,14 @@ export async function getAllProducts(): Promise<Product[]> {
     .order("created_at", { ascending: true });
 
   if (error || !data) return [];
-  return (data as ProductWithCategory[]).map(toProduct);
+  const products = (data as ProductWithCategory[]).map(toProduct);
+  return Promise.all(products.map((p) => localizeProduct(p, locale)));
 }
 
-export async function getProductBySlug(slug: string): Promise<Product | null> {
+export async function getProductBySlug(
+  slug: string,
+  locale: Locale = "ru"
+): Promise<Product | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
@@ -48,7 +70,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     .maybeSingle();
 
   if (error || !data) return null;
-  return toProduct(data as ProductWithCategory);
+  return localizeProduct(toProduct(data as ProductWithCategory), locale);
 }
 
 export async function getAllCategories(): Promise<CategoryRow[]> {

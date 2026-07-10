@@ -7,11 +7,12 @@ import { ProcessSection } from "@/components/home/ProcessSection";
 import { CareSection } from "@/components/home/CareSection";
 import { OrderSection } from "@/components/home/OrderSection";
 import { getAllProducts } from "@/lib/supabase/queries";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { getDictionary, getLocale } from "@/lib/i18n/get-dictionary";
 
 export default async function Home() {
+  const locale = await getLocale();
   const [products, { t }] = await Promise.all([
-    getAllProducts(),
+    getAllProducts(locale),
     getDictionary(),
   ]);
 

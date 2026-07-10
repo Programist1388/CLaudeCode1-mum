@@ -94,6 +94,9 @@ lib/
   types.ts                shared Product/ShowroomItem types (storefront-facing, DB-agnostic)
   format.ts                formatPriceRub()
   order-links.ts           WhatsApp/Telegram link builders + contact info (env-driven)
+  translate.ts             translateProductText() — DeepL machine translation for product
+                           title/description, cached a week via unstable_cache; falls back
+                           to the original Russian text if DEEPL_API_KEY is unset or DeepL errors
   cart/       cart-context.tsx (CartProvider/useCart), cart-storage.ts (localStorage),
               order-storage.ts (ids of orders placed from this browser, newOrderId/orderNumber)
   i18n/
@@ -111,7 +114,9 @@ lib/
     types.ts    CategoryRow, ProductRow, ShowroomItemRow, OrderRow + ORDER_STATUSES (raw DB shapes)
     queries.ts  getAllProducts, getProductBySlug, getAllCategories,
                 getAllShowroomItems, getAllOrders — maps DB rows to storefront types;
-                products are joined with categories(slug) so /catalog can filter by category
+                products are joined with categories(slug) so /catalog can filter by category;
+                getAllProducts/getProductBySlug take an optional locale, translating
+                title/description via lib/translate.ts when it isn't "ru"
     mutations.ts  Server Actions: create/update/delete for products, categories, and
                   showroom items, each calling revalidatePath() after writing; plus
                   createOrder (anon, called at checkout) and updateOrderStatus (admin)
@@ -416,11 +421,24 @@ just keeps the docs and the DB in sync for anyone reading this file first.
   `lib/i18n/locales.ts` and add one full `Dictionary`-shaped file under
   `lib/i18n/dictionaries/`; TypeScript enforces every key exists since each
   file is typed as `Dictionary`.
-- **Product/category/showroom content the owner types into `/admin` is
-  never auto-translated** — titles, descriptions, tags, category names, and
-  showroom captions always render exactly as entered. Machine-translating
-  handmade-product descriptions with no owner review step was judged too
-  risky (garbled or wrong text); only static UI chrome is translated.
+- **Product title/description are machine-translated on read** via DeepL
+  (`lib/translate.ts`) for non-Russian locales — `getAllProducts()` /
+  `getProductBySlug()` in `lib/supabase/queries.ts` now take an optional
+  `locale` argument and, when it isn't `"ru"`, translate `title`/
+  `description` before returning the `Product`. The Russian text typed into
+  `/admin` stays the single source of truth (never overwritten); nothing is
+  stored per-locale in the DB. Translations are cached for a week via
+  `unstable_cache` (keyed on the source text + target language) so the same
+  product isn't re-translated on every request. Owner review was judged too
+  risky to skip entirely, but the site had no path to reach non-Russian
+  visitors otherwise, so this trades a *possibly* imperfect machine
+  translation for *definitely* no translation at all — see `DEEPL_API_KEY`
+  below. If it's unset, or DeepL errors/times out, the original Russian
+  text is shown as a graceful fallback (never throws, matches the pattern
+  in `lib/order-notifications.ts`).
+- Tags, category names, and showroom captions are **not** translated —
+  only product `title`/`description` were asked for; they always render
+  exactly as entered in `/admin`.
 - A manual override exists too: `components/layout/LanguageSwitcher.tsx` in
   the header lets a visitor pick RU/EN/FR/ES directly (sets the cookie,
   calls `router.refresh()`), since Accept-Language detection can guess
@@ -437,6 +455,7 @@ just keeps the docs and the DB in sync for anyone reading this file first.
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Shown in the contact section | Vercel + `.env.local` |
 | `TELEGRAM_BOT_TOKEN` | Bot (via @BotFather) that notifies the owner about new orders. **Server-only** — no `NEXT_PUBLIC` prefix, must never reach the browser. Unset = notifications silently off, orders unaffected | Vercel + `.env.local` |
 | `TELEGRAM_ADMIN_CHAT_ID` | The owner's chat id with that bot (she must /start the bot once; id via the bot API `getUpdates`) | Vercel + `.env.local` |
+| `DEEPL_API_KEY` | Machine-translates product title/description into EN/FR/ES (see "Internationalization"). **Server-only**. Unset = non-Russian locales just show the Russian text as-is | Vercel + `.env.local` |
 
 Copy `.env.example` to `.env.local` for local dev. `.env.local` is
 git-ignored; `.env.example` is intentionally committed as the template.
