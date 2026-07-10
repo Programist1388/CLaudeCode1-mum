@@ -7,16 +7,16 @@ import type { Dictionary } from "@/lib/i18n/dictionary";
 // corners), built entirely from real shop stats and copy rather than
 // product photos.
 const CELL_BORDER = "border-r border-b border-line/60";
+// Every piece of text in this grid (stat numbers, captions, headings, body
+// copy) intentionally shares one style — no size/weight/color hierarchy —
+// at the owner's request.
+const UNIFORM_TEXT = "font-sans text-[14.5px] leading-relaxed font-normal text-text-dim";
 
 function StatCell({ value, label }: { value: string; label: string }) {
   return (
     <div className={`flex min-h-[220px] flex-col justify-between p-6 sm:p-8 ${CELL_BORDER}`}>
-      <span className="font-sans text-[clamp(28px,4vw,42px)] font-extrabold tracking-tight text-text">
-        {value}
-      </span>
-      <span className="text-[12.5px] font-semibold tracking-[0.05em] text-text-dim uppercase">
-        {label}
-      </span>
+      <span className={UNIFORM_TEXT}>{value}</span>
+      <span className={UNIFORM_TEXT}>{label}</span>
     </div>
   );
 }
@@ -24,10 +24,8 @@ function StatCell({ value, label }: { value: string; label: string }) {
 function TextCell({ label, text }: { label: string; text: string }) {
   return (
     <div className={`flex min-h-[220px] flex-col justify-between p-6 sm:p-8 ${CELL_BORDER}`}>
-      <span className="text-[12.5px] font-semibold tracking-[0.05em] text-gold-soft uppercase">
-        {label}
-      </span>
-      <p className="text-[14.5px] leading-relaxed text-text-dim">{text}</p>
+      <span className={UNIFORM_TEXT}>{label}</span>
+      <p className={UNIFORM_TEXT}>{text}</p>
     </div>
   );
 }
