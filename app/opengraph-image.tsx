@@ -32,11 +32,11 @@ export default async function OpengraphImage() {
             fontSize: 108,
             fontWeight: 600,
             letterSpacing: 6,
-            color: "#f6f1e6",
+            color: "#f4f4f2",
           }}
         >
           ЛА
-          <span style={{ color: "#c9a768" }}>В</span>
+          <span style={{ color: "#f2811c" }}>В</span>
           АНДА
         </div>
         <div
@@ -47,7 +47,7 @@ export default async function OpengraphImage() {
             textAlign: "center",
             fontFamily: "Arial, sans-serif",
             fontSize: 32,
-            color: "#ab9f8d",
+            color: "#a3a3a3",
           }}
         >
           {t.metadata.description}

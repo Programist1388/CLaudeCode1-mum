@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  /* Deeper, warmer near-black base (was #141318/#1c1a21/#201e26) and a
-     brighter, more luminous gold-soft — the richer contrast between the
-     two is what reads as "gilded" rather than just "dark with gold
-     accents". See the .bg-gold gradient override below for the other
-     half of the luxury pass. */
+  /* Dark-neutral base with a vivid orange accent (was warm-black + gold),
+     matching a reference dashboard palette. Token names stay "gold"/
+     "gold-soft" — renaming them would mean touching every component that
+     uses bg-gold/text-gold-soft/etc. for no visual benefit — but the
+     values are now orange. */
   --bg: #0c0a0e;
   --bg-soft: #17141b;
   --card: #1b1720;
-  --line: #362f3d;
-  --gold: #c9a768;
-  --gold-soft: #ecd9a8;
+  --line: #363238;
+  --gold: #f2811c;
+  --gold-soft: #fda65c;
   --ice: #e9e4f5;
-  --text: #f6f1e6;
-  --text-dim: #ab9f8d;
+  --text: #f4f4f2;
+  --text-dim: #a3a3a3;
   --rose: #b98a8a;
 }
 
@@ -33,9 +33,9 @@
   --font-serif: var(--font-cormorant);
   --font-sans: var(--font-manrope);
 
-  /* Gilded glow for primary gold buttons — shadow-gold / shadow-gold-strong */
-  --shadow-gold: 0 8px 28px -8px rgba(201, 167, 104, 0.5);
-  --shadow-gold-strong: 0 12px 40px -6px rgba(201, 167, 104, 0.7);
+  /* Glow for primary accent buttons — shadow-gold / shadow-gold-strong */
+  --shadow-gold: 0 8px 28px -8px rgba(242, 129, 28, 0.5);
+  --shadow-gold-strong: 0 12px 40px -6px rgba(242, 129, 28, 0.7);
 }
 
 html {
@@ -55,25 +55,26 @@ body {
   color: var(--text);
 }
 
-/* Gilded-metal sheen for every solid-gold surface (buttons, badges, the
-   active category pill) — a single override so the whole site (storefront
-   and admin, which intentionally shares these tokens) gets it at once,
-   instead of editing every bg-gold usage individually. Background-color
-   stays as a solid fallback; background-image is what Tailwind's bg-gold
-   utility doesn't set, so this only adds the gradient on top of it. */
+/* Sheen for every solid-accent surface (buttons, badges, the active
+   category pill) — a single override so the whole site (storefront and
+   admin, which intentionally shares these tokens) gets it at once, instead
+   of editing every bg-gold usage individually. Background-color stays as a
+   solid fallback; background-image is what Tailwind's bg-gold utility
+   doesn't set, so this only adds the gradient on top of it. */
 .bg-gold {
   background-image: linear-gradient(
     135deg,
-    #a9834a 0%,
+    #c9670f 0%,
     var(--gold-soft) 45%,
     var(--gold) 75%,
-    #a9834a 100%
+    #c9670f 100%
   );
 }
 
-/* Soft radiant glow behind gold display text (see Hero's emphasis word). */
+/* Soft radiant glow behind accent-colored display text (see Hero's
+   emphasis word). */
 .text-glow-gold {
-  text-shadow: 0 0 28px rgba(201, 167, 104, 0.45);
+  text-shadow: 0 0 28px rgba(242, 129, 28, 0.45);
 }
 
 /* Small breathing dot next to each header nav link (see Header.tsx) — a
@@ -157,7 +158,7 @@ body {
   height: 3px;
   border-radius: 50%;
   background: var(--gold-soft);
-  box-shadow: 0 0 6px 1px rgba(227, 205, 156, 0.9);
+  box-shadow: 0 0 6px 1px rgba(253, 166, 92, 0.9);
   animation: twinkle 3.4s ease-in-out infinite;
   opacity: 0.2;
 }
@@ -178,7 +179,7 @@ body {
   background: linear-gradient(
     115deg,
     transparent 40%,
-    rgba(236, 217, 168, 0.22) 48%,
+    rgba(253, 166, 92, 0.22) 48%,
     transparent 56%
   );
   transform: translateX(-120%);

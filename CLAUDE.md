@@ -291,24 +291,33 @@ just keeps the docs and the DB in sync for anyone reading this file first.
   `bg-*`/`text-*` utilities (e.g. `bg-card`, `text-gold-soft`,
   `border-line`). **Don't hardcode hex colors in components** — add/adjust
   the token in `globals.css` instead so it stays in one place.
-- **"Gilded" luxury pass**: the base palette went deeper/warmer
-  (`--bg`/`--bg-soft`/`--card` darker, `--gold-soft`/`--text` brighter) for
-  richer contrast. `.bg-gold` is overridden in `globals.css` with a gold
-  gradient (`background-image`, layered on top of the Tailwind-generated
-  solid `background-color`) — this means **every** `bg-gold` usage
-  site-wide (buttons, badges, the active category pill, in both storefront
-  and admin) automatically gets the gilded-metal sheen with zero
-  per-component work. `--shadow-gold`/`--shadow-gold-strong` are `@theme`
-  tokens generating real `shadow-gold`/`shadow-gold-strong` Tailwind
-  utilities — apply those (not ad hoc `shadow-[...]` arbitrary values) to
-  give a primary CTA a glow, typically `shadow-gold hover:shadow-gold-strong`.
-  `.text-glow-gold` is a small soft-glow text-shadow class for gold display
-  text (used on Hero's emphasis word).
+- **Accent color**: `--gold`/`--gold-soft` are named after the site's
+  original gold-luxury look, but the values were later changed to a vivid
+  orange (`#f2811c`/`#fda65c`, matching a reference dashboard palette) —
+  the token *names* stayed `gold`/`gold-soft` on purpose (renaming would
+  mean touching every `bg-gold`/`text-gold-soft`/`border-gold` usage across
+  the codebase for no visual benefit). Don't be misled by the name — check
+  `globals.css` for the actual current value before assuming it's literally
+  gold-colored. `.bg-gold` is overridden in `globals.css` with a gradient
+  (`background-image`, layered on top of the Tailwind-generated solid
+  `background-color`) — this means **every** `bg-gold` usage site-wide
+  (buttons, badges, the active category pill, in both storefront and
+  admin) automatically gets the sheen with zero per-component work.
+  `--shadow-gold`/`--shadow-gold-strong` are `@theme` tokens generating
+  real `shadow-gold`/`shadow-gold-strong` Tailwind utilities — apply those
+  (not ad hoc `shadow-[...]` arbitrary values) to give a primary CTA a
+  glow, typically `shadow-gold hover:shadow-gold-strong`. `.text-glow-gold`
+  is a small soft-glow text-shadow class for accent-colored display text
+  (used on Hero's emphasis word). `app/icon.tsx`, `app/apple-icon.tsx`, and
+  `app/opengraph-image.tsx` hardcode the accent/text hex values directly
+  (they render via `next/og`'s `ImageResponse`, outside the CSS cascade,
+  so they can't reference the CSS custom properties) — keep those in sync
+  by hand if the palette changes again.
 - Fonts: Cormorant Garamond (serif/headings) and Manrope (sans/body), loaded
   via `next/font/google` in `app/layout.tsx`.
 - No UI component library — the site is small and bespoke; keep it that way
-  rather than introducing one. The admin panel follows the same tokens
-  (dark/gold), it's not a separate visual system.
+  rather than introducing one. The admin panel follows the same tokens,
+  it's not a separate visual system.
 
 ## Cart / order flow
 
