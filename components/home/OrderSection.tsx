@@ -7,12 +7,12 @@ const CONTACT_LINKS = [
   {
     href: `https://t.me/${contactInfo.telegramHandle}`,
     icon: "TG",
-    label: `@${contactInfo.telegramHandle} — Telegram`,
+    label: `Telegram: @${contactInfo.telegramHandle}`,
   },
   {
     href: `https://wa.me/${contactInfo.whatsappNumber}`,
     icon: "WA",
-    label: "+7 922 737-36-23 — WhatsApp",
+    label: "WhatsApp: +7 922 737-36-23",
   },
   {
     href: contactInfo.emailUrl,
@@ -22,7 +22,7 @@ const CONTACT_LINKS = [
   {
     href: "#",
     icon: "IG",
-    label: "@lavanda.handmade — Instagram*",
+    label: "Instagram*: @lavanda.handmade",
   },
 ];
 

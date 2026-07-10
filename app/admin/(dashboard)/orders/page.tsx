@@ -1,7 +1,7 @@
 import { OrdersTable } from "@/components/admin/OrdersTable";
 import { getAllOrders } from "@/lib/supabase/queries";
 
-export const metadata = { title: "Заказы — Админ" };
+export const metadata = { title: "Заказы | Админ" };
 
 export default async function AdminOrdersPage() {
   const orders = await getAllOrders();

@@ -111,14 +111,14 @@ export function OrdersTable({ orders }: { orders: OrderRow[] }) {
                       {DELIVERY_METHOD_LABELS_RU[order.delivery_method]}
                       {deliveryMethodNeedsAddress(order.delivery_method) &&
                         order.delivery_address &&
-                        ` — ${order.delivery_address}`}
+                        `, ${order.delivery_address}`}
                     </div>
                   )}
                 </td>
                 <td className="p-4 align-top text-text-dim">
                   {order.items.map((item) => (
                     <div key={item.slug}>
-                      {item.title} — {item.qty} шт.
+                      {item.title}, {item.qty} шт.
                     </div>
                   ))}
                   {order.note && (

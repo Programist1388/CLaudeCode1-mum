@@ -49,7 +49,7 @@ export function ProductsTable({ products }: { products: ProductListRow[] }) {
             <tr key={p.id} className="border-b border-line last:border-b-0">
               <td className="p-4 text-text">{p.title}</td>
               <td className="p-4 text-text-dim">
-                {p.categories?.name ?? "—"}
+                {p.categories?.name ?? "Без категории"}
               </td>
               <td className="p-4 text-gold-soft">
                 {formatPriceRub(p.price_value, p.price_is_from)}

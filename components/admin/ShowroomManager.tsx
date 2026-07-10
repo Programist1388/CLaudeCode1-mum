@@ -215,7 +215,7 @@ export function ShowroomManager({
               <div className="flex-1">
                 <div className="text-text">{item.title}</div>
                 <div className="text-xs text-text-dim">
-                  Порядок: {item.order_index ?? "—"}
+                  Порядок: {item.order_index ?? "не задан"}
                 </div>
               </div>
               <button

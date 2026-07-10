@@ -18,7 +18,7 @@ export const en: Dictionary = {
     titleEmphasis: "embroidered",
     titleLine3: "stitch by stitch",
     subtitle:
-      "Bags, caps, pins, and other accessories with original embroidery, made by hand stitch by stitch. Your own design, character, or logo — made to order.",
+      "Bags, caps, pins, and other accessories with original embroidery, made by hand stitch by stitch. Your own design, character, or logo, made to order.",
     ctaCatalog: "View catalog",
     ctaProcess: "How we make it",
   },
@@ -35,14 +35,14 @@ export const en: Dictionary = {
   showroom: {
     title: "Work we've already made",
     subtitle:
-      "Fragments of finished orders — inspiration for your own idea. The full catalog with prices is in its own section.",
+      "Fragments of finished orders: inspiration for your own idea. The full catalog with prices is in its own section.",
     empty: "Examples of our work are coming soon.",
     cta: "View catalog",
   },
   spotlight: {
     kicker: "Collection",
     title: "Find your accessory",
-    subtitle: "Switch between pieces with a single tap — photo and price update instantly.",
+    subtitle: "Switch between pieces with a single tap: photo and price update instantly.",
     otherModels: "Other models",
     viewDetails: "View details",
   },
@@ -51,9 +51,9 @@ export const en: Dictionary = {
     title: "The workshop, in numbers and pieces",
     subtitle: "A few facts about how we work and what we make.",
     workLabel: "The work",
-    workText: "Every piece is embroidered by hand, stitch by stitch — from marking the fabric to a final check before packaging.",
+    workText: "Every piece is embroidered by hand, stitch by stitch, from marking the fabric to a final check before packaging.",
     productsLabel: "The pieces",
-    productsText: "Bags, backpacks, caps, and other accessories — each one of a kind, with an original embroidery design.",
+    productsText: "Bags, backpacks, caps, and other accessories: each one of a kind, with an original embroidery design.",
   },
   process: {
     kicker: "Process",
@@ -62,7 +62,7 @@ export const en: Dictionary = {
       {
         mark: "01",
         title: "Layout and marking",
-        text: "We turn an image or reference into an embroidery scheme and trace the outline onto the fabric — by hand, no stencil.",
+        text: "We turn an image or reference into an embroidery scheme and trace the outline onto the fabric, by hand, no stencil.",
       },
       {
         mark: "02",
@@ -72,7 +72,7 @@ export const en: Dictionary = {
       {
         mark: "03",
         title: "Hand embroidery",
-        text: "Every stitch is placed by hand with a needle — the longest and most painstaking part of the work.",
+        text: "Every stitch is placed by hand with a needle. This is the longest and most painstaking part of the work.",
       },
       {
         mark: "04",
@@ -112,7 +112,7 @@ export const en: Dictionary = {
     body: "We'll confirm availability, the production time (usually 3–7 days), and arrange shipping across Russia. A 50% prepayment starts the work. We can also make a custom design from your reference.",
     priceNoteBold: "Prices are approximate",
     priceNoteRest:
-      " and depend on how detailed the embroidery is — the exact cost is confirmed once the layout is agreed.",
+      " and depend on how detailed the embroidery is; the exact cost is confirmed once the layout is agreed.",
   },
   footer: {
     tagline: "Handmade · Embroidery · Made with love for detail",
@@ -121,7 +121,7 @@ export const en: Dictionary = {
     kicker: "Catalog",
     title: "Every accessory is one of a kind",
     subtitle:
-      "Photos are taken by us as we assemble orders — these are real pieces, not renders. Fabric color and embroidery variant are confirmed when you order. We can recreate your own idea — just send a reference.",
+      "Photos are taken by us as we assemble orders: these are real pieces, not renders. Fabric color and embroidery variant are confirmed when you order. We can recreate your own idea: just send a reference.",
     allTab: "All",
     emptyGeneral: "The catalog will be filled in soon.",
     emptyCategory: "There are no products in this category yet.",
@@ -158,9 +158,9 @@ export const en: Dictionary = {
     requiredFieldError: "Please fill in this field",
     checkoutWhatsapp: "Order via WhatsApp",
     checkoutTelegram: "Copy and open Telegram",
-    checkoutTelegramCopied: "Copied — open Telegram",
+    checkoutTelegramCopied: "Copied, open Telegram",
     orderPlacedNote:
-      "Your order summary is ready — you can clear the cart if you'd like.",
+      "Your order summary is ready, you can clear the cart if you'd like.",
     clearCart: "Clear cart",
     decreaseAria: "Decrease quantity",
     increaseAria: "Increase quantity",
@@ -177,9 +177,9 @@ export const en: Dictionary = {
     text: "Photo coming soon",
   },
   metadata: {
-    title: "LAVANDA — handmade embroidered accessories",
+    title: "LAVANDA: handmade embroidered accessories",
     description:
-      "Bags, caps, pins, and other accessories with original embroidery, made by hand stitch by stitch. Your own design, character, or logo — made to order.",
-    catalogTitle: "Catalog — LAVANDA",
+      "Bags, caps, pins, and other accessories with original embroidery, made by hand stitch by stitch. Your own design, character, or logo, made to order.",
+    catalogTitle: "Catalog | LAVANDA",
   },
 };

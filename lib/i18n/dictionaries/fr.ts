@@ -18,7 +18,7 @@ export const fr: Dictionary = {
     titleEmphasis: "à la main",
     titleLine3: "point par point",
     subtitle:
-      "Sacs, casquettes, pin's et autres accessoires ornés de broderies originales, réalisées à la main point par point. Votre propre design, personnage ou logo — sur commande.",
+      "Sacs, casquettes, pin's et autres accessoires ornés de broderies originales, réalisées à la main point par point. Votre propre design, personnage ou logo, sur commande.",
     ctaCatalog: "Voir le catalogue",
     ctaProcess: "Comment nous procédons",
   },
@@ -35,14 +35,14 @@ export const fr: Dictionary = {
   showroom: {
     title: "Des créations déjà réalisées",
     subtitle:
-      "Extraits de commandes terminées — de quoi inspirer votre propre idée. Le catalogue complet avec les prix se trouve dans sa propre rubrique.",
+      "Extraits de commandes terminées : de quoi inspirer votre propre idée. Le catalogue complet avec les prix se trouve dans sa propre rubrique.",
     empty: "Des exemples de nos créations arrivent bientôt.",
     cta: "Voir le catalogue",
   },
   spotlight: {
     kicker: "Collection",
     title: "Trouvez votre accessoire",
-    subtitle: "Passez d'un modèle à l'autre en un clic — photo et prix se mettent à jour instantanément.",
+    subtitle: "Passez d'un modèle à l'autre en un clic : photo et prix se mettent à jour instantanément.",
     otherModels: "Autres modèles",
     viewDetails: "Voir le détail",
   },
@@ -51,9 +51,9 @@ export const fr: Dictionary = {
     title: "L'atelier, en chiffres et en pièces",
     subtitle: "Quelques faits sur notre façon de travailler et ce que nous créons.",
     workLabel: "Le travail",
-    workText: "Chaque pièce est brodée à la main, point par point — du traçage sur le tissu à la vérification finale avant l'emballage.",
+    workText: "Chaque pièce est brodée à la main, point par point, du traçage sur le tissu à la vérification finale avant l'emballage.",
     productsLabel: "Les pièces",
-    productsText: "Sacs, sacs à dos, casquettes et autres accessoires — chacun est unique, avec un motif de broderie original.",
+    productsText: "Sacs, sacs à dos, casquettes et autres accessoires : chacun est unique, avec un motif de broderie original.",
   },
   process: {
     kicker: "Procédé",
@@ -62,7 +62,7 @@ export const fr: Dictionary = {
       {
         mark: "01",
         title: "Plan et repérage",
-        text: "Nous transformons une image ou une référence en schéma de broderie, puis traçons le contour sur le tissu — à la main, sans pochoir.",
+        text: "Nous transformons une image ou une référence en schéma de broderie, puis traçons le contour sur le tissu, à la main, sans pochoir.",
       },
       {
         mark: "02",
@@ -72,7 +72,7 @@ export const fr: Dictionary = {
       {
         mark: "03",
         title: "Broderie à la main",
-        text: "Chaque point est réalisé à la main à l'aiguille — l'étape la plus longue et la plus minutieuse.",
+        text: "Chaque point est réalisé à la main à l'aiguille. C'est l'étape la plus longue et la plus minutieuse.",
       },
       {
         mark: "04",
@@ -112,7 +112,7 @@ export const fr: Dictionary = {
     body: "Nous confirmons la disponibilité, le délai de fabrication (généralement 3 à 7 jours) et organisons la livraison en Russie. Un acompte de 50 % est requis pour lancer la production. Nous pouvons aussi réaliser un design personnalisé à partir de votre référence.",
     priceNoteBold: "Les prix sont indicatifs",
     priceNoteRest:
-      " et dépendent de la complexité de la broderie — le coût exact est confirmé après validation du plan.",
+      " et dépendent de la complexité de la broderie ; le coût exact est confirmé après validation du plan.",
   },
   footer: {
     tagline: "Fait main · Broderie · Réalisé avec passion du détail",
@@ -121,7 +121,7 @@ export const fr: Dictionary = {
     kicker: "Catalogue",
     title: "Chaque accessoire est une pièce unique",
     subtitle:
-      "Les photos sont prises par nos soins lors de l'assemblage des commandes — ce sont de vraies pièces, pas des rendus. La couleur du tissu et la variante de broderie sont confirmées lors de la commande. Nous pouvons recréer votre propre idée — envoyez-nous une référence.",
+      "Les photos sont prises par nos soins lors de l'assemblage des commandes : ce sont de vraies pièces, pas des rendus. La couleur du tissu et la variante de broderie sont confirmées lors de la commande. Nous pouvons recréer votre propre idée : envoyez-nous une référence.",
     allTab: "Tout",
     emptyGeneral: "Le catalogue sera bientôt garni.",
     emptyCategory: "Il n'y a pas encore de produits dans cette catégorie.",
@@ -158,9 +158,9 @@ export const fr: Dictionary = {
     requiredFieldError: "Veuillez remplir ce champ",
     checkoutWhatsapp: "Commander via WhatsApp",
     checkoutTelegram: "Copier et ouvrir Telegram",
-    checkoutTelegramCopied: "Copié — ouvrir Telegram",
+    checkoutTelegramCopied: "Copié, ouvrir Telegram",
     orderPlacedNote:
-      "Votre commande est prête — vous pouvez vider le panier si vous le souhaitez.",
+      "Votre commande est prête, vous pouvez vider le panier si vous le souhaitez.",
     clearCart: "Vider le panier",
     decreaseAria: "Diminuer la quantité",
     increaseAria: "Augmenter la quantité",
@@ -177,9 +177,9 @@ export const fr: Dictionary = {
     text: "Photo à venir",
   },
   metadata: {
-    title: "LAVANDA — accessoires brodés faits main",
+    title: "LAVANDA : accessoires brodés faits main",
     description:
-      "Sacs, casquettes, pin's et autres accessoires ornés de broderies originales, réalisées à la main point par point. Votre propre design, personnage ou logo — sur commande.",
-    catalogTitle: "Catalogue — LAVANDA",
+      "Sacs, casquettes, pin's et autres accessoires ornés de broderies originales, réalisées à la main point par point. Votre propre design, personnage ou logo, sur commande.",
+    catalogTitle: "Catalogue | LAVANDA",
   },
 };

@@ -18,7 +18,7 @@ export const es: Dictionary = {
     titleEmphasis: "a mano",
     titleLine3: "punto a punto",
     subtitle:
-      "Bolsos, gorras, pins y otros accesorios con bordados originales, hechos a mano punto a punto. Tu propio diseño, personaje o logo — por encargo.",
+      "Bolsos, gorras, pins y otros accesorios con bordados originales, hechos a mano punto a punto. Tu propio diseño, personaje o logo, por encargo.",
     ctaCatalog: "Ver catálogo",
     ctaProcess: "Cómo lo hacemos",
   },
@@ -35,14 +35,14 @@ export const es: Dictionary = {
   showroom: {
     title: "Trabajos que ya hemos realizado",
     subtitle:
-      "Fragmentos de pedidos terminados — inspiración para tu propia idea. El catálogo completo con precios está en su propia sección.",
+      "Fragmentos de pedidos terminados: inspiración para tu propia idea. El catálogo completo con precios está en su propia sección.",
     empty: "Pronto llegarán ejemplos de nuestros trabajos.",
     cta: "Ver catálogo",
   },
   spotlight: {
     kicker: "Colección",
     title: "Encuentra tu accesorio",
-    subtitle: "Cambia de modelo con un toque — foto y precio se actualizan al instante.",
+    subtitle: "Cambia de modelo con un toque: foto y precio se actualizan al instante.",
     otherModels: "Otros modelos",
     viewDetails: "Ver detalles",
   },
@@ -51,9 +51,9 @@ export const es: Dictionary = {
     title: "El taller, en cifras y piezas",
     subtitle: "Algunos datos sobre cómo trabajamos y qué hacemos.",
     workLabel: "El trabajo",
-    workText: "Cada pieza se borda a mano, punto a punto — desde el trazado en la tela hasta la revisión final antes de embalar.",
+    workText: "Cada pieza se borda a mano, punto a punto, desde el trazado en la tela hasta la revisión final antes de embalar.",
     productsLabel: "Las piezas",
-    productsText: "Bolsos, mochilas, gorras y otros accesorios — cada uno una pieza única, con un diseño de bordado original.",
+    productsText: "Bolsos, mochilas, gorras y otros accesorios: cada uno una pieza única, con un diseño de bordado original.",
   },
   process: {
     kicker: "Proceso",
@@ -62,7 +62,7 @@ export const es: Dictionary = {
       {
         mark: "01",
         title: "Boceto y trazado",
-        text: "Convertimos una imagen o referencia en un esquema de bordado y trazamos el contorno sobre la tela — a mano, sin plantilla.",
+        text: "Convertimos una imagen o referencia en un esquema de bordado y trazamos el contorno sobre la tela, a mano, sin plantilla.",
       },
       {
         mark: "02",
@@ -72,7 +72,7 @@ export const es: Dictionary = {
       {
         mark: "03",
         title: "Bordado a mano",
-        text: "Cada puntada se hace a mano con aguja — la parte más larga y minuciosa del trabajo.",
+        text: "Cada puntada se hace a mano con aguja. Es la parte más larga y minuciosa del trabajo.",
       },
       {
         mark: "04",
@@ -112,7 +112,7 @@ export const es: Dictionary = {
     body: "Confirmamos la disponibilidad, el plazo de fabricación (normalmente de 3 a 7 días) y organizamos el envío dentro de Rusia. Un anticipo del 50% inicia el trabajo. También podemos crear un diseño personalizado a partir de tu referencia.",
     priceNoteBold: "Los precios son orientativos",
     priceNoteRest:
-      " y dependen de la complejidad del bordado — el costo exacto se confirma tras acordar el diseño.",
+      " y dependen de la complejidad del bordado; el costo exacto se confirma tras acordar el diseño.",
   },
   footer: {
     tagline: "Hecho a mano · Bordado · Hecho con amor por el detalle",
@@ -121,7 +121,7 @@ export const es: Dictionary = {
     kicker: "Catálogo",
     title: "Cada accesorio es una pieza única",
     subtitle:
-      "Las fotos las tomamos nosotros mismos al preparar los pedidos — son piezas reales, no renders. El color de la tela y la variante de bordado se confirman al hacer el pedido. Podemos recrear tu propia idea — solo envíanos una referencia.",
+      "Las fotos las tomamos nosotros mismos al preparar los pedidos: son piezas reales, no renders. El color de la tela y la variante de bordado se confirman al hacer el pedido. Podemos recrear tu propia idea: solo envíanos una referencia.",
     allTab: "Todos",
     emptyGeneral: "El catálogo se llenará pronto.",
     emptyCategory: "Todavía no hay productos en esta categoría.",
@@ -158,9 +158,9 @@ export const es: Dictionary = {
     requiredFieldError: "Completa este campo",
     checkoutWhatsapp: "Pedir por WhatsApp",
     checkoutTelegram: "Copiar y abrir Telegram",
-    checkoutTelegramCopied: "Copiado — abrir Telegram",
+    checkoutTelegramCopied: "Copiado, abrir Telegram",
     orderPlacedNote:
-      "Tu pedido está listo — puedes vaciar el carrito si lo deseas.",
+      "Tu pedido está listo, puedes vaciar el carrito si lo deseas.",
     clearCart: "Vaciar carrito",
     decreaseAria: "Disminuir cantidad",
     increaseAria: "Aumentar cantidad",
@@ -177,9 +177,9 @@ export const es: Dictionary = {
     text: "Foto próximamente",
   },
   metadata: {
-    title: "LAVANDA — accesorios bordados hechos a mano",
+    title: "LAVANDA: accesorios bordados hechos a mano",
     description:
-      "Bolsos, gorras, pins y otros accesorios con bordados originales, hechos a mano punto a punto. Tu propio diseño, personaje o logo — por encargo.",
-    catalogTitle: "Catálogo — LAVANDA",
+      "Bolsos, gorras, pins y otros accesorios con bordados originales, hechos a mano punto a punto. Tu propio diseño, personaje o logo, por encargo.",
+    catalogTitle: "Catálogo | LAVANDA",
   },
 };
