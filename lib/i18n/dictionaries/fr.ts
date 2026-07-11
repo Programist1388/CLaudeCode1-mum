@@ -109,7 +109,7 @@ export const fr: Dictionary = {
     kicker: "Commande",
     titleLine1: "Vous avez choisi un accessoire ?",
     titleLine2: "Indiquez-nous la couleur et vos souhaits",
-    body: "Nous confirmons la disponibilité, le délai de fabrication (généralement 3 à 7 jours) et organisons la livraison en Russie. Un acompte de 50 % est requis pour lancer la production. Nous pouvons aussi réaliser un design personnalisé à partir de votre référence.",
+    body: "Nous confirmons la disponibilité, le délai de fabrication (généralement 4 à 6 mois) et organisons la livraison en Russie. Un acompte de 50 % est requis pour lancer la production. Nous pouvons aussi réaliser un design personnalisé à partir de votre référence.",
     priceNoteBold: "Les prix sont indicatifs",
     priceNoteRest:
       " et dépendent de la complexité de la broderie ; le coût exact est confirmé après validation du plan.",

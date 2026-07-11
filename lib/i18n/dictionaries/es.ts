@@ -109,7 +109,7 @@ export const es: Dictionary = {
     kicker: "Pedido",
     titleLine1: "¿Elegiste un accesorio?",
     titleLine2: "Escríbenos el color y tus preferencias",
-    body: "Confirmamos la disponibilidad, el plazo de fabricación (normalmente de 3 a 7 días) y organizamos el envío dentro de Rusia. Un anticipo del 50% inicia el trabajo. También podemos crear un diseño personalizado a partir de tu referencia.",
+    body: "Confirmamos la disponibilidad, el plazo de fabricación (normalmente de 4 a 6 meses) y organizamos el envío dentro de Rusia. Un anticipo del 50% inicia el trabajo. También podemos crear un diseño personalizado a partir de tu referencia.",
     priceNoteBold: "Los precios son orientativos",
     priceNoteRest:
       " y dependen de la complejidad del bordado; el costo exacto se confirma tras acordar el diseño.",

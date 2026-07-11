@@ -109,7 +109,7 @@ export const en: Dictionary = {
     kicker: "Order",
     titleLine1: "Picked an accessory?",
     titleLine2: "Send us the color and any requests",
-    body: "We'll confirm availability, the production time (usually 3–7 days), and arrange shipping across Russia. A 50% prepayment starts the work. We can also make a custom design from your reference.",
+    body: "We'll confirm availability, the production time (usually 4–6 months), and arrange shipping across Russia. A 50% prepayment starts the work. We can also make a custom design from your reference.",
     priceNoteBold: "Prices are approximate",
     priceNoteRest:
       " and depend on how detailed the embroidery is; the exact cost is confirmed once the layout is agreed.",
